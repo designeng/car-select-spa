@@ -1,7 +1,7 @@
 var __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-define(['underscore', 'backbone', 'marionette'], function(_, Backbone, Marionette) {
+define(['underscore', 'backbone', 'marionette', 'hbs!templates/tabsItem'], function(_, Backbone, Marionette, tabsItemTpl) {
   var TabsItemView, TabsView, _ref, _ref1;
   TabsItemView = (function(_super) {
     __extends(TabsItemView, _super);
@@ -15,6 +15,8 @@ define(['underscore', 'backbone', 'marionette'], function(_, Backbone, Marionett
 
     TabsItemView.prototype.className = "tabs-item";
 
+    TabsItemView.prototype.template = tabsItemTpl;
+
     return TabsItemView;
 
   })(Marionette.ItemView);
@@ -25,6 +27,10 @@ define(['underscore', 'backbone', 'marionette'], function(_, Backbone, Marionett
       _ref1 = TabsView.__super__.constructor.apply(this, arguments);
       return _ref1;
     }
+
+    TabsView.prototype.tagName = 'ul';
+
+    TabsView.prototype.className = 'tabsView';
 
     TabsView.prototype.childView = TabsItemView;
 
@@ -43,7 +49,8 @@ define(['underscore', 'backbone', 'marionette'], function(_, Backbone, Marionett
           };
         });
         tabsView = new TabsView({
-          collection: new Backbone.Collection(items)
+          collection: new Backbone.Collection(items),
+          className: options.className
         });
         return resolver.resolve(tabsView);
       });

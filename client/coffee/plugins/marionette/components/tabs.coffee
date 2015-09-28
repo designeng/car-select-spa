@@ -2,13 +2,17 @@ define [
     'underscore'
     'backbone'
     'marionette'
-], (_, Backbone, Marionette) ->
+    'hbs!templates/tabsItem'
+], (_, Backbone, Marionette, tabsItemTpl) ->
 
     class TabsItemView extends Marionette.ItemView
         tagName: "li"
         className: "tabs-item"
+        template: tabsItemTpl
 
     class TabsView extends Marionette.CollectionView
+        tagName: 'ul'
+        className: 'tabsView'
         childView: TabsItemView
 
     return (options) ->
@@ -19,6 +23,7 @@ define [
                     href: options.labels[label]
                 tabsView = new TabsView({
                     collection: new Backbone.Collection(items)
+                    className: options.className
                 })
                 resolver.resolve tabsView
 
