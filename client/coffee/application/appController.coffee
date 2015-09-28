@@ -37,8 +37,8 @@ define [
         # ROUTES HANDLERS:
 
         carsModuleHandler: (brand, id) ->
-            console.debug "brand, id", brand, id
             When(@createTable "cars").then () =>
+                @emphasizeEntity "cars", brand, id
 
         statisticModuleHandler: ->
             @startModule "statistic"
@@ -55,3 +55,6 @@ define [
 
         createTable: (sandbox) ->
             sandbox.createTable()
+
+        emphasizeEntity: (sandbox, args) ->
+            console.debug "brand, id:::::", args[0], args[1]

@@ -23,7 +23,7 @@ define
             cars                : {$ref: 'cars'}
             statistic           : {$ref: 'statistic'}
             notFoundPageLayer   : {$ref: "element!.not-found"}
-        registerIntercessors: ['startModule', 'createTable']
+        registerIntercessors: ['startModule', 'createTable', 'emphasizeEntity']
         ready:
             showPreloader: {$ref: 'preloader'}
             switchOn: [

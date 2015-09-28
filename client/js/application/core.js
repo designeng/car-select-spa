@@ -30,7 +30,7 @@ define({
         $ref: "element!.not-found"
       }
     },
-    registerIntercessors: ['startModule', 'createTable'],
+    registerIntercessors: ['startModule', 'createTable', 'emphasizeEntity'],
     ready: {
       showPreloader: {
         $ref: 'preloader'
