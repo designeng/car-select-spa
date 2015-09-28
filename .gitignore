@@ -4,8 +4,6 @@ client/js/vendors/*
 build/*
 *.pdf
 
-test/*
-
 client/coffee/application/modules/deals/*
 client/coffee/application/modules/navigation/*
 client/coffee/application/modules/perspective/*
