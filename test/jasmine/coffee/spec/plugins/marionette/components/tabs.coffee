@@ -1,8 +1,8 @@
 define [
-    "wire"
-    "when"
-    "backbone"
-    "jasmine-jquery"
+    'wire'
+    'when'
+    'backbone'
+    'jasmine-jquery'
 ], (wire, When, Backbone) ->
 
     spec = 
@@ -14,37 +14,37 @@ define [
         tabs:
             createTabs:
                 labels:
-                    "All items"         : "all"
-                    "Selected items"    : "selected"
+                    'All items'         : 'all'
+                    'Selected items'    : 'selected'
                 className: 'navigation-tabs'
 
-    describe "marionette components tabs plugin", ->
+    describe 'marionette components tabs plugin', ->
 
         beforeEach (done) ->
             wire(spec).then (@ctx) =>
                 done()
             .otherwise (err) ->
-                console.log "ERROR", err
+                console.log 'ERROR', err
 
-        it "should be defined", (done) ->
+        it 'should be defined', (done) ->
             expect(@ctx.tabs).toBeDefined()
             done()
 
-        it "should have collection", (done) ->
+        it 'should have collection', (done) ->
             expect(@ctx.tabs.collection).toBeDefined()
             done()
 
-        it "with length = 2", (done) ->
+        it 'with length = 2', (done) ->
             expect(@ctx.tabs.collection.length).toBe 2
             done()
 
-        it "model should have fields 'label' and 'href'", (done) ->
+        it 'model should have fields \'label\' and \'href\'', (done) ->
             model0 = @ctx.tabs.collection.at(0)
-            expect(model0.get 'label').toBe "All items"
-            expect(model0.get 'href').toBe "#/all"
+            expect(model0.get 'label').toBe 'All items'
+            expect(model0.get 'href').toBe '#/all'
             done()
 
-        it "when rendered should have: 1) li collection length 2) li with html 3) class", (done) ->
+        it 'when rendered should have: 1) li collection length 2) li with html 3) class', (done) ->
             @ctx.tabs.render()
             rootEl = @ctx.tabs.$el
             liCollection = rootEl.find('li')
@@ -53,6 +53,6 @@ define [
             expect(liCollection.length).toBe 2
             expect(li0aTag).toHaveAttr 'href', '#/all'
             expect(li0aTag).toHaveText 'All items'
-            expect(rootEl).toHaveClass "navigation-tabs"
+            expect(rootEl).toHaveClass 'navigation-tabs'
 
             done()
