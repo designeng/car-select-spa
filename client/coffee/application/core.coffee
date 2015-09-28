@@ -10,8 +10,8 @@ define
     appInstance:
         createApplication:
             withRegions:
-                navigationTabsRegion    : ".tabs"
-                mainAreaRegion          : ".main-area"
+                navigationRegion    : ".navigation"
+                mainAreaRegion      : ".main-area"
             onStart: ->
                 Backbone.history.start()
         addController: {$ref: 'appController'}
@@ -19,7 +19,7 @@ define
     appController:
         create: "application/appController"
         properties:
-            tabs                : {$ref: 'tabs'}
+            navigation          : {$ref: 'navigation'}
             cars                : {$ref: 'cars'}
             notFoundPageLayer   : {$ref: "element!.not-found"}
         registerIntercessors: ['startModule', 'createTable']
@@ -27,7 +27,6 @@ define
             showPreloader: {$ref: 'preloader'}
             switchOn: [
                 "navigation"    : {}
-                "perspective"   : {}
             ]
             listenToModules: {}
 
@@ -41,12 +40,12 @@ define
         onRoute: {$ref: 'appController.onRoute'}
 
     # APPLICATION MODULES
-    tabs:
+    navigation:
         wire:
-            spec: "application/modules/tabs/spec"
+            spec: "application/modules/navigation/spec"
             defer: true
             provide:
-                navigationTabsRegion    : {$ref: 'appInstance.regions.navigationTabsRegion'}
+                navigationRegion    : {$ref: 'appInstance.regions.navigationRegion'}
 
     cars:
         wire:

@@ -3,7 +3,7 @@ define({
   appInstance: {
     createApplication: {
       withRegions: {
-        navigationTabsRegion: ".tabs",
+        navigationRegion: ".navigation",
         mainAreaRegion: ".main-area"
       },
       onStart: function() {
@@ -17,8 +17,8 @@ define({
   appController: {
     create: "application/appController",
     properties: {
-      tabs: {
-        $ref: 'tabs'
+      navigation: {
+        $ref: 'navigation'
       },
       cars: {
         $ref: 'cars'
@@ -34,8 +34,7 @@ define({
       },
       switchOn: [
         {
-          "navigation": {},
-          "perspective": {}
+          "navigation": {}
         }
       ],
       listenToModules: {}
@@ -56,13 +55,13 @@ define({
       $ref: 'appController.onRoute'
     }
   },
-  tabs: {
+  navigation: {
     wire: {
-      spec: "application/modules/tabs/spec",
+      spec: "application/modules/navigation/spec",
       defer: true,
       provide: {
-        navigationTabsRegion: {
-          $ref: 'appInstance.regions.navigationTabsRegion'
+        navigationRegion: {
+          $ref: 'appInstance.regions.navigationRegion'
         }
       }
     }
