@@ -4,6 +4,7 @@
     "Denis Savenok <denissavenok@gmail.com>"
   ],
   "dependencies": {
+    "random-word-generator": "^0.9.9",
     "when": "^3.7.3"
   },
   "devDependencies": {

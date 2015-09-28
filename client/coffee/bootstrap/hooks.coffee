@@ -10,7 +10,7 @@ define [
     Backbone.ajax = (response) ->
         url = response.url
 
-        if (url).match new RegExp("/models")
+        if url.match new RegExp("/cars")
             require ["json!../assets/api/response/cars.json"], (json) ->
                 response.success(json)
 

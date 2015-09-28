@@ -2,7 +2,7 @@ define(["underscore", "backbone", "backbone.radio", "marionette", "handlebars"],
   Backbone.ajax = function(response) {
     var url;
     url = response.url;
-    if (url.match(new RegExp("/models"))) {
+    if (url.match(new RegExp("/cars"))) {
       return require(["json!../assets/api/response/cars.json"], function(json) {
         return response.success(json);
       });
