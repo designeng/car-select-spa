@@ -14,4 +14,4 @@ module.exports = (grunt) ->
         while (length--)
             cropRandLength = getRandomInt(0, 10)
             result += generator.generate().slice(cropRandLength) + " "
-        console.log "RESULT:", capitalizeFirstLetter(result)
+        console.log capitalizeFirstLetter(result)

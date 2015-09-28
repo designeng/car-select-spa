@@ -50,11 +50,10 @@ define(["marionette", "when"], function(Marionette, When) {
       }
     };
 
-    AppController.prototype.carsModuleHandler = function(personId) {
+    AppController.prototype.carsModuleHandler = function(brand, id) {
       var _this = this;
-      return When(this.createEntityList("profiles")).then(function() {
-        return _this.createEntityDetails("profiles", personId);
-      });
+      console.debug("brand, id", brand, id);
+      return When(this.createTable("cars")).then(function() {});
     };
 
     AppController.prototype.notFoundHandler = function() {
@@ -63,12 +62,8 @@ define(["marionette", "when"], function(Marionette, When) {
 
     AppController.prototype.startModule = function(sandbox) {};
 
-    AppController.prototype.createEntityList = function(sandbox) {
-      return sandbox.createList();
-    };
-
-    AppController.prototype.createEntityDetails = function(sandbox, args) {
-      return sandbox.createDetails(args[0]);
+    AppController.prototype.createTable = function(sandbox) {
+      return sandbox.createTable();
     };
 
     return AppController;

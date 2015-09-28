@@ -40,9 +40,9 @@ define [
 
         # PROFILES:
 
-        carsModuleHandler: (personId) ->
-            When(@createEntityList "profiles").then () =>
-                @createEntityDetails "profiles", personId
+        carsModuleHandler: (brand, id) ->
+            console.debug "brand, id", brand, id
+            When(@createTable "cars").then () =>
 
         # 404 ERROR:
 
@@ -54,8 +54,5 @@ define [
         startModule: (sandbox) ->
             # all is done in container/register plugin
 
-        createEntityList: (sandbox) ->
-            sandbox.createList()
-
-        createEntityDetails: (sandbox, args) ->
-            sandbox.createDetails args[0]
+        createTable: (sandbox) ->
+            sandbox.createTable()

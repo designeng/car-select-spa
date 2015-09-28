@@ -3,8 +3,7 @@ define({
   appInstance: {
     createApplication: {
       withRegions: {
-        navigationRegion: ".navigation",
-        sidebarRegion: ".sidebar",
+        navigationTabsRegion: ".tabs",
         mainAreaRegion: ".main-area"
       },
       onStart: function() {
@@ -18,26 +17,17 @@ define({
   appController: {
     create: "application/appController",
     properties: {
-      navigation: {
-        $ref: 'navigation'
+      tabs: {
+        $ref: 'tabs'
       },
-      perspective: {
-        $ref: 'perspective'
-      },
-      profiles: {
-        $ref: 'profiles'
-      },
-      deals: {
-        $ref: 'deals'
-      },
-      docs: {
-        $ref: 'docs'
+      cars: {
+        $ref: 'cars'
       },
       notFoundPageLayer: {
         $ref: "element!.not-found"
       }
     },
-    registerIntercessors: ['startModule', 'createEntityList', 'createEntityDetails'],
+    registerIntercessors: ['startModule', 'createTable'],
     ready: {
       showPreloader: {
         $ref: 'preloader'
@@ -66,46 +56,26 @@ define({
       $ref: 'appController.onRoute'
     }
   },
-  navigation: {
+  tabs: {
     wire: {
-      spec: "application/modules/navigation/spec",
+      spec: "application/modules/tabs/spec",
       defer: true,
       provide: {
-        navigationRegion: {
-          $ref: 'appInstance.regions.navigationRegion'
+        navigationTabsRegion: {
+          $ref: 'appInstance.regions.navigationTabsRegion'
         }
       }
     }
   },
-  perspective: {
+  cars: {
     wire: {
-      spec: "application/modules/perspective/spec",
-      defer: true,
-      provide: {
-        sidebarRegion: {
-          $ref: 'appInstance.regions.sidebarRegion'
-        },
-        mainAreaRegion: {
-          $ref: 'appInstance.regions.mainAreaRegion'
-        }
-      }
-    }
-  },
-  profiles: {
-    wire: {
-      spec: "application/modules/profiles/spec",
+      spec: "application/modules/cars/spec",
       defer: true
     }
   },
-  deals: {
+  statistic: {
     wire: {
-      spec: "application/modules/deals/spec",
-      defer: true
-    }
-  },
-  docs: {
-    wire: {
-      spec: "application/modules/docs/spec",
+      spec: "application/modules/statistic/spec",
       defer: true
     }
   },
