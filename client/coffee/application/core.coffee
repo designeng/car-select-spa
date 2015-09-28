@@ -37,6 +37,7 @@ define
             routes:
                 'cars'              : 'carsModuleHandler'
                 'cars/:brand/:id'   : 'carsModuleHandler'
+                'selected'          : 'selectedCarsHandler'
                 'statistic'         : 'statisticModuleHandler'
                 '*notFound'         : 'notFoundHandler'
         onRoute: {$ref: 'appController.onRoute'}

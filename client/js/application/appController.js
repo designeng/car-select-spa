@@ -57,6 +57,10 @@ define(["marionette", "when"], function(Marionette, When) {
       });
     };
 
+    AppController.prototype.selectedCarsHandler = function() {
+      return console.debug('selectedCarsHandler');
+    };
+
     AppController.prototype.statisticModuleHandler = function() {
       return this.startModule("statistic");
     };

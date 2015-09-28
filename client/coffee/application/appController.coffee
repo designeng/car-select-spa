@@ -40,6 +40,10 @@ define [
             When(@createTable "cars").then () =>
                 @emphasizeEntity "cars", brand, id
 
+        selectedCarsHandler: ->
+            console.debug 'selectedCarsHandler'
+            # no selected if no in localstorage.....
+
         statisticModuleHandler: ->
             @startModule "statistic"
 
