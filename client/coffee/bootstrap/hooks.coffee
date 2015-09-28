@@ -11,7 +11,7 @@ define [
         url = response.url
 
         if (url).match new RegExp("/models")
-            require ["json!../assets/api/response/models.json"], (json) ->
+            require ["json!../assets/api/response/cars.json"], (json) ->
                 response.success(json)
 
     # all nessesary marionette hooks can be listed here

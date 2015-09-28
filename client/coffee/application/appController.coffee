@@ -40,21 +40,9 @@ define [
 
         # PROFILES:
 
-        profilesModuleHandler: (personId) ->
+        carsModuleHandler: (personId) ->
             When(@createEntityList "profiles").then () =>
                 @createEntityDetails "profiles", personId
-
-        # DEALS:
-
-        dealsModuleHandler: (dealId) ->
-            When(@createEntityList "deals").then () =>
-                @createEntityDetails "deals", dealId
-
-        # DOCUMENTATION:
-
-        docsModuleHandler: (id) ->
-            When(@createEntityList "docs").then () =>
-                @createEntityDetails "docs", id
 
         # 404 ERROR:
 

@@ -1,0 +1,102 @@
+[
+    {
+        "id": 1,
+        "name": "Volvo S60",
+        "image": "volvo-s60.jpg"
+    },
+    {
+        "id": 2,
+        "name": "Volvo S80",
+        "image": "volvo-s80.jpg"
+    },
+    {
+        "id": 3,
+        "name": "Volvo V40",
+        "image": "volvo-v40.jpg"
+    },
+    {
+        "id": 4,
+        "name": "Volvo XC60",
+        "image": "volvo-xc60.jpg"
+    },
+    {
+        "id": 5,
+        "name": "Volvo XC90",
+        "image": "volvo-xc90.jpg"
+    },
+    {
+        "id": 6,
+        "name": "Ford Ecosport",
+        "image": "ford-ecosport.jpg"
+    },
+    {
+        "id": 7,
+        "name": "Ford Endeavour",
+        "image": "ford-endeavour.jpg"
+    },
+    {
+        "id": 8,
+        "name": "Ford Fiesta Classic",
+        "image": "ford-fiesta-classic.jpg"
+    },
+    {
+        "id": 9,
+        "name": "Ford Fiesta",
+        "image": "ford-fiesta.jpg"
+    },
+    {
+        "id": 10,
+        "name": "Ford Fake Mustang",
+        "image": "ford-fake-mustang.jpg"
+    },
+    {
+        "id": 11,
+        "name": "Mitsubishi Pajero",
+        "image": "mitsubishi-pajero.jpg"
+    },
+    {
+        "id": 12,
+        "name": "Mitsubishi Mock Macro",
+        "image": "mitsubishi-mock-macro.jpg"
+    },
+    {
+        "id": 13,
+        "name": "Mitsubishi Mock Wild Horse",
+        "image": "mitsubishi-mock-wild-horse.jpg"
+    },
+    {
+        "id": 14,
+        "name": "Mitsubishi Fake Trollo",
+        "image": "mitsubishi-fake-trollo.jpg"
+    },
+    {
+        "id": 15,
+        "name": "Mitsubishi Mock Suzzi",
+        "image": "mitsubishi-mock-suzzi.jpg"
+    },
+    {
+        "id": 16,
+        "name": "Nissan Evalia",
+        "image": "nissan-evalia.jpg"
+    },
+    {
+        "id": 17,
+        "name": "Nissan Micra Active",
+        "image": "nissan-micra-active.jpg"
+    },
+    {
+        "id": 18,
+        "name": "Nissan Micra",
+        "image": "nissan-micra.jpg"
+    },
+    {
+        "id": 19,
+        "name": "Nissan Sunny",
+        "image": "nissan-sunny.jpg"
+    },
+    {
+        "id": 20,
+        "name": "Nissan Terrano",
+        "image": "nissan-terrano.jpg"
+    }
+]

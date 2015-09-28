@@ -50,24 +50,10 @@ define(["marionette", "when"], function(Marionette, When) {
       }
     };
 
-    AppController.prototype.profilesModuleHandler = function(personId) {
+    AppController.prototype.carsModuleHandler = function(personId) {
       var _this = this;
       return When(this.createEntityList("profiles")).then(function() {
         return _this.createEntityDetails("profiles", personId);
-      });
-    };
-
-    AppController.prototype.dealsModuleHandler = function(dealId) {
-      var _this = this;
-      return When(this.createEntityList("deals")).then(function() {
-        return _this.createEntityDetails("deals", dealId);
-      });
-    };
-
-    AppController.prototype.docsModuleHandler = function(id) {
-      var _this = this;
-      return When(this.createEntityList("docs")).then(function() {
-        return _this.createEntityDetails("docs", id);
       });
     };
 

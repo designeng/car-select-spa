@@ -57,12 +57,8 @@ define({
         $ref: 'appController'
       },
       routes: {
-        'profiles': 'profilesModuleHandler',
-        'profiles/:id': 'profilesModuleHandler',
-        'deals': 'dealsModuleHandler',
-        'deals/:id': 'dealsModuleHandler',
-        'docs': 'docsModuleHandler',
-        'docs/:id': 'docsModuleHandler',
+        'cars': 'carsModuleHandler',
+        'cars/:brand/:id': 'carsModuleHandler',
         '*notFound': 'notFoundHandler'
       }
     },

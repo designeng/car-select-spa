@@ -3,7 +3,7 @@ define(["underscore", "backbone", "backbone.radio", "marionette", "handlebars"],
     var url;
     url = response.url;
     if (url.match(new RegExp("/models"))) {
-      return require(["json!../assets/api/response/models.json"], function(json) {
+      return require(["json!../assets/api/response/cars.json"], function(json) {
         return response.success(json);
       });
     }
