@@ -36,13 +36,12 @@ define [
 
         # ROUTES HANDLERS:
 
-        # TODO: optimize it
-
-        # PROFILES:
-
         carsModuleHandler: (brand, id) ->
             console.debug "brand, id", brand, id
             When(@createTable "cars").then () =>
+
+        statisticModuleHandler: ->
+            @startModule "statistic"
 
         # 404 ERROR:
 

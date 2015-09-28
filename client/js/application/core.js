@@ -23,6 +23,9 @@ define({
       cars: {
         $ref: 'cars'
       },
+      statistic: {
+        $ref: 'statistic'
+      },
       notFoundPageLayer: {
         $ref: "element!.not-found"
       }
@@ -48,6 +51,7 @@ define({
       routes: {
         'cars': 'carsModuleHandler',
         'cars/:brand/:id': 'carsModuleHandler',
+        'statistic': 'statisticModuleHandler',
         '*notFound': 'notFoundHandler'
       }
     },

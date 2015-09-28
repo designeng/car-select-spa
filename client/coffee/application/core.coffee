@@ -21,6 +21,7 @@ define
         properties:
             navigation          : {$ref: 'navigation'}
             cars                : {$ref: 'cars'}
+            statistic           : {$ref: 'statistic'}
             notFoundPageLayer   : {$ref: "element!.not-found"}
         registerIntercessors: ['startModule', 'createTable']
         ready:
@@ -36,6 +37,7 @@ define
             routes:
                 'cars'              : 'carsModuleHandler'
                 'cars/:brand/:id'   : 'carsModuleHandler'
+                'statistic'         : 'statisticModuleHandler'
                 '*notFound'         : 'notFoundHandler'
         onRoute: {$ref: 'appController.onRoute'}
 

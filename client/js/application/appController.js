@@ -56,6 +56,10 @@ define(["marionette", "when"], function(Marionette, When) {
       return When(this.createTable("cars")).then(function() {});
     };
 
+    AppController.prototype.statisticModuleHandler = function() {
+      return this.startModule("statistic");
+    };
+
     AppController.prototype.notFoundHandler = function() {
       return this.notFoundPageLayer.show();
     };
