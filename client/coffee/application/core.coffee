@@ -54,6 +54,8 @@ define
         wire:
             spec: "application/modules/cars/spec"
             defer: true
+            provide:
+                carsModuleAreaRegion: {$ref: 'appInstance.regions.mainAreaRegion'}
 
     statistic:
         wire:

@@ -74,7 +74,12 @@ define({
   cars: {
     wire: {
       spec: "application/modules/cars/spec",
-      defer: true
+      defer: true,
+      provide: {
+        carsModuleAreaRegion: {
+          $ref: 'appInstance.regions.mainAreaRegion'
+        }
+      }
     }
   },
   statistic: {

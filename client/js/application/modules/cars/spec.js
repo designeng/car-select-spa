@@ -1,9 +1,28 @@
 define({
-  $plugins: ['wire/debug', 'plugins/marionette/components/table'],
+  $plugins: ['wire/debug', 'plugins/hbs', 'plugins/marionette/layout', 'plugins/marionette/components/table'],
   publicApi: {
     literal: {
       createTable: {
         $ref: 'controller.createTable'
+      }
+    }
+  },
+  layout: {
+    createLayout: {
+      fromTemplate: {
+        $ref: 'hbs!templates/carsLayout'
+      },
+      withRegions: {
+        tabsRegion: ".cars-tabs-control-wrapper",
+        tableRegion: ".cars-table-control-wrapper"
+      }
+    },
+    renderIn: {
+      $ref: 'carsModuleAreaRegion'
+    },
+    showInRegions: {
+      'tableRegion': {
+        $ref: 'table'
       }
     }
   },
@@ -21,9 +40,13 @@ define({
       },
       collection: {
         $ref: 'collection'
+      },
+      table: {
+        $ref: 'table'
       }
     },
     ready: {
+      showTable: {},
       onReady: {}
     }
   },
