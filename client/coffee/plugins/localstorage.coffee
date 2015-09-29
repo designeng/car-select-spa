@@ -1,6 +1,4 @@
-define [
-    'underscore'
-], (_) ->
+define ->
 
     return (options) ->
 

@@ -1,4 +1,4 @@
-define(['underscore'], function(_) {
+define(function() {
   return function(options) {
     var pluginInstance, storageFacet;
     storageFacet = function(resolver, facet, wire) {
