@@ -66,7 +66,7 @@ define [
                         cells = tr.getElementsByTagName('td')
                         id = options.cellId
                         try
-                            cell = _[id] cells  # underscore methods 'first', 'last'
+                            cell = _[id] cells  # give a chance for underscore methods 'first', 'last'
                         catch e
                             cell = cells[id]
                         finally
