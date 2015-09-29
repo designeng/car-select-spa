@@ -1,4 +1,4 @@
-define(["wire", "when", "backbone"], function(wire, When, Backbone) {
+define(["wire", "backbone"], function(wire, Backbone) {
   var spec;
   spec = {
     $plugins: ['wire/debug', 'plugins/backbone/collection/create'],

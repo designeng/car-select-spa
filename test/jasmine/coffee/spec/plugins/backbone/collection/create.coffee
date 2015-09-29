@@ -1,8 +1,7 @@
 define [
     "wire"
-    "when"
     "backbone"
-], (wire, When, Backbone) ->
+], (wire, Backbone) ->
 
     spec = 
         $plugins:[
