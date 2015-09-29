@@ -61,13 +61,12 @@ define(['underscore', 'marionette', 'when'], function(_, Marionette, When) {
         this.filterByBrand('cars', brand);
       }
       if (brand && id) {
-        this.emphasizeEntity('cars', brand, id);
+        return this.emphasizeEntity('cars', brand, id);
       }
-      return this.switchTableState('cars', 'selection-state');
     };
 
     AppController.prototype.selectedCarsHandler = function() {
-      return this.switchTableState('cars', 'elected-state');
+      return this.startModule('selected');
     };
 
     AppController.prototype.statisticModuleHandler = function() {
@@ -86,10 +85,6 @@ define(['underscore', 'marionette', 'when'], function(_, Marionette, When) {
 
     AppController.prototype.emphasizeEntity = function(sandbox, args) {
       return console.debug('brand, id:::::', args[0], args[1]);
-    };
-
-    AppController.prototype.switchTableState = function(sandbox, args) {
-      return console.debug('switchTableState', sandbox, args);
     };
 
     return AppController;

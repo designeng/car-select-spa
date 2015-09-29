@@ -15,6 +15,3 @@ define [
 
         filterByBrand: (brand) =>
             @table.filterBy 'brand', brand
-
-        switchTableState: (state) =>
-            

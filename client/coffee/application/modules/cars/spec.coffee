@@ -10,7 +10,6 @@ define
     publicApi:
         literal:
             filterByBrand       : {$ref: 'controller.filterByBrand'}
-            switchTableState    : {$ref: 'controller.switchTableState'}
 
     layout:
         createLayout:

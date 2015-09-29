@@ -8,7 +8,6 @@ define(["marionette"], function(Marionette) {
     __extends(Controller, _super);
 
     function Controller() {
-      this.switchTableState = __bind(this.switchTableState, this);
       this.filterByBrand = __bind(this.filterByBrand, this);
       _ref = Controller.__super__.constructor.apply(this, arguments);
       return _ref;
@@ -26,8 +25,6 @@ define(["marionette"], function(Marionette) {
     Controller.prototype.filterByBrand = function(brand) {
       return this.table.filterBy('brand', brand);
     };
-
-    Controller.prototype.switchTableState = function(state) {};
 
     return Controller;
 

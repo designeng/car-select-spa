@@ -46,10 +46,9 @@ define [
                 @filterByBrand 'cars', brand
             if brand and id
                 @emphasizeEntity 'cars', brand, id
-            @switchTableState 'cars', 'selection-state'
 
         selectedCarsHandler: ->
-            @switchTableState 'cars', 'elected-state'
+            @startModule 'selected'
 
         statisticModuleHandler: ->
             @startModule 'statistic'
@@ -69,6 +68,3 @@ define [
 
         emphasizeEntity: (sandbox, args) ->
             console.debug 'brand, id:::::', args[0], args[1]
-
-        switchTableState: (sandbox, args) ->
-            console.debug 'switchTableState', sandbox, args

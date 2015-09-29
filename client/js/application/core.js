@@ -23,6 +23,9 @@ define({
       cars: {
         $ref: 'cars'
       },
+      selected: {
+        $ref: 'selected'
+      },
       statistic: {
         $ref: 'statistic'
       },
@@ -30,7 +33,7 @@ define({
         $ref: "element!.not-found"
       }
     },
-    registerIntercessors: ['startModule', 'createTable', 'filterByBrand', 'emphasizeEntity', 'switchTableState'],
+    registerIntercessors: ['startModule', 'createTable', 'filterByBrand', 'emphasizeEntity'],
     ready: {
       showPreloader: {
         $ref: 'preloader'
@@ -50,9 +53,9 @@ define({
       },
       routes: {
         'cars': 'carsModuleHandler',
-        'cars/selected': 'selectedCarsHandler',
         'cars/:brand': 'carsModuleHandler',
         'cars/:brand/:id': 'carsModuleHandler',
+        'selected': 'selectedCarsHandler',
         'statistic': 'statisticModuleHandler',
         '*notFound': 'notFoundHandler'
       }
@@ -84,6 +87,17 @@ define({
   cars: {
     wire: {
       spec: "application/modules/cars/spec",
+      defer: true,
+      provide: {
+        carsModuleAreaRegion: {
+          $ref: 'appInstance.regions.mainAreaRegion'
+        }
+      }
+    }
+  },
+  selected: {
+    wire: {
+      spec: "application/modules/selected/spec",
       defer: true,
       provide: {
         carsModuleAreaRegion: {

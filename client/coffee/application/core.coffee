@@ -23,9 +23,10 @@ define
         properties:
             navigation          : {$ref: 'navigation'}
             cars                : {$ref: 'cars'}
+            selected            : {$ref: 'selected'}
             statistic           : {$ref: 'statistic'}
             notFoundPageLayer   : {$ref: "element!.not-found"}
-        registerIntercessors: ['startModule', 'createTable', 'filterByBrand', 'emphasizeEntity', 'switchTableState']
+        registerIntercessors: ['startModule', 'createTable', 'filterByBrand', 'emphasizeEntity']
         ready:
             showPreloader: {$ref: 'preloader'}
             switchOn: [
@@ -38,9 +39,9 @@ define
             controller: {$ref: 'appController'}
             routes:
                 'cars'              : 'carsModuleHandler'
-                'cars/selected'     : 'selectedCarsHandler'
                 'cars/:brand'       : 'carsModuleHandler'
                 'cars/:brand/:id'   : 'carsModuleHandler'
+                'selected'          : 'selectedCarsHandler'
                 'statistic'         : 'statisticModuleHandler'
                 '*notFound'         : 'notFoundHandler'
         onRoute: {$ref: 'appController.onRoute'}
@@ -63,6 +64,13 @@ define
     cars:
         wire:
             spec: "application/modules/cars/spec"
+            defer: true
+            provide:
+                carsModuleAreaRegion: {$ref: 'appInstance.regions.mainAreaRegion'}
+
+    selected:
+        wire:
+            spec: "application/modules/selected/spec"
             defer: true
             provide:
                 carsModuleAreaRegion: {$ref: 'appInstance.regions.mainAreaRegion'}

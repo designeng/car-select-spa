@@ -4,9 +4,6 @@ define({
     literal: {
       filterByBrand: {
         $ref: 'controller.filterByBrand'
-      },
-      switchTableState: {
-        $ref: 'controller.switchTableState'
       }
     }
   },
