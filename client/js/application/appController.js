@@ -51,7 +51,12 @@ define(["marionette", "when"], function(Marionette, When) {
     };
 
     AppController.prototype.carsModuleHandler = function(brand, id) {
-      return this.emphasizeEntity("cars", brand, id);
+      if (brand && !id) {
+        this.filterByBrand("cars", brand);
+      }
+      if (brand && id) {
+        return this.emphasizeEntity("cars", brand, id);
+      }
     };
 
     AppController.prototype.selectedCarsHandler = function() {
@@ -67,6 +72,10 @@ define(["marionette", "when"], function(Marionette, When) {
     };
 
     AppController.prototype.startModule = function(sandbox) {};
+
+    AppController.prototype.filterByBrand = function(sandbox, args) {
+      return sandbox.filterByBrand(args[0]);
+    };
 
     AppController.prototype.emphasizeEntity = function(sandbox, args) {
       return console.debug("brand, id:::::", args[0], args[1]);

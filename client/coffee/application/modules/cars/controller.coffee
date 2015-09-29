@@ -9,3 +9,6 @@ define [
 
         onReady: ->
             console.debug ">>>>>", @collection
+
+        filterByBrand: (brand) =>
+            console.debug "filterByBrand", brand

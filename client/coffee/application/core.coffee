@@ -23,7 +23,7 @@ define
             cars                : {$ref: 'cars'}
             statistic           : {$ref: 'statistic'}
             notFoundPageLayer   : {$ref: "element!.not-found"}
-        registerIntercessors: ['startModule', 'createTable', 'emphasizeEntity']
+        registerIntercessors: ['startModule', 'createTable', 'filterByBrand', 'emphasizeEntity']
         ready:
             showPreloader: {$ref: 'preloader'}
             switchOn: [
@@ -36,6 +36,7 @@ define
             controller: {$ref: 'appController'}
             routes:
                 'cars'              : 'carsModuleHandler'
+                'cars/:brand'       : 'carsModuleHandler'
                 'cars/:brand/:id'   : 'carsModuleHandler'
                 'selected'          : 'selectedCarsHandler'
                 'statistic'         : 'statisticModuleHandler'

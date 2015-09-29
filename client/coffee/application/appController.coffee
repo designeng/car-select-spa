@@ -37,7 +37,10 @@ define [
         # ROUTES HANDLERS:
 
         carsModuleHandler: (brand, id) ->
-            @emphasizeEntity "cars", brand, id
+            if brand and !id
+                @filterByBrand "cars", brand
+            if brand and id
+                @emphasizeEntity "cars", brand, id
 
         selectedCarsHandler: ->
             console.debug 'selectedCarsHandler'
@@ -55,6 +58,9 @@ define [
 
         startModule: (sandbox) ->
             # all is done in container/register plugin
+
+        filterByBrand: (sandbox, args) ->
+            sandbox.filterByBrand args[0]
 
         emphasizeEntity: (sandbox, args) ->
             console.debug "brand, id:::::", args[0], args[1]

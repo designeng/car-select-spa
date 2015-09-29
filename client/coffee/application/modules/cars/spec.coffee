@@ -7,6 +7,10 @@ define
         'plugins/marionette/components/table'
     ]
 
+    publicApi:
+        literal:
+            filterByBrand   : {$ref: 'controller.filterByBrand'}
+
     layout:
         createLayout:
             fromTemplate: {$ref: 'hbs!templates/carsLayout'}

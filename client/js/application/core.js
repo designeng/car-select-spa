@@ -30,7 +30,7 @@ define({
         $ref: "element!.not-found"
       }
     },
-    registerIntercessors: ['startModule', 'createTable', 'emphasizeEntity'],
+    registerIntercessors: ['startModule', 'createTable', 'filterByBrand', 'emphasizeEntity'],
     ready: {
       showPreloader: {
         $ref: 'preloader'
@@ -50,6 +50,7 @@ define({
       },
       routes: {
         'cars': 'carsModuleHandler',
+        'cars/:brand': 'carsModuleHandler',
         'cars/:brand/:id': 'carsModuleHandler',
         'selected': 'selectedCarsHandler',
         'statistic': 'statisticModuleHandler',
