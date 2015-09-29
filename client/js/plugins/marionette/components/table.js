@@ -34,16 +34,13 @@ define(['underscore', 'backbone', 'marionette', 'hbs!templates/tableRow'], funct
 
     TableView.prototype.childView = TableRowView;
 
-    TableView.prototype._models = null;
-
     TableView.prototype.initialize = function(options) {
       return this.childTemplate = options.childTemplate;
     };
 
     TableView.prototype.filterBy = function(fieldName, value) {
       this[fieldName] = value;
-      this.collection = new Backbone.Collection(this._models);
-      return this.render();
+      return this.collection.fetch();
     };
 
     TableView.prototype.childViewOptions = function(model, index) {
@@ -76,13 +73,10 @@ define(['underscore', 'backbone', 'marionette', 'hbs!templates/tableRow'], funct
         });
         expression = expression.join(" and ");
         facet.target.collection.on("sync", function(collection, resp, options) {
-          facet.target._models = collection.models.filter(function(item) {
+          collection.filter(function(item) {
             return eval(expression);
           });
-          if (facet.target._models.length) {
-            facet.target.collection = new Backbone.Collection(facet.target._models);
-          }
-          return facet.target.__parentRegion__.show(facet.target);
+          return facet.target.render();
         });
         return resolver.resolve(facet.target);
       });

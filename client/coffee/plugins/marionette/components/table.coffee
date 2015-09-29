@@ -14,16 +14,12 @@ define [
         className: ''
         childView: TableRowView
 
-        _models: null
-
         initialize: (options) ->
             @childTemplate = options.childTemplate
 
         filterBy: (fieldName, value) =>
             @[fieldName] = value
-            
-            @collection = new Backbone.Collection(@_models)
-            @render()
+            @collection.fetch()
 
         childViewOptions: (model, index) ->
             template: @childTemplate
@@ -46,13 +42,11 @@ define [
                 expression = expression.join(" and ")
 
                 facet.target.collection.on "sync", (collection, resp, options) ->
-
-                    facet.target._models = collection.models.filter((item) ->
+                    collection.filter((item) ->
                         return eval(expression)
                     )
 
-                    facet.target.collection = new Backbone.Collection(facet.target._models) if facet.target._models.length
-                    facet.target.__parentRegion__.show facet.target
+                    facet.target.render()
 
                 resolver.resolve facet.target
 

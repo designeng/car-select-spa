@@ -62,7 +62,6 @@ define [
             # all is done in container/register plugin
 
         filterByBrand: (sandbox, args) ->
-            console.debug "filterByBrand app contr"
             sandbox.filterByBrand args[0]
 
         emphasizeEntity: (sandbox, args) ->

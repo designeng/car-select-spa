@@ -20,7 +20,6 @@ define
         renderIn: {$ref: 'carsModuleAreaRegion'}
         showInRegions:
             'tabsRegion'    : {$ref: 'tabs'}
-        attachToRegions:
             'tableRegion'   : {$ref: 'table'}
 
     collection:

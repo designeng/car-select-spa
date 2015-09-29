@@ -5,4 +5,5 @@ define [
     specs = [
         "plugins/marionette/components/tabs"
         "plugins/marionette/components/table"
+        "plugins/localstorage"
     ]
