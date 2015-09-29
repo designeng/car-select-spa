@@ -4,10 +4,6 @@ define [
 
     return (options) ->
 
-        ensureStorage = (name) ->
-            # if !localStorage.getItem(name)
-
-
         storageFacet = (resolver, facet, wire) ->
             wire(facet.options).then (options) ->
                 facet.target.on "add update reset", (item) ->

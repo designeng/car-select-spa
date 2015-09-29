@@ -1,7 +1,6 @@
 define(['underscore'], function(_) {
   return function(options) {
-    var ensureStorage, pluginInstance, storageFacet;
-    ensureStorage = function(name) {};
+    var pluginInstance, storageFacet;
     storageFacet = function(resolver, facet, wire) {
       return wire(facet.options).then(function(options) {
         facet.target.on("add update reset", function(item) {
