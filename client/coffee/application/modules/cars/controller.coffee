@@ -4,11 +4,14 @@ define [
 
     class Controller extends Marionette.Object
 
+        _collection: null
+
         activateById: (id) ->
             # .... activateById id
 
         onReady: ->
-            console.debug ">>>>>", @collection
+            @_collection = @collection
+            console.debug "READY"
 
         filterByBrand: (brand) =>
-            console.debug "filterByBrand", brand
+            @table.filterBy 'brand', brand

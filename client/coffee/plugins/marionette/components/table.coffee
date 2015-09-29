@@ -16,6 +16,16 @@ define [
 
         initialize: (options) ->
             @childTemplate = options.childTemplate
+            @_models = options.collection.models
+
+        filterBy: (fieldName, value) ->
+            setTimeout () =>
+                _models = @_models.filter((item) ->
+                    return item.get(fieldName) == value
+                )
+                @collection = new Backbone.Collection(_models)
+                @render()
+            , 10
 
         childViewOptions: (model, index) ->
             template: @childTemplate

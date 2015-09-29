@@ -33,7 +33,20 @@ define(['underscore', 'backbone', 'marionette', 'hbs!templates/tableRow'], funct
     TableView.prototype.childView = TableRowView;
 
     TableView.prototype.initialize = function(options) {
-      return this.childTemplate = options.childTemplate;
+      this.childTemplate = options.childTemplate;
+      return this._models = options.collection.models;
+    };
+
+    TableView.prototype.filterBy = function(fieldName, value) {
+      var _this = this;
+      return setTimeout(function() {
+        var _models;
+        _models = _this._models.filter(function(item) {
+          return item.get(fieldName) === value;
+        });
+        _this.collection = new Backbone.Collection(_models);
+        return _this.render();
+      }, 10);
     };
 
     TableView.prototype.childViewOptions = function(model, index) {
