@@ -10,8 +10,5 @@ define [
         createTable: =>
             @sandbox.channel.request "list:ready", "cars"
 
-        showTable: ->
-            
-
         onReady: ->
             console.debug ">>>>>", @collection

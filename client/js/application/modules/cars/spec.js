@@ -46,7 +46,6 @@ define({
       }
     },
     ready: {
-      showTable: {},
       onReady: {}
     }
   },

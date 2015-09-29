@@ -32,7 +32,6 @@ define
             collection          : {$ref: 'collection'}
             table               : {$ref: 'table'}
         ready:
-            showTable: {}
             onReady: {}
 
     table:

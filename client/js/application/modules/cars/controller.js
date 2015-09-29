@@ -19,8 +19,6 @@ define(["marionette"], function(Marionette) {
       return this.sandbox.channel.request("list:ready", "cars");
     };
 
-    Controller.prototype.showTable = function() {};
-
     Controller.prototype.onReady = function() {
       return console.debug(">>>>>", this.collection);
     };
