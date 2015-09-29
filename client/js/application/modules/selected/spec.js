@@ -1,5 +1,5 @@
 define({
-  $plugins: ['wire/debug', 'plugins/hbs', 'plugins/marionette/layout', 'plugins/marionette/components/tabs', 'plugins/marionette/components/table', 'plugins/backbone/collection/create', 'plugins/localstorage'],
+  $plugins: ['wire/debug', 'plugins/hbs', 'plugins/marionette/layout', 'plugins/marionette/components/tabs', 'plugins/marionette/components/table', 'plugins/backbone/collection/create'],
   layout: {
     createLayout: {
       fromTemplate: {

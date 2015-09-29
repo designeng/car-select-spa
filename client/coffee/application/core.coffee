@@ -5,7 +5,6 @@ define
         'plugins/marionette/application'
         'plugins/backbone/collection/create'
         'plugins/container/register'
-        'plugins/localstorage'
         'plugins/element'
     ]
 

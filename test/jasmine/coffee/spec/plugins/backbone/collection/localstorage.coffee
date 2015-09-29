@@ -4,6 +4,7 @@ define [
     "backbone"
 ], (wire, When, Backbone) ->
 
+    collectionWithStoredSourceName = 'from_source'
     storageName = 'selected_items'
 
     stored = ->
@@ -23,8 +24,13 @@ define [
     spec = 
         $plugins:[
             'wire/debug'
-            'plugins/localstorage'
+            'plugins/backbone/collection/create'
         ]
+
+        collectionWithStoredSource:
+            localstorage: []
+            storage:
+                name: collectionWithStoredSourceName
 
         collection:
             create: 'plugins/localstorage/collection'
@@ -38,6 +44,16 @@ define [
                 done()
             .otherwise (err) ->
                 console.log "ERROR", err
+
+        xit "should get source from localstorage if exists", (done) ->
+            source = JSON.stringify [
+                {id: 0, name: "Ford"}
+                {id: 1, name: "Nissan"}
+                {id: 2, name: "Mitsubishi"}
+            ]
+            localStorage.setItem(collectionWithStoredSourceName, source)
+            expect(@ctx.collectionWithStoredSource.length).toBe 3
+            done()
 
         it "should synchronize with localstorage on add event", (done) ->
             @ctx.collection.add {id: 5, name: "Ford", description: "description5"}
