@@ -32,9 +32,14 @@ define [
                 collection: {$ref: 'collection'}
                 className: 'cars-table'
                 childTemplate: {$ref: 'hbs!templates/tableRow'}
+            addControls:
+                cellId: 'last'
+                controlType: 'button'
             extend:
                 getRowsCount: ->
                     @$el.find('tr').length
+                getLastCell: ->
+                    _.last @$el.find('tr')[0].getElementsByTagName('td')
 
     describe 'marionette components table plugin', ->
 
@@ -51,4 +56,9 @@ define [
         it 'should have 5 rows', (done) ->
             @ctx.table.render()
             expect(@ctx.table.getRowsCount()).toBe 5
+            done()
+
+        it 'should have the button in last cell in row', (done) ->
+            @ctx.table.render()
+            expect(@ctx.table.getLastCell()).toContainElement 'button'
             done()

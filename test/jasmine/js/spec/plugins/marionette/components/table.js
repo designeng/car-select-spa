@@ -58,9 +58,16 @@ define(['wire', 'when', 'backbone', 'jasmine-jquery'], function(wire, When, Back
           $ref: 'hbs!templates/tableRow'
         }
       },
+      addControls: {
+        cellId: 'last',
+        controlType: 'button'
+      },
       extend: {
         getRowsCount: function() {
           return this.$el.find('tr').length;
+        },
+        getLastCell: function() {
+          return _.last(this.$el.find('tr')[0].getElementsByTagName('td'));
         }
       }
     }
@@ -79,9 +86,14 @@ define(['wire', 'when', 'backbone', 'jasmine-jquery'], function(wire, When, Back
       expect(this.ctx.table).toBeDefined();
       return done();
     });
-    return it('should have 5 rows', function(done) {
+    it('should have 5 rows', function(done) {
       this.ctx.table.render();
       expect(this.ctx.table.getRowsCount()).toBe(5);
+      return done();
+    });
+    return it('should have the button in last cell in row', function(done) {
+      this.ctx.table.render();
+      expect(this.ctx.table.getLastCell()).toContainElement('button');
       return done();
     });
   });

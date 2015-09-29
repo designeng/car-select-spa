@@ -3,7 +3,7 @@ var __hasProp = {}.hasOwnProperty,
   __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 define(['underscore', 'backbone', 'marionette', 'hbs!templates/tableRow'], function(_, Backbone, Marionette, tableRowTpl) {
-  var TableRowView, TableView, _ref, _ref1;
+  var TableRowView, TableView, addControl, insertSelect, _ref, _ref1;
   TableRowView = (function(_super) {
     __extends(TableRowView, _super);
 
@@ -52,8 +52,17 @@ define(['underscore', 'backbone', 'marionette', 'hbs!templates/tableRow'], funct
     return TableView;
 
   })(Marionette.CollectionView);
+  insertSelect = function(cell, controlType) {};
+  addControl = function(cell, controlType) {
+    switch (controlType) {
+      case 'button':
+        return $(cell).append('<button />');
+      case 'select':
+        return insertControl(cell, 'select');
+    }
+  };
   return function(options) {
-    var createTableFactory, filtersFacet, pluginInstance;
+    var addControlsFacet, addFiltersFacet, createTableFactory, pluginInstance;
     createTableFactory = function(resolver, compDef, wire) {
       return wire(compDef.options).then(function(options) {
         var tabsView;
@@ -65,7 +74,7 @@ define(['underscore', 'backbone', 'marionette', 'hbs!templates/tableRow'], funct
         return resolver.resolve(tabsView);
       });
     };
-    filtersFacet = function(resolver, facet, wire) {
+    addFiltersFacet = function(resolver, facet, wire) {
       return wire(facet.options).then(function(filters) {
         var expression;
         expression = _.map(filters, function(filterArgs, filterName) {
@@ -81,13 +90,36 @@ define(['underscore', 'backbone', 'marionette', 'hbs!templates/tableRow'], funct
         return resolver.resolve(facet.target);
       });
     };
+    addControlsFacet = function(resolver, facet, wire) {
+      return wire(facet.options).then(function(options) {
+        facet.target.onRender = function() {
+          return _.each(facet.target.$el.find('tr'), function(tr) {
+            var cell, cells, e, id;
+            cells = tr.getElementsByTagName('td');
+            id = options.cellId;
+            try {
+              return cell = _[id](cells);
+            } catch (_error) {
+              e = _error;
+              return cell = cells[id];
+            } finally {
+              addControl(cell, options.controlType);
+            }
+          });
+        };
+        return resolver.resolve(facet.target);
+      });
+    };
     pluginInstance = {
       factories: {
         createTable: createTableFactory
       },
       facets: {
         addFilters: {
-          'ready:after': filtersFacet
+          'ready:after': addFiltersFacet
+        },
+        addControls: {
+          'ready:after': addControlsFacet
         }
       }
     };
