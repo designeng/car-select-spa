@@ -20,9 +20,6 @@ define [
         childViewOptions: (model, index) ->
             template: @childTemplate
 
-        # getRowsCount: ->
-        #     @$el.find('tr').length
-
     return (options) ->
         createTableFactory = (resolver, compDef, wire) ->
             wire(compDef.options).then (options) ->

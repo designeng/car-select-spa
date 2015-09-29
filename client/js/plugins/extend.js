@@ -3,8 +3,7 @@ define(['underscore'], function(_) {
     var extendFacet, pluginInstance;
     extendFacet = function(resolver, facet, wire) {
       return wire(facet.options).then(function(object) {
-        _.extend(facet.target, object);
-        return resolver.resolve(facet.target);
+        return resolver.resolve(_.extend(facet.target, object));
       });
     };
     pluginInstance = {
