@@ -27,6 +27,10 @@ define(["backbone", "api"], function(Backbone, api) {
     CarsCollection.prototype.model = CarModel;
 
     CarsCollection.prototype.parse = function(resp) {
+      resp.data.cars = _.map(resp.data.cars, function(item) {
+        item.image = 'assets/images/' + item.image;
+        return item;
+      });
       return resp.data.cars;
     };
 

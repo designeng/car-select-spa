@@ -593,3 +593,9 @@ code{
   padding-top: 10px;
 }
 /* /markdown */
+
+
+/* new styles */
+img.car-image{
+  width: 150px;
+}

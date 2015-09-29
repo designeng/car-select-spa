@@ -10,4 +10,7 @@ define [
         model: CarModel
 
         parse: (resp) ->
+            resp.data.cars = _.map resp.data.cars, (item) ->
+                item.image = 'assets/images/' + item.image
+                return item
             return resp.data.cars
