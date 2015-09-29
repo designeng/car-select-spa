@@ -24,7 +24,7 @@ define [
         childViewOptions: (model, index) ->
             template: @childTemplate
 
-    insertSelect = (cell, controlType, controlBehavior) ->
+    insertControl = (cell, controlType, controlBehavior) ->
         # noop function, not implemented for other control types
 
     addControl = (cell, controlType, controlBehavior) ->

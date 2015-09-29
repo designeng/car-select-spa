@@ -3,7 +3,7 @@ var __hasProp = {}.hasOwnProperty,
   __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 define(['underscore', 'backbone', 'marionette', 'hbs!templates/tableRow'], function(_, Backbone, Marionette, tableRowTpl) {
-  var TableRowView, TableView, addControl, insertSelect, _ref, _ref1;
+  var TableRowView, TableView, addControl, insertControl, _ref, _ref1;
   TableRowView = (function(_super) {
     __extends(TableRowView, _super);
 
@@ -52,7 +52,7 @@ define(['underscore', 'backbone', 'marionette', 'hbs!templates/tableRow'], funct
     return TableView;
 
   })(Marionette.CollectionView);
-  insertSelect = function(cell, controlType, controlBehavior) {};
+  insertControl = function(cell, controlType, controlBehavior) {};
   addControl = function(cell, controlType, controlBehavior) {
     switch (controlType) {
       case 'button':
