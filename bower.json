@@ -15,6 +15,7 @@
     "wire": "~0.10.11",
     "backbone.radio": "~1.0.0",
     "jquery": "~2.1.4",
-    "requirejs-json": "git://github.com/designeng/requirejs-json.git"
+    "requirejs-json": "git://github.com/designeng/requirejs-json.git",
+    "highcharts": "~4.1.8"
   }
 }

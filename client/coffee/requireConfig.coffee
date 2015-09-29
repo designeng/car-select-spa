@@ -4,9 +4,6 @@ require.config
 
     paths:
         "text": "lib/text"
-        "highlight": "lib/highlight/highlight"
-        # just a coffeescript highlighter function for usage in documentation part
-        "coffeescript": "lib/highlight/languages/coffeescript"
 
     packages: [
         {
@@ -65,21 +62,16 @@ require.config
             location: "vendors/moment"
         }
         {
-            name: "showdown"
-            main: "showdown.min"
-            location: "vendors/showdown/dist"
-        }
-        {
             name: "json"
             main: "json"
             location: "vendors/requirejs-json"
         }
+        {
+            name: "highcharts"
+            main: "highcharts"
+            location: "vendors/highcharts"
+        }
     ]
-
-    shim: {
-        "highlight":
-            exports: "highlight"
-    }
 
     hbs:
         templateExtension: ".html"
