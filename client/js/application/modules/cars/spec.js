@@ -1,26 +1,22 @@
 define({
-  $plugins: ['wire/debug', 'plugins/hbs', 'plugins/marionette/layout', 'plugins/marionette/components/table'],
-  publicApi: {
-    literal: {
-      createTable: {
-        $ref: 'controller.createTable'
-      }
-    }
-  },
+  $plugins: ['wire/debug', 'plugins/hbs', 'plugins/marionette/layout', 'plugins/marionette/components/tabs', 'plugins/marionette/components/table'],
   layout: {
     createLayout: {
       fromTemplate: {
         $ref: 'hbs!templates/carsLayout'
       },
       withRegions: {
-        tabsRegion: ".cars-tabs-control-wrapper",
-        tableRegion: ".cars-table-control-wrapper"
+        tabsRegion: '.cars-tabs-control-wrapper',
+        tableRegion: '.cars-table-control-wrapper'
       }
     },
     renderIn: {
       $ref: 'carsModuleAreaRegion'
     },
     showInRegions: {
+      'tabsRegion': {
+        $ref: 'tabs'
+      },
       'tableRegion': {
         $ref: 'table'
       }
@@ -47,6 +43,18 @@ define({
     },
     ready: {
       onReady: {}
+    }
+  },
+  tabs: {
+    createTabs: {
+      labels: {
+        'All brands': 'cars',
+        'Volvo': 'cars/volvo',
+        'Ford': 'cars/ford',
+        'Mitsubishi': 'cars/mitsubishi',
+        'Nissan': 'cars/nissan'
+      },
+      className: 'cars-filters'
     }
   },
   table: {

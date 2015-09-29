@@ -37,8 +37,7 @@ define [
         # ROUTES HANDLERS:
 
         carsModuleHandler: (brand, id) ->
-            When(@createTable "cars").then () =>
-                @emphasizeEntity "cars", brand, id
+            @emphasizeEntity "cars", brand, id
 
         selectedCarsHandler: ->
             console.debug 'selectedCarsHandler'
@@ -56,9 +55,6 @@ define [
 
         startModule: (sandbox) ->
             # all is done in container/register plugin
-
-        createTable: (sandbox) ->
-            sandbox.createTable()
 
         emphasizeEntity: (sandbox, args) ->
             console.debug "brand, id:::::", args[0], args[1]

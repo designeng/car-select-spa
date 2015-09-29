@@ -356,7 +356,7 @@ table.deals-list-wrapper th, table.deals-list-wrapper td{
 .loading {
   width: 180px;
   height: 270px;
-  background-image: url("ajax-loader-horizontal-bar.gif"), url("body-logo.png");
+  background-image: url("ajax-loader-horizontal-bar.gif");
   background-repeat: no-repeat, no-repeat, repeat;
   background-position: center 95%, center center, top left;
   background-size: 101px auto, 150px auto, auto auto;
