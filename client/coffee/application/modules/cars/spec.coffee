@@ -1,7 +1,7 @@
 define
     $plugins: [
         'wire/debug'
-        'plugins/hbs'
+        'plugins/marionette/components/table'
     ]
 
     publicApi:
@@ -20,3 +20,8 @@ define
             collection          : {$ref: 'collection'}
         ready:
             onReady: {}
+
+    table:
+        createTable:
+            collection          : {$ref: 'collection'}
+

@@ -27,8 +27,7 @@ define(["backbone", "api"], function(Backbone, api) {
     CarsCollection.prototype.model = CarModel;
 
     CarsCollection.prototype.parse = function(resp) {
-      console.debug("RESP::::", resp);
-      return resp;
+      return resp.data.cars;
     };
 
     return CarsCollection;

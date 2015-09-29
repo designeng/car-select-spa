@@ -10,10 +10,4 @@ define [
         model: CarModel
 
         parse: (resp) ->
-            console.debug "RESP::::", resp
-            return resp
-            # resp.data = _.map resp.data, (item) ->
-            #     organization = _.find resp.related_objects.organization, {id: item.id}
-            #     item.organization = organization if organization
-            #     return item
-            # return resp.data
+            return resp.data.cars

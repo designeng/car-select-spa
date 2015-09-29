@@ -1,5 +1,5 @@
 define({
-  $plugins: ['wire/debug', 'plugins/hbs'],
+  $plugins: ['wire/debug', 'plugins/marionette/components/table'],
   publicApi: {
     literal: {
       createTable: {
@@ -25,6 +25,13 @@ define({
     },
     ready: {
       onReady: {}
+    }
+  },
+  table: {
+    createTable: {
+      collection: {
+        $ref: 'collection'
+      }
     }
   }
 });
