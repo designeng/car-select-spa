@@ -15,8 +15,10 @@ define [
         storageFacet = (resolver, facet, wire) ->
             wire(facet.options).then (options) ->
                 # source = localStorage.getItem(options.name)
-                # if source?
-                #     facet.target.add JSON.parse(source)
+                # source = JSON.parse(source) if source?
+                # if source?.length
+                #     facet.target.add source
+                    
                 facet.target.on "add update reset", (item) ->
                     stringifiedCollection = JSON.stringify facet.target.toJSON()
                     localStorage.setItem options.name, stringifiedCollection
