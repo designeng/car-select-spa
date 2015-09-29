@@ -49,6 +49,9 @@ define
     table:
         createTable:
             collection          : {$ref: 'collection'}
+        addControls:
+            cellId: 'last'
+            controlType: 'button'
         addFilters:
             "brand" : {}
 

@@ -24,14 +24,14 @@ define [
         childViewOptions: (model, index) ->
             template: @childTemplate
 
-    insertSelect = (cell, controlType) ->
+    insertSelect = (cell, controlType, controlBehavior) ->
         # noop function, not implemented for other control types
 
-    addControl = (cell, controlType) ->
+    addControl = (cell, controlType, controlBehavior) ->
         switch controlType
             when 'button'
-                $(cell).append '<button />'
-            when 'select' then insertControl(cell, 'select')
+                $(cell).append('<button />').on 'click', controlBehavior
+            when 'select' then insertControl(cell, 'select', controlBehavior)
 
     return (options) ->
         createTableFactory = (resolver, compDef, wire) ->
@@ -70,7 +70,7 @@ define [
                         catch e
                             cell = cells[id]
                         finally
-                            addControl(cell, options.controlType)
+                            addControl(cell, options.controlType, options.controlBehavior)
                 resolver.resolve facet.target
 
         pluginInstance = 

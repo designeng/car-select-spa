@@ -70,6 +70,10 @@ define({
         $ref: 'collection'
       }
     },
+    addControls: {
+      cellId: 'last',
+      controlType: 'button'
+    },
     addFilters: {
       "brand": {}
     }

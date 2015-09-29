@@ -2,7 +2,8 @@ var __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 define(['wire', 'when', 'backbone', 'jasmine-jquery'], function(wire, When, Backbone) {
-  var spec;
+  var buttonControlBehaviorSpy, spec;
+  buttonControlBehaviorSpy = jasmine.createSpy('buttonControlBehaviorSpy');
   define('plugins/marionette/components/table/collection', function() {
     var Collection, _ref;
     return Collection = (function(_super) {
@@ -43,10 +44,19 @@ define(['wire', 'when', 'backbone', 'jasmine-jquery'], function(wire, When, Back
 
     })(Backbone.Collection);
   });
+  define('/controls/button/behavior', function() {
+    var buttonControlBehavior;
+    return buttonControlBehavior = function() {
+      return buttonControlBehaviorSpy();
+    };
+  });
   spec = {
     $plugins: ['wire/debug', 'plugins/hbs', 'plugins/extend', 'plugins/marionette/components/table'],
     collection: {
       create: 'plugins/marionette/components/table/collection'
+    },
+    buttonControlBehavior: {
+      module: '/controls/button/behavior'
     },
     table: {
       createTable: {
@@ -60,7 +70,10 @@ define(['wire', 'when', 'backbone', 'jasmine-jquery'], function(wire, When, Back
       },
       addControls: {
         cellId: 'last',
-        controlType: 'button'
+        controlType: 'button',
+        controlBehavior: {
+          $ref: 'buttonControlBehavior'
+        }
       },
       extend: {
         getRowsCount: function() {
@@ -68,6 +81,9 @@ define(['wire', 'when', 'backbone', 'jasmine-jquery'], function(wire, When, Back
         },
         getLastCell: function() {
           return _.last(this.$el.find('tr')[0].getElementsByTagName('td'));
+        },
+        getButton: function() {
+          return _.last(this.$el.find('tr')[0].getElementsByTagName('td')).getElementsByTagName('button')[0];
         }
       }
     }
@@ -91,9 +107,15 @@ define(['wire', 'when', 'backbone', 'jasmine-jquery'], function(wire, When, Back
       expect(this.ctx.table.getRowsCount()).toBe(5);
       return done();
     });
-    return it('should have the button in last cell in row', function(done) {
+    it('should have the button in last cell in row', function(done) {
       this.ctx.table.render();
       expect(this.ctx.table.getLastCell()).toContainElement('button');
+      return done();
+    });
+    return it('button control behavior function should be invoked on click', function(done) {
+      this.ctx.table.render();
+      this.ctx.table.getButton().click();
+      expect(buttonControlBehaviorSpy).toHaveBeenCalled();
       return done();
     });
   });
