@@ -48,7 +48,7 @@ define [
             expect(@ctx.table).toBeDefined()
             done()
 
-        it 'should accept child template', (done) ->
+        it 'should have 5 rows', (done) ->
             @ctx.table.render()
             expect(@ctx.table.getRowsCount()).toBe 5
             done()

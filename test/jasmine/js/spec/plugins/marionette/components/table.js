@@ -79,7 +79,7 @@ define(['wire', 'when', 'backbone', 'jasmine-jquery'], function(wire, When, Back
       expect(this.ctx.table).toBeDefined();
       return done();
     });
-    return it('should accept child template', function(done) {
+    return it('should have 5 rows', function(done) {
       this.ctx.table.render();
       expect(this.ctx.table.getRowsCount()).toBe(5);
       return done();
