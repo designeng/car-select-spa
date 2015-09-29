@@ -1,5 +1,5 @@
 define({
-  $plugins: ['plugins/marionette/router', 'plugins/marionette/application', 'plugins/container/register', 'plugins/element'],
+  $plugins: ['plugins/marionette/router', 'plugins/marionette/application', 'plugins/backbone/collection/create', 'plugins/container/register', 'plugins/localstorage', 'plugins/element'],
   appInstance: {
     createApplication: {
       withRegions: {
@@ -59,6 +59,15 @@ define({
     },
     onRoute: {
       $ref: 'appController.onRoute'
+    }
+  },
+  selectedCarsStorageName: 'selected-cars',
+  selectedCars: {
+    createCollection: {},
+    storage: {
+      name: {
+        $ref: 'selectedCarsStorageName'
+      }
     }
   },
   navigation: {
