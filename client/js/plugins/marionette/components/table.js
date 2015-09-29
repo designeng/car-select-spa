@@ -44,9 +44,13 @@ define(['underscore', 'backbone', 'marionette', 'hbs!templates/tableRow'], funct
         _models = _this._models.filter(function(item) {
           return item.get(fieldName) === value;
         });
-        _this.collection = new Backbone.Collection(_models);
+        if (_models.length) {
+          _this.collection = new Backbone.Collection(_models);
+        } else {
+          _this.collection = new Backbone.Collection(_this._models);
+        }
         return _this.render();
-      }, 10);
+      }, 100);
     };
 
     TableView.prototype.childViewOptions = function(model, index) {

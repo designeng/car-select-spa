@@ -37,6 +37,8 @@ define [
         # ROUTES HANDLERS:
 
         carsModuleHandler: (brand, id) ->
+            if !brand and !id
+                @filterByBrand "cars", null
             if brand and !id
                 @filterByBrand "cars", brand
             if brand and id

@@ -23,9 +23,12 @@ define [
                 _models = @_models.filter((item) ->
                     return item.get(fieldName) == value
                 )
-                @collection = new Backbone.Collection(_models)
+                if _models.length
+                    @collection = new Backbone.Collection(_models)
+                else
+                    @collection = new Backbone.Collection(@_models)
                 @render()
-            , 10
+            , 100
 
         childViewOptions: (model, index) ->
             template: @childTemplate

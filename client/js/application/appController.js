@@ -51,6 +51,9 @@ define(["marionette", "when"], function(Marionette, When) {
     };
 
     AppController.prototype.carsModuleHandler = function(brand, id) {
+      if (!brand && !id) {
+        this.filterByBrand("cars", null);
+      }
       if (brand && !id) {
         this.filterByBrand("cars", brand);
       }
