@@ -4,6 +4,9 @@ define({
     literal: {
       filterByBrand: {
         $ref: 'controller.filterByBrand'
+      },
+      switchTableState: {
+        $ref: 'controller.switchTableState'
       }
     }
   },
@@ -72,10 +75,16 @@ define({
     },
     addControls: {
       cellId: 'last',
-      controlType: 'button'
+      controlType: 'button',
+      controlBehavior: {
+        $ref: 'buttonControlBehavior'
+      }
     },
     addFilters: {
-      "brand": {}
+      'brand': {}
     }
+  },
+  buttonControlBehavior: {
+    module: 'application/modules/cars/behaviors/button'
   }
 });

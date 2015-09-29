@@ -9,7 +9,8 @@ define
 
     publicApi:
         literal:
-            filterByBrand   : {$ref: 'controller.filterByBrand'}
+            filterByBrand       : {$ref: 'controller.filterByBrand'}
+            switchTableState    : {$ref: 'controller.switchTableState'}
 
     layout:
         createLayout:
@@ -52,6 +53,9 @@ define
         addControls:
             cellId: 'last'
             controlType: 'button'
+            controlBehavior: {$ref: 'buttonControlBehavior'}
         addFilters:
-            "brand" : {}
+            'brand' : {}
 
+    buttonControlBehavior:
+        module: 'application/modules/cars/behaviors/button'
