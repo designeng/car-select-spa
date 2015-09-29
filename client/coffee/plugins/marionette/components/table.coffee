@@ -14,21 +14,16 @@ define [
         className: ''
         childView: TableRowView
 
+        _models: null
+
         initialize: (options) ->
             @childTemplate = options.childTemplate
-            @_models = options.collection.models
 
-        filterBy: (fieldName, value) ->
-            setTimeout () =>
-                _models = @_models.filter((item) ->
-                    return item.get(fieldName) == value
-                )
-                if _models.length
-                    @collection = new Backbone.Collection(_models)
-                else
-                    @collection = new Backbone.Collection(@_models)
-                @render()
-            , 100
+        filterBy: (fieldName, value) =>
+            @[fieldName] = value
+            
+            @collection = new Backbone.Collection(@_models)
+            @render()
 
         childViewOptions: (model, index) ->
             template: @childTemplate
@@ -43,8 +38,29 @@ define [
                 })
                 resolver.resolve tabsView
 
+        filtersFacet = (resolver, facet, wire) ->
+            wire(facet.options).then (filters) ->
+                expression = _.map filters, (filterArgs, filterName) ->
+                    return "item.get('#{filterName}') == facet.target.#{filterName}"
+
+                expression = expression.join(" and ")
+
+                facet.target.collection.on "sync", (collection, resp, options) ->
+
+                    facet.target._models = collection.models.filter((item) ->
+                        return eval(expression)
+                    )
+
+                    facet.target.collection = new Backbone.Collection(facet.target._models) if facet.target._models.length
+                    facet.target.__parentRegion__.show facet.target
+
+                resolver.resolve facet.target
+
         pluginInstance = 
             factories: 
                 createTable: createTableFactory
+            facets:
+                addFilters:
+                    'ready:after': filtersFacet
 
         return pluginInstance

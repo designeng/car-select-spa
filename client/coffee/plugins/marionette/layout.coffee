@@ -29,12 +29,21 @@ define [
                             facet.target.showChildView region, view
                 resolver.resolve facet.target
 
+        attachToRegionsFacet = (resolver, facet, wire) ->
+            wire(facet.options).then (options) ->
+                _.each options, (view, region) ->
+                    regionObject = facet.target.getRegion(region)
+                    view.__parentRegion__ = regionObject
+                resolver.resolve facet.target
+
         pluginInstance = 
             factories: 
                 createLayout: createLayoutFactory
             facets:
                 showInRegions:
                     "ready"     : showInRegionsFacet
+                attachToRegions:
+                    "ready"     : attachToRegionsFacet
                 renderIn:
                     "ready"     : renderInFacet
 

@@ -20,6 +20,7 @@ define
         renderIn: {$ref: 'carsModuleAreaRegion'}
         showInRegions:
             'tabsRegion'    : {$ref: 'tabs'}
+        attachToRegions:
             'tableRegion'   : {$ref: 'table'}
 
     collection:
@@ -49,4 +50,6 @@ define
     table:
         createTable:
             collection          : {$ref: 'collection'}
+        addFilters:
+            "brand" : {}
 

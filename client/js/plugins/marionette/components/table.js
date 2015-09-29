@@ -1,5 +1,6 @@
 var __hasProp = {}.hasOwnProperty,
-  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 define(['underscore', 'backbone', 'marionette', 'hbs!templates/tableRow'], function(_, Backbone, Marionette, tableRowTpl) {
   var TableRowView, TableView, _ref, _ref1;
@@ -22,6 +23,7 @@ define(['underscore', 'backbone', 'marionette', 'hbs!templates/tableRow'], funct
     __extends(TableView, _super);
 
     function TableView() {
+      this.filterBy = __bind(this.filterBy, this);
       _ref1 = TableView.__super__.constructor.apply(this, arguments);
       return _ref1;
     }
@@ -32,25 +34,16 @@ define(['underscore', 'backbone', 'marionette', 'hbs!templates/tableRow'], funct
 
     TableView.prototype.childView = TableRowView;
 
+    TableView.prototype._models = null;
+
     TableView.prototype.initialize = function(options) {
-      this.childTemplate = options.childTemplate;
-      return this._models = options.collection.models;
+      return this.childTemplate = options.childTemplate;
     };
 
     TableView.prototype.filterBy = function(fieldName, value) {
-      var _this = this;
-      return setTimeout(function() {
-        var _models;
-        _models = _this._models.filter(function(item) {
-          return item.get(fieldName) === value;
-        });
-        if (_models.length) {
-          _this.collection = new Backbone.Collection(_models);
-        } else {
-          _this.collection = new Backbone.Collection(_this._models);
-        }
-        return _this.render();
-      }, 100);
+      this[fieldName] = value;
+      this.collection = new Backbone.Collection(this._models);
+      return this.render();
     };
 
     TableView.prototype.childViewOptions = function(model, index) {
@@ -63,7 +56,7 @@ define(['underscore', 'backbone', 'marionette', 'hbs!templates/tableRow'], funct
 
   })(Marionette.CollectionView);
   return function(options) {
-    var createTableFactory, pluginInstance;
+    var createTableFactory, filtersFacet, pluginInstance;
     createTableFactory = function(resolver, compDef, wire) {
       return wire(compDef.options).then(function(options) {
         var tabsView;
@@ -75,9 +68,33 @@ define(['underscore', 'backbone', 'marionette', 'hbs!templates/tableRow'], funct
         return resolver.resolve(tabsView);
       });
     };
+    filtersFacet = function(resolver, facet, wire) {
+      return wire(facet.options).then(function(filters) {
+        var expression;
+        expression = _.map(filters, function(filterArgs, filterName) {
+          return "item.get('" + filterName + "') == facet.target." + filterName;
+        });
+        expression = expression.join(" and ");
+        facet.target.collection.on("sync", function(collection, resp, options) {
+          facet.target._models = collection.models.filter(function(item) {
+            return eval(expression);
+          });
+          if (facet.target._models.length) {
+            facet.target.collection = new Backbone.Collection(facet.target._models);
+          }
+          return facet.target.__parentRegion__.show(facet.target);
+        });
+        return resolver.resolve(facet.target);
+      });
+    };
     pluginInstance = {
       factories: {
         createTable: createTableFactory
+      },
+      facets: {
+        addFilters: {
+          'ready:after': filtersFacet
+        }
       }
     };
     return pluginInstance;

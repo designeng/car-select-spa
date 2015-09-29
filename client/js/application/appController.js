@@ -77,6 +77,7 @@ define(["marionette", "when"], function(Marionette, When) {
     AppController.prototype.startModule = function(sandbox) {};
 
     AppController.prototype.filterByBrand = function(sandbox, args) {
+      console.debug("filterByBrand app contr");
       return sandbox.filterByBrand(args[0]);
     };
 

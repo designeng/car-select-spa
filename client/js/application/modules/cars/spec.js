@@ -23,7 +23,9 @@ define({
     showInRegions: {
       'tabsRegion': {
         $ref: 'tabs'
-      },
+      }
+    },
+    attachToRegions: {
       'tableRegion': {
         $ref: 'table'
       }
@@ -69,6 +71,9 @@ define({
       collection: {
         $ref: 'collection'
       }
+    },
+    addFilters: {
+      "brand": {}
     }
   }
 });

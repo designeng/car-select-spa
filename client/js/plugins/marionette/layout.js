@@ -1,6 +1,6 @@
 define(['underscore', 'marionette'], function(_, Marionette) {
   return function(options) {
-    var createLayoutFactory, pluginInstance, renderInFacet, showInRegionsFacet;
+    var attachToRegionsFacet, createLayoutFactory, pluginInstance, renderInFacet, showInRegionsFacet;
     createLayoutFactory = function(resolver, compDef, wire) {
       var layout;
       layout = new Marionette.LayoutView();
@@ -33,6 +33,16 @@ define(['underscore', 'marionette'], function(_, Marionette) {
         return resolver.resolve(facet.target);
       });
     };
+    attachToRegionsFacet = function(resolver, facet, wire) {
+      return wire(facet.options).then(function(options) {
+        _.each(options, function(view, region) {
+          var regionObject;
+          regionObject = facet.target.getRegion(region);
+          return view.__parentRegion__ = regionObject;
+        });
+        return resolver.resolve(facet.target);
+      });
+    };
     pluginInstance = {
       factories: {
         createLayout: createLayoutFactory
@@ -40,6 +50,9 @@ define(['underscore', 'marionette'], function(_, Marionette) {
       facets: {
         showInRegions: {
           "ready": showInRegionsFacet
+        },
+        attachToRegions: {
+          "ready": attachToRegionsFacet
         },
         renderIn: {
           "ready": renderInFacet
