@@ -22,8 +22,8 @@ define
         properties:
             navigation          : {$ref: 'navigation'}
             table               : {$ref: 'table'}
-            addItemBehavior         : {$ref: 'addItemBehavior'}
-            removeItemBehavior      : {$ref: 'removeItemBehavior'}
+            addItemBehavior     : {$ref: 'addItemBehavior'}
+            removeItemBehavior  : {$ref: 'removeItemBehavior'}
             statistic           : {$ref: 'statistic'}
             notFoundPageLayer   : {$ref: "element!.not-found"}
         registerIntercessors: ['startModule', 'createTable', 'filterBy', 'emphasizeEntity']
