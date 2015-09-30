@@ -54,7 +54,7 @@ define
     selectedCarsCollection:
         createCollection:
             fromStorage: {$ref: 'selectedCarsStorageName'}
-        storage:
+        storeIn:
             name: {$ref: 'selectedCarsStorageName'}
 
     # BEHAVIOR STRATEGIES

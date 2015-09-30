@@ -16,13 +16,8 @@ define [
                     collection = new Backbone.Collection()
                 resolver.resolve collection
 
-        storageFacet = (resolver, facet, wire) ->
+        storeInFacet = (resolver, facet, wire) ->
             wire(facet.options).then (options) ->
-                # source = localStorage.getItem(options.name)
-                # source = JSON.parse(source) if source?
-                # if source?.length
-                #     facet.target.add source
-                    
                 facet.target.on "add update reset", (item) ->
                     stringifiedCollection = JSON.stringify facet.target.toJSON()
                     localStorage.setItem options.name, stringifiedCollection
@@ -32,7 +27,7 @@ define [
             factories: 
                 createCollection: createCollectionFactory
             facets:
-                storage:
-                    "ready"     : storageFacet
+                storeIn:
+                    "ready"     : storeInFacet
 
         return pluginInstance

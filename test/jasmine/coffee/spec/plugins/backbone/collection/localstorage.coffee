@@ -30,12 +30,12 @@ define [
         collectionWithStoredSource:
             createCollection:
                 fromStorage: collectionWithStoredSourceName
-            storage:
+            storeIn:
                 name: collectionWithStoredSourceName
 
         collection:
             create: 'plugins/localstorage/collection'
-            storage:
+            storeIn:
                 name: storageName
 
     describe "collection localstorage plugin", ->

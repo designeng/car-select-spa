@@ -1,6 +1,6 @@
 define(['underscore', 'backbone'], function(_, Backbone) {
   return function(options) {
-    var createCollectionFactory, pluginInstance, storageFacet;
+    var createCollectionFactory, pluginInstance, storeInFacet;
     createCollectionFactory = function(resolver, compDef, wire) {
       return wire(compDef.options).then(function(options) {
         var collection, fromArray, fromStorage;
@@ -16,7 +16,7 @@ define(['underscore', 'backbone'], function(_, Backbone) {
         return resolver.resolve(collection);
       });
     };
-    storageFacet = function(resolver, facet, wire) {
+    storeInFacet = function(resolver, facet, wire) {
       return wire(facet.options).then(function(options) {
         facet.target.on("add update reset", function(item) {
           var stringifiedCollection;
@@ -31,8 +31,8 @@ define(['underscore', 'backbone'], function(_, Backbone) {
         createCollection: createCollectionFactory
       },
       facets: {
-        storage: {
-          "ready": storageFacet
+        storeIn: {
+          "ready": storeInFacet
         }
       }
     };

@@ -76,7 +76,7 @@ define({
         $ref: 'selectedCarsStorageName'
       }
     },
-    storage: {
+    storeIn: {
       name: {
         $ref: 'selectedCarsStorageName'
       }

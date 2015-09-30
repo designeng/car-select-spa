@@ -54,13 +54,13 @@ define(["wire", "when", "backbone"], function(wire, When, Backbone) {
       createCollection: {
         fromStorage: collectionWithStoredSourceName
       },
-      storage: {
+      storeIn: {
         name: collectionWithStoredSourceName
       }
     },
     collection: {
       create: 'plugins/localstorage/collection',
-      storage: {
+      storeIn: {
         name: storageName
       }
     }
