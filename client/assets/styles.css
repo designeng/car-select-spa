@@ -613,6 +613,8 @@ img.car-image{
   font-size: 12px;
   font-weight: bold;
 }
+.navigation-tabs li a:active{
+}
 
 .cars-filters li{
   display: inline-block;
