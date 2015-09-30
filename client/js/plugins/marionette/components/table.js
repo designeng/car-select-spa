@@ -53,10 +53,12 @@ define(['underscore', 'backbone', 'marionette', 'hbs!templates/tableRow'], funct
 
   })(Marionette.CollectionView);
   insertControl = function(cell, controlType, controlBehavior) {};
-  addControl = function(cell, controlType, controlBehavior) {
+  addControl = function(cell, controlType, controlLable, controlBehavior) {
+    var $button;
     switch (controlType) {
       case 'button':
-        return $(cell).append('<button />').on('click', controlBehavior);
+        $button = $('<button />').text(controlLable);
+        return $(cell).append($button).on('click', controlBehavior);
       case 'select':
         return insertControl(cell, 'select', controlBehavior);
     }
@@ -103,7 +105,7 @@ define(['underscore', 'backbone', 'marionette', 'hbs!templates/tableRow'], funct
               e = _error;
               return cell = cells[id];
             } finally {
-              addControl(cell, options.controlType, options.controlBehavior);
+              addControl(cell, options.controlType, options.controlLable, options.controlBehavior);
             }
           });
         };

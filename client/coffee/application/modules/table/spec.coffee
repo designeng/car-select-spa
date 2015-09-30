@@ -42,6 +42,7 @@ define
         addControls:
             cellId: 'last'
             controlType: 'button'
+            controlLable: {$ref: 'controlLable'}
             controlBehavior: {$ref: 'behavior'}
         addFilters:
             'brand' : {}

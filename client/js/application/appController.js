@@ -41,15 +41,18 @@ define(['underscore', 'marionette', 'when'], function(_, Marionette, When) {
     };
 
     AppController.prototype.carsModuleHandler = function(brand, id) {
+      var environment;
       if ((brand != null) && _.indexOf(['volvo', 'ford', 'mitsubishi', 'nissan'], brand) === -1) {
         console.debug("Unknown brand");
       }
+      environment = {
+        behavior: {
+          $ref: 'addBehavior'
+        },
+        controlLable: 'select'
+      };
       if (brand && !id) {
-        return this.filterByBrand('table', {
-          behavior: {
-            $ref: 'addBehavior'
-          }
-        }, brand);
+        return this.filterByBrand('table', environment, brand);
       }
     };
 

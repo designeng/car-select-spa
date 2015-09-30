@@ -32,11 +32,15 @@ define [
         carsModuleHandler: (brand, id) ->
             if brand? and _.indexOf(['volvo', 'ford', 'mitsubishi', 'nissan'], brand) == -1
                 console.debug "Unknown brand"
+
+            environment =
+                behavior: {$ref: 'addBehavior'}
+                controlLable: 'select'
                 
             # if !brand and !id
             #     @filterByBrand 'table', null
             if brand and !id
-                @filterByBrand 'table', {behavior: {$ref: 'addBehavior'}}, brand
+                @filterByBrand 'table', environment, brand
             # if brand and id
             #     @emphasizeEntity 'table', brand, id
 
