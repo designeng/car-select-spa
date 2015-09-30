@@ -9,7 +9,7 @@ define
 
     publicApi:
         literal:
-            filterByBrand       : {$ref: 'controller.filterByBrand'}
+            filterBy       : {$ref: 'controller.filterBy'}
 
     layout:
         createLayout:

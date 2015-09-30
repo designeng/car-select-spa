@@ -42,13 +42,11 @@ define [
                 behavior        : {$ref: 'addBehavior'}
                 controlLabel    : 'select'
                 controlsConfig  : ['table', 'tabs']
-                
-            if !brand and !id
-                @startModule 'table', environment
-            if brand and !id
-                @filterByBrand 'table', environment, brand
-            if brand and id
-                @emphasizeEntity 'table', environment, brand, id
+
+            @filterBy 'table', environment, 'brand', brand
+
+            # to make accent on current model
+            @emphasizeEntity 'table', environment, brand, id if brand and id
 
         selectedCarsHandler: ->
             @rootFragmentMutation()
@@ -72,8 +70,8 @@ define [
         startModule: (sandbox) ->
             # all is done in container/register plugin
 
-        filterByBrand: (sandbox, args) ->
-            sandbox.filterByBrand args[0]
+        filterBy: (sandbox, args) ->
+            sandbox.filterBy args[0], args[1]
 
         emphasizeEntity: (sandbox, args) ->
             console.debug 'brand, id:::::', args[0], args[1]

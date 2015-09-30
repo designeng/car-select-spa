@@ -82,7 +82,7 @@ define(['underscore', 'backbone', 'marionette', 'hbs!templates/tableRow'], funct
       return wire(facet.options).then(function(filters) {
         var expression;
         expression = _.map(filters, function(filterArgs, filterName) {
-          return "item.get('" + filterName + "') == facet.target.filters." + filterName;
+          return "!facet.target.filters." + filterName + " || item.get('" + filterName + "') == facet.target.filters." + filterName;
         });
         expression = expression.join(" and ");
         facet.target.collection.on("sync", function(collection, resp, options) {

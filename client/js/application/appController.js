@@ -58,12 +58,7 @@ define(['underscore', 'marionette', 'when', 'meld'], function(_, Marionette, Whe
         controlLabel: 'select',
         controlsConfig: ['table', 'tabs']
       };
-      if (!brand && !id) {
-        this.startModule('table', environment);
-      }
-      if (brand && !id) {
-        this.filterByBrand('table', environment, brand);
-      }
+      this.filterBy('table', environment, 'brand', brand);
       if (brand && id) {
         return this.emphasizeEntity('table', environment, brand, id);
       }
@@ -95,8 +90,8 @@ define(['underscore', 'marionette', 'when', 'meld'], function(_, Marionette, Whe
 
     AppController.prototype.startModule = function(sandbox) {};
 
-    AppController.prototype.filterByBrand = function(sandbox, args) {
-      return sandbox.filterByBrand(args[0]);
+    AppController.prototype.filterBy = function(sandbox, args) {
+      return sandbox.filterBy(args[0], args[1]);
     };
 
     AppController.prototype.emphasizeEntity = function(sandbox, args) {

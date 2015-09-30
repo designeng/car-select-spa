@@ -49,7 +49,7 @@ define [
         addFiltersFacet = (resolver, facet, wire) ->
             wire(facet.options).then (filters) ->
                 expression = _.map filters, (filterArgs, filterName) ->
-                    return "item.get('#{filterName}') == facet.target.filters.#{filterName}"
+                    return "!facet.target.filters.#{filterName} || item.get('#{filterName}') == facet.target.filters.#{filterName}"
                 expression = expression.join(" and ")
 
                 facet.target.collection.on "sync", (collection, resp, options) ->

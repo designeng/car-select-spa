@@ -36,7 +36,7 @@ define({
         $ref: "element!.not-found"
       }
     },
-    registerIntercessors: ['startModule', 'createTable', 'filterByBrand', 'emphasizeEntity'],
+    registerIntercessors: ['startModule', 'createTable', 'filterBy', 'emphasizeEntity'],
     ready: {
       showPreloader: {
         $ref: 'preloader'
@@ -67,10 +67,7 @@ define({
     }
   },
   carsCollection: {
-    create: 'application/collections/cars',
-    ready: {
-      fetch: {}
-    }
+    create: 'application/collections/cars'
   },
   selectedCarsStorageName: 'selected-cars',
   selectedCarsCollection: {

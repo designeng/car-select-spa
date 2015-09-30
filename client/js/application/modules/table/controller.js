@@ -8,7 +8,7 @@ define(["marionette"], function(Marionette) {
     __extends(Controller, _super);
 
     function Controller() {
-      this.filterByBrand = __bind(this.filterByBrand, this);
+      this.filterBy = __bind(this.filterBy, this);
       _ref = Controller.__super__.constructor.apply(this, arguments);
       return _ref;
     }
@@ -17,9 +17,8 @@ define(["marionette"], function(Marionette) {
       return console.debug("READY.....");
     };
 
-    Controller.prototype.filterByBrand = function(brand) {
-      console.debug("filterBy", brand);
-      return this.table.filterBy('brand', brand);
+    Controller.prototype.filterBy = function(fieldName, value) {
+      return this.table.filterBy(fieldName, value);
     };
 
     return Controller;

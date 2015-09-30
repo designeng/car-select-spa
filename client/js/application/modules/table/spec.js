@@ -2,8 +2,8 @@ define({
   $plugins: ['wire/debug', 'plugins/hbs', 'plugins/marionette/layout', 'plugins/marionette/components/tabs', 'plugins/marionette/components/table'],
   publicApi: {
     literal: {
-      filterByBrand: {
-        $ref: 'controller.filterByBrand'
+      filterBy: {
+        $ref: 'controller.filterBy'
       }
     }
   },

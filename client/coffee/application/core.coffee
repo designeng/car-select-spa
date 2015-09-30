@@ -26,7 +26,7 @@ define
             removeBehavior      : {$ref: 'removeBehavior'}
             statistic           : {$ref: 'statistic'}
             notFoundPageLayer   : {$ref: "element!.not-found"}
-        registerIntercessors: ['startModule', 'createTable', 'filterByBrand', 'emphasizeEntity']
+        registerIntercessors: ['startModule', 'createTable', 'filterBy', 'emphasizeEntity']
         ready:
             showPreloader: {$ref: 'preloader'}
             switchOn: [
@@ -48,8 +48,6 @@ define
     # SHARED RESOURCES: COLLECTIONS
     carsCollection:
         create: 'application/collections/cars'
-        ready:
-            fetch: {}
 
     selectedCarsStorageName: 'selected-cars'
 
