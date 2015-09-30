@@ -17,7 +17,9 @@ define(["marionette"], function(Marionette) {
       return console.debug("READY.....");
     };
 
-    Controller.prototype.filterByBrand = function(brand) {};
+    Controller.prototype.filterByBrand = function(brand) {
+      return this.table.filterBy('brand', brand);
+    };
 
     return Controller;
 

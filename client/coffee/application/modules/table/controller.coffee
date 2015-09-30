@@ -8,4 +8,4 @@ define [
             console.debug "READY....."
 
         filterByBrand: (brand) =>
-            # @table.filterBy 'brand', brand
+            @table.filterBy 'brand', brand

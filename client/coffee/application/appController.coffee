@@ -38,8 +38,10 @@ define [
             @rootFragmentMutation()
 
             environment =
-                behavior: {$ref: 'addBehavior'}
-                controlLable: 'select'
+                collection      : {$ref: 'carsCollection'}
+                behavior        : {$ref: 'addBehavior'}
+                controlLable    : 'select'
+                controlsConfig  : ['table', 'tabs']
                 
             if !brand and !id
                 @startModule 'table', environment
@@ -51,8 +53,10 @@ define [
         selectedCarsHandler: ->
             @rootFragmentMutation()
             environment =
-                behavior: {$ref: 'removeBehavior'}
-                controlLable: 'remove'
+                collection      : {$ref: 'selectedCarsCollection'}
+                behavior        : {$ref: 'removeBehavior'}
+                controlLable    : 'remove'
+                controlsConfig  : ['table', 'counter']
             @startModule 'table', environment
 
         statisticModuleHandler: ->

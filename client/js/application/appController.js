@@ -49,10 +49,14 @@ define(['underscore', 'marionette', 'when', 'meld'], function(_, Marionette, Whe
       }
       this.rootFragmentMutation();
       environment = {
+        collection: {
+          $ref: 'carsCollection'
+        },
         behavior: {
           $ref: 'addBehavior'
         },
-        controlLable: 'select'
+        controlLable: 'select',
+        controlsConfig: ['table', 'tabs']
       };
       if (!brand && !id) {
         this.startModule('table', environment);
@@ -69,10 +73,14 @@ define(['underscore', 'marionette', 'when', 'meld'], function(_, Marionette, Whe
       var environment;
       this.rootFragmentMutation();
       environment = {
+        collection: {
+          $ref: 'selectedCarsCollection'
+        },
         behavior: {
           $ref: 'removeBehavior'
         },
-        controlLable: 'remove'
+        controlLable: 'remove',
+        controlsConfig: ['table', 'counter']
       };
       return this.startModule('table', environment);
     };

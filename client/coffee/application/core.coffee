@@ -53,8 +53,21 @@ define
 
     selectedCarsStorageName: 'selected-cars'
 
-    selectedCars:
-        createCollection: {}
+    selectedCarsCollection:
+        createCollection: [
+            {
+                "id": 1,
+                "name": "Volvo S60",
+                "image": "volvo-s60.jpg",
+                "brand": "volvo"
+            },
+            {
+                "id": 2,
+                "name": "Volvo S80",
+                "image": "volvo-s80.jpg",
+                "brand": "volvo"
+            }
+        ]
         storage:
             name: {$ref: 'selectedCarsStorageName'}
 
@@ -78,7 +91,6 @@ define
             spec: "application/modules/table/spec"
             defer: true
             provide:
-                collection      : {$ref: 'carsCollection'}
                 region          : {$ref: 'appInstance.regions.mainAreaRegion'}
 
     statistic:
