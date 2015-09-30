@@ -12,6 +12,9 @@ define [
                     collection = new Backbone.Collection(options.fromArray)
                 else if fromStorage and _.isString fromStorage
                     collection = new Backbone.Collection(JSON.parse localStorage.getItem(fromStorage))
+                    if options.synchronize
+                        collection.on 'add update reset', (item) ->
+                            localStorage.setItem fromStorage, JSON.stringify collection.toJSON()
                 else
                     collection = new Backbone.Collection()
                 resolver.resolve collection

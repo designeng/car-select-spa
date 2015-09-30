@@ -30,8 +30,7 @@ define [
         collectionWithStoredSource:
             createCollection:
                 fromStorage: collectionWithStoredSourceName
-            storeIn:
-                name: collectionWithStoredSourceName
+                synchronize: true
 
         collection:
             create: 'plugins/localstorage/collection'

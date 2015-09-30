@@ -52,10 +52,8 @@ define(["wire", "when", "backbone"], function(wire, When, Backbone) {
     $plugins: ['wire/debug', 'plugins/backbone/collection/create'],
     collectionWithStoredSource: {
       createCollection: {
-        fromStorage: collectionWithStoredSourceName
-      },
-      storeIn: {
-        name: collectionWithStoredSourceName
+        fromStorage: collectionWithStoredSourceName,
+        synchronize: true
       }
     },
     collection: {

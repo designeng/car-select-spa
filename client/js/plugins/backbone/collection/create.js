@@ -10,6 +10,11 @@ define(['underscore', 'backbone'], function(_, Backbone) {
           collection = new Backbone.Collection(options.fromArray);
         } else if (fromStorage && _.isString(fromStorage)) {
           collection = new Backbone.Collection(JSON.parse(localStorage.getItem(fromStorage)));
+          if (options.synchronize) {
+            collection.on('add update reset', function(item) {
+              return localStorage.setItem(fromStorage, JSON.stringify(collection.toJSON()));
+            });
+          }
         } else {
           collection = new Backbone.Collection();
         }

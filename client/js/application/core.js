@@ -74,12 +74,8 @@ define({
     createCollection: {
       fromStorage: {
         $ref: 'selectedCarsStorageName'
-      }
-    },
-    storeIn: {
-      name: {
-        $ref: 'selectedCarsStorageName'
-      }
+      },
+      synchronize: true
     }
   },
   addBehavior: {
