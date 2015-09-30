@@ -38,6 +38,11 @@ define({
     },
     registerIntercessors: ['startModule', 'createTable', 'filterBy', 'emphasizeEntity'],
     ready: {
+      populateSelectedCarsCollection: [
+        {
+          $ref: 'selectedCarsCollection'
+        }
+      ],
       showPreloader: {
         $ref: 'preloader'
       },

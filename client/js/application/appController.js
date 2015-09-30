@@ -19,6 +19,10 @@ define(['underscore', 'marionette', 'when', 'meld'], function(_, Marionette, Whe
       return this.regions.mainAreaRegion.show(preloader);
     };
 
+    AppController.prototype.populateSelectedCarsCollection = function(collection) {
+      return collection.add(JSON.parse(localStorage.getItem('selected-cars')));
+    };
+
     AppController.prototype.switchOn = function(modules) {
       var _this = this;
       return _.each(modules, function(options, module) {

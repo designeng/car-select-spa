@@ -28,6 +28,9 @@ define
             notFoundPageLayer   : {$ref: "element!.not-found"}
         registerIntercessors: ['startModule', 'createTable', 'filterBy', 'emphasizeEntity']
         ready:
+            populateSelectedCarsCollection: [
+                {$ref: 'selectedCarsCollection'}
+            ]
             showPreloader: {$ref: 'preloader'}
             switchOn: [
                 "navigation"    : {}
@@ -52,20 +55,7 @@ define
     selectedCarsStorageName: 'selected-cars'
 
     selectedCarsCollection:
-        createCollection: [
-            # {
-            #     "id": 1,
-            #     "name": "Nissan",
-            #     "image": "assets/images/nissan-terrano.jpg",
-            #     "brand": "nissan"
-            # },
-            # {
-            #     "id": 2,
-            #     "name": "Ford",
-            #     "image": "assets/images/ford-endeavour.jpg",
-            #     "brand": "ford"
-            # }
-        ]
+        createCollection: []
         storage:
             name: {$ref: 'selectedCarsStorageName'}
 
