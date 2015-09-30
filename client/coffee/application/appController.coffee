@@ -2,7 +2,8 @@ define [
     'underscore'
     'marionette'
     'when'
-], (_, Marionette, When) ->
+    'meld'
+], (_, Marionette, When, meld) ->
 
     class AppController extends Marionette.Object
 
@@ -18,13 +19,12 @@ define [
 
         # DEFAULT ROUTE HANDLER:
         onRoute: (name, path, opts) =>
-            @rootFragmentMutation(path.split('/')[0])
             @notFoundPageLayer.hide() unless path is '*notFound'
 
         # remove and destroy cached context if root fragment is changed
         rootFragmentMutation: (rootFragment) ->
             if @currentRootFragment != rootFragment
-                @container.stopModule @currentRootFragment
+                @container.stopModule 'table'
                 @currentRootFragment = rootFragment
 
         # ROUTES HANDLERS:
@@ -32,22 +32,27 @@ define [
         carsModuleHandler: (brand, id) ->
             if brand? and _.indexOf(['volvo', 'ford', 'mitsubishi', 'nissan'], brand) == -1
                 console.debug "Unknown brand"
+                return
+
+            @rootFragmentMutation(window.location.hash.split('/')[1])
 
             environment =
                 behavior: {$ref: 'addBehavior'}
                 controlLable: 'select'
                 
-            # if !brand and !id
-            #     @filterByBrand 'table', null
+            if !brand and !id
+                @startModule 'table', environment
             if brand and !id
                 @filterByBrand 'table', environment, brand
-            # if brand and id
-            #     @emphasizeEntity 'table', brand, id
-
-            # @table
+            if brand and id
+                @emphasizeEntity 'table', environment, brand, id
 
         selectedCarsHandler: ->
-            @startModule 'selected'
+            @rootFragmentMutation(window.location.hash.split('/')[1])
+            environment =
+                behavior: {$ref: 'removeBehavior'}
+                controlLable: 'remove'
+            @startModule 'table', environment
 
         statisticModuleHandler: ->
             @startModule 'statistic'

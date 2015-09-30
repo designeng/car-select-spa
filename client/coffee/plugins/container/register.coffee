@@ -24,6 +24,7 @@ define [
                     resolve context
 
         stopModule: (name) ->
+            console.debug "stopModule", name
             Radio.reset(name) if Radio._channels[name]
             delete @channels[name]
             @modules[name]?.destroy()

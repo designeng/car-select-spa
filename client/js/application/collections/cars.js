@@ -27,7 +27,6 @@ define(["backbone", "api"], function(Backbone, api) {
     CarsCollection.prototype.model = CarModel;
 
     CarsCollection.prototype.parse = function(resp) {
-      console.debug("resp:::::::::", resp);
       resp.data.cars = _.map(resp.data.cars, function(item) {
         if (!item.image.match(/assets\/images\//)) {
           item.image = 'assets/images/' + item.image;

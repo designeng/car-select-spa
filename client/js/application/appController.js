@@ -2,7 +2,7 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-define(['underscore', 'marionette', 'when'], function(_, Marionette, When) {
+define(['underscore', 'marionette', 'when', 'meld'], function(_, Marionette, When, meld) {
   var AppController, _ref;
   return AppController = (function(_super) {
     __extends(AppController, _super);
@@ -27,7 +27,6 @@ define(['underscore', 'marionette', 'when'], function(_, Marionette, When) {
     };
 
     AppController.prototype.onRoute = function(name, path, opts) {
-      this.rootFragmentMutation(path.split('/')[0]);
       if (path !== '*notFound') {
         return this.notFoundPageLayer.hide();
       }
@@ -35,7 +34,7 @@ define(['underscore', 'marionette', 'when'], function(_, Marionette, When) {
 
     AppController.prototype.rootFragmentMutation = function(rootFragment) {
       if (this.currentRootFragment !== rootFragment) {
-        this.container.stopModule(this.currentRootFragment);
+        this.container.stopModule('table');
         return this.currentRootFragment = rootFragment;
       }
     };
@@ -44,20 +43,36 @@ define(['underscore', 'marionette', 'when'], function(_, Marionette, When) {
       var environment;
       if ((brand != null) && _.indexOf(['volvo', 'ford', 'mitsubishi', 'nissan'], brand) === -1) {
         console.debug("Unknown brand");
+        return;
       }
+      this.rootFragmentMutation(window.location.hash.split('/')[1]);
       environment = {
         behavior: {
           $ref: 'addBehavior'
         },
         controlLable: 'select'
       };
+      if (!brand && !id) {
+        this.startModule('table', environment);
+      }
       if (brand && !id) {
-        return this.filterByBrand('table', environment, brand);
+        this.filterByBrand('table', environment, brand);
+      }
+      if (brand && id) {
+        return this.emphasizeEntity('table', environment, brand, id);
       }
     };
 
     AppController.prototype.selectedCarsHandler = function() {
-      return this.startModule('selected');
+      var environment;
+      this.rootFragmentMutation(window.location.hash.split('/')[1]);
+      environment = {
+        behavior: {
+          $ref: 'removeBehavior'
+        },
+        controlLable: 'remove'
+      };
+      return this.startModule('table', environment);
     };
 
     AppController.prototype.statisticModuleHandler = function() {

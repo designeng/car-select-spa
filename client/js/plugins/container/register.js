@@ -33,6 +33,7 @@ define(["underscore", "backbone.radio", "when", "meld"], function(_, Radio, When
 
     Container.prototype.stopModule = function(name) {
       var _ref;
+      console.debug("stopModule", name);
       if (Radio._channels[name]) {
         Radio.reset(name);
       }
