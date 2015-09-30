@@ -1,8 +1,9 @@
 define [
     'jquery'
 ], ($) ->
-    addBehavior = (carsCollection, selectedCarsCollection) ->
-        return (event) ->
-            console.debug "event.target addButtonBehavior", event.target, $(event.target).parent().parent()
-            $(event.target).parent()
+    addBehavior = (selectedCarsCollection) ->
+        return (model) ->
+            return (event) ->
+                selectedCarsCollection.add model
+                $(event.target).prop('disabled', true)
 

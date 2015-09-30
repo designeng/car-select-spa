@@ -53,18 +53,18 @@ define
 
     selectedCarsCollection:
         createCollection: [
-            {
-                "id": 1,
-                "name": "Nissan",
-                "image": "assets/images/nissan-terrano.jpg",
-                "brand": "nissan"
-            },
-            {
-                "id": 2,
-                "name": "Ford",
-                "image": "assets/images/ford-endeavour.jpg",
-                "brand": "ford"
-            }
+            # {
+            #     "id": 1,
+            #     "name": "Nissan",
+            #     "image": "assets/images/nissan-terrano.jpg",
+            #     "brand": "nissan"
+            # },
+            # {
+            #     "id": 2,
+            #     "name": "Ford",
+            #     "image": "assets/images/ford-endeavour.jpg",
+            #     "brand": "ford"
+            # }
         ]
         storage:
             name: {$ref: 'selectedCarsStorageName'}
@@ -74,7 +74,6 @@ define
         create:
             module: 'application/behaviors/add'
             args: [
-                {$ref: 'carsCollection'}
                 {$ref: 'selectedCarsCollection'}
             ]
 

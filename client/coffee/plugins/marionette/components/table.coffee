@@ -26,15 +26,16 @@ define [
         childViewOptions: (model, index) ->
             template: @childTemplate
 
-    insertControl = (cell, controlType, controlBehavior) ->
+    insertControl = (cell, controlType, controlBehavior, model) ->
         # noop function, not implemented for other control types
 
-    addControl = (cell, controlType, controlLabel, controlBehavior) ->
+    addControl = (cell, model, controlType, controlLabel, controlBehavior) ->
         switch controlType
             when 'button'
-                $button = $('<button />').text controlLabel
-                $(cell).append($button).on 'click', controlBehavior
-            when 'select' then insertControl(cell, 'select', controlBehavior)
+                $button = $("<button />").text controlLabel
+                $(cell).append($button).on 'click', controlBehavior(model)
+            when 'select' then insertControl(cell, 'select', controlBehavior, model)
+            # and so on
 
     return (options) ->
         createTableFactory = (resolver, compDef, wire) ->
@@ -66,8 +67,6 @@ define [
             wire(facet.options).then (options) ->
 
                 facet.target.onRender = ->
-                    console.debug "getChildren:::::", facet.target.getChildren()
-
                     _.each facet.target.getChildren(), (child) ->
                         cells = child.$el.find('td')
                         id = options.cellId
@@ -76,7 +75,7 @@ define [
                         catch e
                             cell = cells[id]
                         finally
-                            addControl(cell, options.controlType, options.controlLabel, options.controlBehavior)
+                            addControl(cell, child.model, options.controlType, options.controlLabel, options.controlBehavior)
                 resolver.resolve facet.target
 
         pluginInstance = 

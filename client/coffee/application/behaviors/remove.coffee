@@ -1,5 +1,9 @@
 define [
     'jquery'
 ], ($) ->
-    removeBehavior = (event) ->
-        console.debug "event.target removeButtonBehavior", event.target
+    removeBehavior = (selectedCarsCollection) ->
+        return (model) ->
+            return (event) ->
+                id = model.get 'id'
+                selectedCarsCollection.remove(model)
+

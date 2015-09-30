@@ -54,15 +54,15 @@ define(['underscore', 'backbone', 'marionette', 'hbs!templates/tableRow'], funct
     return TableView;
 
   })(Marionette.CollectionView);
-  insertControl = function(cell, controlType, controlBehavior) {};
-  addControl = function(cell, controlType, controlLabel, controlBehavior) {
+  insertControl = function(cell, controlType, controlBehavior, model) {};
+  addControl = function(cell, model, controlType, controlLabel, controlBehavior) {
     var $button;
     switch (controlType) {
       case 'button':
-        $button = $('<button />').text(controlLabel);
-        return $(cell).append($button).on('click', controlBehavior);
+        $button = $("<button />").text(controlLabel);
+        return $(cell).append($button).on('click', controlBehavior(model));
       case 'select':
-        return insertControl(cell, 'select', controlBehavior);
+        return insertControl(cell, 'select', controlBehavior, model);
     }
   };
   return function(options) {
@@ -100,7 +100,6 @@ define(['underscore', 'backbone', 'marionette', 'hbs!templates/tableRow'], funct
     addControlsFacet = function(resolver, facet, wire) {
       return wire(facet.options).then(function(options) {
         facet.target.onRender = function() {
-          console.debug("getChildren:::::", facet.target.getChildren());
           return _.each(facet.target.getChildren(), function(child) {
             var cell, cells, e, id;
             cells = child.$el.find('td');
@@ -111,7 +110,7 @@ define(['underscore', 'backbone', 'marionette', 'hbs!templates/tableRow'], funct
               e = _error;
               return cell = cells[id];
             } finally {
-              addControl(cell, options.controlType, options.controlLabel, options.controlBehavior);
+              addControl(cell, child.model, options.controlType, options.controlLabel, options.controlBehavior);
             }
           });
         };
