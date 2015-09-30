@@ -1,6 +1,6 @@
 define
     $plugins: [
-        # 'wire/debug'
+        'wire/debug'
         'plugins/marionette/router'
         'plugins/marionette/application'
         'plugins/backbone/collection/create'
@@ -21,8 +21,7 @@ define
         create: "application/appController"
         properties:
             navigation          : {$ref: 'navigation'}
-            cars                : {$ref: 'cars'}
-            selected            : {$ref: 'selected'}
+            table               : {$ref: 'table'}
             statistic           : {$ref: 'statistic'}
             notFoundPageLayer   : {$ref: "element!.not-found"}
         registerIntercessors: ['startModule', 'createTable', 'filterByBrand', 'emphasizeEntity']
@@ -31,7 +30,6 @@ define
             switchOn: [
                 "navigation"    : {}
             ]
-            listenToModules: {}
 
     router:
         createRouter:
@@ -45,6 +43,12 @@ define
                 '*notFound'         : 'notFoundHandler'
         onRoute: {$ref: 'appController.onRoute'}
 
+    # SHARED RESOURCES: COLLECTIONS
+    carsCollection:
+        create: 'application/collections/cars'
+        ready:
+            fetch: {}
+
     selectedCarsStorageName: 'selected-cars'
 
     selectedCars:
@@ -52,27 +56,30 @@ define
         storage:
             name: {$ref: 'selectedCarsStorageName'}
 
+    # BEHAVIOR STRATEGIES
+    addBehavior:
+        module: 'application/behaviors/add'
+
+    removeBehavior:
+        module: 'application/behaviors/remove'
+
     # APPLICATION MODULES
     navigation:
         wire:
             spec: "application/modules/navigation/spec"
             defer: true
             provide:
-                navigationRegion    : {$ref: 'appInstance.regions.navigationRegion'}
+                region          : {$ref: 'appInstance.regions.navigationRegion'}
 
-    cars:
+    table:
         wire:
-            spec: "application/modules/cars/spec"
+            spec: "application/modules/table/spec"
             defer: true
             provide:
-                carsModuleAreaRegion: {$ref: 'appInstance.regions.mainAreaRegion'}
-
-    selected:
-        wire:
-            spec: "application/modules/selected/spec"
-            defer: true
-            provide:
-                carsModuleAreaRegion: {$ref: 'appInstance.regions.mainAreaRegion'}
+                collection      : {$ref: 'carsCollection'}
+                addBehavior     : {$ref: 'addBehavior'}
+                removeBehavior  : {$ref: 'removeBehavior'}
+                region          : {$ref: 'appInstance.regions.mainAreaRegion'}
 
     statistic:
         wire:

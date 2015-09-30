@@ -1,5 +1,5 @@
 define({
-  $plugins: ['plugins/marionette/router', 'plugins/marionette/application', 'plugins/backbone/collection/create', 'plugins/container/register', 'plugins/element'],
+  $plugins: ['wire/debug', 'plugins/marionette/router', 'plugins/marionette/application', 'plugins/backbone/collection/create', 'plugins/container/register', 'plugins/element'],
   appInstance: {
     createApplication: {
       withRegions: {
@@ -20,11 +20,8 @@ define({
       navigation: {
         $ref: 'navigation'
       },
-      cars: {
-        $ref: 'cars'
-      },
-      selected: {
-        $ref: 'selected'
+      table: {
+        $ref: 'table'
       },
       statistic: {
         $ref: 'statistic'
@@ -42,8 +39,7 @@ define({
         {
           "navigation": {}
         }
-      ],
-      listenToModules: {}
+      ]
     }
   },
   router: {
@@ -64,6 +60,12 @@ define({
       $ref: 'appController.onRoute'
     }
   },
+  carsCollection: {
+    create: 'application/collections/cars',
+    ready: {
+      fetch: {}
+    }
+  },
   selectedCarsStorageName: 'selected-cars',
   selectedCars: {
     createCollection: {},
@@ -73,34 +75,38 @@ define({
       }
     }
   },
+  addBehavior: {
+    module: 'application/behaviors/add'
+  },
+  removeBehavior: {
+    module: 'application/behaviors/remove'
+  },
   navigation: {
     wire: {
       spec: "application/modules/navigation/spec",
       defer: true,
       provide: {
-        navigationRegion: {
+        region: {
           $ref: 'appInstance.regions.navigationRegion'
         }
       }
     }
   },
-  cars: {
+  table: {
     wire: {
-      spec: "application/modules/cars/spec",
+      spec: "application/modules/table/spec",
       defer: true,
       provide: {
-        carsModuleAreaRegion: {
-          $ref: 'appInstance.regions.mainAreaRegion'
-        }
-      }
-    }
-  },
-  selected: {
-    wire: {
-      spec: "application/modules/selected/spec",
-      defer: true,
-      provide: {
-        carsModuleAreaRegion: {
+        collection: {
+          $ref: 'carsCollection'
+        },
+        addBehavior: {
+          $ref: 'addBehavior'
+        },
+        removeBehavior: {
+          $ref: 'removeBehavior'
+        },
+        region: {
           $ref: 'appInstance.regions.mainAreaRegion'
         }
       }

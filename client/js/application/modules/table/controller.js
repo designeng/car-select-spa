@@ -13,18 +13,11 @@ define(["marionette"], function(Marionette) {
       return _ref;
     }
 
-    Controller.prototype._collection = null;
-
-    Controller.prototype.activateById = function(id) {};
-
     Controller.prototype.onReady = function() {
-      this._collection = this.collection;
-      return console.debug("READY");
+      return console.debug("READY.....");
     };
 
-    Controller.prototype.filterByBrand = function(brand) {
-      return this.table.filterBy('brand', brand);
-    };
+    Controller.prototype.filterByBrand = function(brand) {};
 
     return Controller;
 

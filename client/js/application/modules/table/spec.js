@@ -10,15 +10,16 @@ define({
   layout: {
     createLayout: {
       fromTemplate: {
-        $ref: 'hbs!templates/carsLayout'
+        $ref: 'hbs!templates/tableModuleLayout'
       },
       withRegions: {
         tabsRegion: '.cars-tabs-control-wrapper',
+        counterRegion: '.cars-counter-control-wrapper',
         tableRegion: '.cars-table-control-wrapper'
       }
     },
     renderIn: {
-      $ref: 'carsModuleAreaRegion'
+      $ref: 'region'
     },
     showInRegions: {
       'tabsRegion': {
@@ -27,29 +28,6 @@ define({
       'tableRegion': {
         $ref: 'table'
       }
-    }
-  },
-  collection: {
-    create: 'application/modules/cars/collections/cars',
-    ready: {
-      fetch: {}
-    }
-  },
-  controller: {
-    create: 'application/modules/cars/controller',
-    properties: {
-      sandbox: {
-        $ref: 'sandbox'
-      },
-      collection: {
-        $ref: 'collection'
-      },
-      table: {
-        $ref: 'table'
-      }
-    },
-    ready: {
-      onReady: {}
     }
   },
   tabs: {
@@ -64,6 +42,9 @@ define({
       className: 'cars-filters'
     }
   },
+  counter: {
+    create: 'application/modules/table/counter'
+  },
   table: {
     createTable: {
       collection: {
@@ -74,14 +55,31 @@ define({
       cellId: 'last',
       controlType: 'button',
       controlBehavior: {
-        $ref: 'buttonControlBehavior'
+        $ref: 'addBehavior'
       }
     },
     addFilters: {
       'brand': {}
     }
   },
-  buttonControlBehavior: {
-    module: 'application/modules/cars/behaviors/button'
+  controller: {
+    create: 'application/modules/table/controller',
+    properties: {
+      collection: {
+        $ref: 'collection'
+      },
+      table: {
+        $ref: 'table'
+      },
+      tabs: {
+        $ref: 'tabs'
+      },
+      counter: {
+        $ref: 'counter'
+      }
+    },
+    ready: {
+      onReady: {}
+    }
   }
 });

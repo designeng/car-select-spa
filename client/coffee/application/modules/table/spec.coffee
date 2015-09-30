@@ -13,28 +13,15 @@ define
 
     layout:
         createLayout:
-            fromTemplate: {$ref: 'hbs!templates/carsLayout'}
+            fromTemplate: {$ref: 'hbs!templates/tableModuleLayout'}
             withRegions:
-                tabsRegion  : '.cars-tabs-control-wrapper'
-                tableRegion : '.cars-table-control-wrapper'
-        renderIn: {$ref: 'carsModuleAreaRegion'}
+                tabsRegion      : '.cars-tabs-control-wrapper'
+                counterRegion   : '.cars-counter-control-wrapper'
+                tableRegion     : '.cars-table-control-wrapper'
+        renderIn: {$ref: 'region'}
         showInRegions:
             'tabsRegion'    : {$ref: 'tabs'}
             'tableRegion'   : {$ref: 'table'}
-
-    collection:
-        create: 'application/modules/cars/collections/cars'
-        ready:
-            fetch: {}
-
-    controller:
-        create: 'application/modules/cars/controller'
-        properties:
-            sandbox             : {$ref: 'sandbox'}
-            collection          : {$ref: 'collection'}
-            table               : {$ref: 'table'}
-        ready:
-            onReady: {}
 
     tabs:
         createTabs:
@@ -46,15 +33,25 @@ define
                 'Nissan'        : 'cars/nissan'
             className: 'cars-filters'
 
+    counter:
+        create: 'application/modules/table/counter'
+
     table:
         createTable:
             collection          : {$ref: 'collection'}
         addControls:
             cellId: 'last'
             controlType: 'button'
-            controlBehavior: {$ref: 'buttonControlBehavior'}
+            controlBehavior: {$ref: 'addBehavior'}
         addFilters:
             'brand' : {}
 
-    buttonControlBehavior:
-        module: 'application/modules/cars/behaviors/button'
+    controller:
+        create: 'application/modules/table/controller'
+        properties:
+            collection          : {$ref: 'collection'}
+            table               : {$ref: 'table'}
+            tabs                : {$ref: 'tabs'}
+            counter             : {$ref: 'counter'}
+        ready:
+            onReady: {}

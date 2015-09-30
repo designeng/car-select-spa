@@ -26,16 +26,6 @@ define(['underscore', 'marionette', 'when'], function(_, Marionette, When) {
       });
     };
 
-    AppController.prototype.listenToModules = function() {
-      var _this = this;
-      this.container.channel.on('list:ready', function(module, list) {
-        return _this.container.broadcastEvent('list:ready', list);
-      });
-      return this.container.channel.on('details:ready', function(module, details) {
-        return _this.container.broadcastEvent('details:ready', details);
-      });
-    };
-
     AppController.prototype.onRoute = function(name, path, opts) {
       this.rootFragmentMutation(path.split('/')[0]);
       if (path !== '*notFound') {
@@ -55,13 +45,13 @@ define(['underscore', 'marionette', 'when'], function(_, Marionette, When) {
         console.debug("Unknown brand");
       }
       if (!brand && !id) {
-        this.filterByBrand('cars', null);
+        this.filterByBrand('table', null);
       }
       if (brand && !id) {
-        this.filterByBrand('cars', brand);
+        this.filterByBrand('table', brand);
       }
       if (brand && id) {
-        return this.emphasizeEntity('cars', brand, id);
+        return this.emphasizeEntity('table', brand, id);
       }
     };
 

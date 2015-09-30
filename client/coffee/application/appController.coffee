@@ -16,14 +16,6 @@ define [
             _.each modules, (options, module) =>
                 @startModule module
 
-        # demonstration of module - core interaction
-        listenToModules: ->
-            @container.channel.on 'list:ready', (module, list) =>
-                @container.broadcastEvent 'list:ready', list
-
-            @container.channel.on 'details:ready', (module, details) =>
-                @container.broadcastEvent 'details:ready', details
-
         # DEFAULT ROUTE HANDLER:
         onRoute: (name, path, opts) =>
             @rootFragmentMutation(path.split('/')[0])
@@ -40,12 +32,13 @@ define [
         carsModuleHandler: (brand, id) ->
             if brand? and _.indexOf(['volvo', 'ford', 'mitsubishi', 'nissan'], brand) == -1
                 console.debug "Unknown brand"
+                
             if !brand and !id
-                @filterByBrand 'cars', null
+                @filterByBrand 'table', null
             if brand and !id
-                @filterByBrand 'cars', brand
+                @filterByBrand 'table', brand
             if brand and id
-                @emphasizeEntity 'cars', brand, id
+                @emphasizeEntity 'table', brand, id
 
         selectedCarsHandler: ->
             @startModule 'selected'
