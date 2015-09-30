@@ -22,7 +22,9 @@ define(["wire", "backbone"], function(wire, Backbone) {
     ],
     collection: {
       createCollection: {
-        $ref: 'arrayForCollection'
+        fromArray: {
+          $ref: 'arrayForCollection'
+        }
       }
     }
   };

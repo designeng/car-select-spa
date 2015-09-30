@@ -12,9 +12,6 @@ define [
         showPreloader: (preloader) ->
             @regions.mainAreaRegion.show preloader
 
-        populateSelectedCarsCollection: (collection) ->
-            collection.add JSON.parse(localStorage.getItem('selected-cars'))
-
         # switch on all service modules
         switchOn: (modules) ->
             _.each modules, (options, module) =>

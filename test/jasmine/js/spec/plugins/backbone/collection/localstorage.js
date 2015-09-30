@@ -51,7 +51,9 @@ define(["wire", "when", "backbone"], function(wire, When, Backbone) {
   spec = {
     $plugins: ['wire/debug', 'plugins/backbone/collection/create'],
     collectionWithStoredSource: {
-      localstorage: [],
+      createCollection: {
+        fromStorage: collectionWithStoredSourceName
+      },
       storage: {
         name: collectionWithStoredSourceName
       }
@@ -73,7 +75,7 @@ define(["wire", "when", "backbone"], function(wire, When, Backbone) {
         return console.log("ERROR", err);
       });
     });
-    xit("should get source from localstorage if exists", function(done) {
+    it("should get source from localstorage if exists", function(done) {
       var source;
       source = JSON.stringify([
         {
@@ -89,6 +91,7 @@ define(["wire", "when", "backbone"], function(wire, When, Backbone) {
       ]);
       localStorage.setItem(collectionWithStoredSourceName, source);
       expect(this.ctx.collectionWithStoredSource.length).toBe(3);
+      expect(this.ctx.collectionWithStoredSource.at(0).get('name')).toBe('Ford');
       return done();
     });
     it("should synchronize with localstorage on add event", function(done) {

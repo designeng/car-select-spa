@@ -28,9 +28,6 @@ define
             notFoundPageLayer   : {$ref: "element!.not-found"}
         registerIntercessors: ['startModule', 'createTable', 'filterBy', 'emphasizeEntity']
         ready:
-            populateSelectedCarsCollection: [
-                {$ref: 'selectedCarsCollection'}
-            ]
             showPreloader: {$ref: 'preloader'}
             switchOn: [
                 "navigation"    : {}
@@ -55,7 +52,8 @@ define
     selectedCarsStorageName: 'selected-cars'
 
     selectedCarsCollection:
-        createCollection: []
+        createCollection:
+            fromStorage: {$ref: 'selectedCarsStorageName'}
         storage:
             name: {$ref: 'selectedCarsStorageName'}
 

@@ -28,7 +28,8 @@ define [
         ]
 
         collectionWithStoredSource:
-            localstorage: []
+            createCollection:
+                fromStorage: collectionWithStoredSourceName
             storage:
                 name: collectionWithStoredSourceName
 
@@ -45,7 +46,7 @@ define [
             .otherwise (err) ->
                 console.log "ERROR", err
 
-        xit "should get source from localstorage if exists", (done) ->
+        it "should get source from localstorage if exists", (done) ->
             source = JSON.stringify [
                 {id: 0, name: "Ford"}
                 {id: 1, name: "Nissan"}
@@ -53,6 +54,7 @@ define [
             ]
             localStorage.setItem(collectionWithStoredSourceName, source)
             expect(@ctx.collectionWithStoredSource.length).toBe 3
+            expect(@ctx.collectionWithStoredSource.at(0).get 'name').toBe 'Ford'
             done()
 
         it "should synchronize with localstorage on add event", (done) ->

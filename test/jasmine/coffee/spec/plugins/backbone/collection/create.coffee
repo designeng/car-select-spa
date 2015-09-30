@@ -18,7 +18,8 @@ define [
             ]
 
         collection:
-            createCollection: {$ref: 'arrayForCollection'}
+            createCollection: 
+                fromArray: {$ref: 'arrayForCollection'}
 
     describe "backbone collection create plugin", ->
 

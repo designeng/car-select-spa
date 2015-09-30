@@ -38,11 +38,6 @@ define({
     },
     registerIntercessors: ['startModule', 'createTable', 'filterBy', 'emphasizeEntity'],
     ready: {
-      populateSelectedCarsCollection: [
-        {
-          $ref: 'selectedCarsCollection'
-        }
-      ],
       showPreloader: {
         $ref: 'preloader'
       },
@@ -76,7 +71,11 @@ define({
   },
   selectedCarsStorageName: 'selected-cars',
   selectedCarsCollection: {
-    createCollection: [],
+    createCollection: {
+      fromStorage: {
+        $ref: 'selectedCarsStorageName'
+      }
+    },
     storage: {
       name: {
         $ref: 'selectedCarsStorageName'

@@ -5,9 +5,13 @@ define [
 
     return (options) ->
         createCollectionFactory = (resolver, compDef, wire) ->
-            wire(compDef.options).then (array) ->
-                if _.isArray array
-                    collection = new Backbone.Collection(array)
+            wire(compDef.options).then (options) ->
+                fromArray = options.fromArray
+                fromStorage = options.fromStorage
+                if fromArray and _.isArray options.fromArray
+                    collection = new Backbone.Collection(options.fromArray)
+                else if fromStorage and _.isString fromStorage
+                    collection = new Backbone.Collection(JSON.parse localStorage.getItem(fromStorage))
                 else
                     collection = new Backbone.Collection()
                 resolver.resolve collection
