@@ -53,7 +53,7 @@ define(['underscore', 'marionette', 'when', 'meld'], function(_, Marionette, Whe
           $ref: 'carsCollection'
         },
         behavior: {
-          $ref: 'addBehavior'
+          $ref: 'addItemBehavior'
         },
         controlLabel: 'select',
         controlsConfig: ['table', 'tabs']
@@ -72,7 +72,7 @@ define(['underscore', 'marionette', 'when', 'meld'], function(_, Marionette, Whe
           $ref: 'selectedCarsCollection'
         },
         behavior: {
-          $ref: 'removeBehavior'
+          $ref: 'removeItemBehavior'
         },
         controlLabel: 'remove',
         controlsConfig: ['table', 'counter']

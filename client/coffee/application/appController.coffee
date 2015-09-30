@@ -39,7 +39,7 @@ define [
 
             environment =
                 collection      : {$ref: 'carsCollection'}
-                behavior        : {$ref: 'addBehavior'}
+                behavior        : {$ref: 'addItemBehavior'}
                 controlLabel    : 'select'
                 controlsConfig  : ['table', 'tabs']
 
@@ -52,7 +52,7 @@ define [
             @rootFragmentMutation()
             environment =
                 collection      : {$ref: 'selectedCarsCollection'}
-                behavior        : {$ref: 'removeBehavior'}
+                behavior        : {$ref: 'removeItemBehavior'}
                 controlLabel    : 'remove'
                 controlsConfig  : ['table', 'counter']
             @startModule 'table', environment

@@ -22,8 +22,8 @@ define
         properties:
             navigation          : {$ref: 'navigation'}
             table               : {$ref: 'table'}
-            addBehavior         : {$ref: 'addBehavior'}
-            removeBehavior      : {$ref: 'removeBehavior'}
+            addItemBehavior         : {$ref: 'addItemBehavior'}
+            removeItemBehavior      : {$ref: 'removeItemBehavior'}
             statistic           : {$ref: 'statistic'}
             notFoundPageLayer   : {$ref: "element!.not-found"}
         registerIntercessors: ['startModule', 'createTable', 'filterBy', 'emphasizeEntity']
@@ -55,14 +55,14 @@ define
             synchronize: true
 
     # BEHAVIOR STRATEGIES
-    addBehavior:
+    addItemBehavior:
         create:
             module: 'application/behaviors/add'
             args: [
                 {$ref: 'selectedCarsCollection'}
             ]
 
-    removeBehavior:
+    removeItemBehavior:
         create:
             module: 'application/behaviors/remove'
             args: [

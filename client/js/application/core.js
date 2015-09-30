@@ -23,11 +23,11 @@ define({
       table: {
         $ref: 'table'
       },
-      addBehavior: {
-        $ref: 'addBehavior'
+      addItemBehavior: {
+        $ref: 'addItemBehavior'
       },
-      removeBehavior: {
-        $ref: 'removeBehavior'
+      removeItemBehavior: {
+        $ref: 'removeItemBehavior'
       },
       statistic: {
         $ref: 'statistic'
@@ -75,7 +75,7 @@ define({
       synchronize: true
     }
   },
-  addBehavior: {
+  addItemBehavior: {
     create: {
       module: 'application/behaviors/add',
       args: [
@@ -85,7 +85,7 @@ define({
       ]
     }
   },
-  removeBehavior: {
+  removeItemBehavior: {
     create: {
       module: 'application/behaviors/remove',
       args: [

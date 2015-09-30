@@ -1,7 +1,7 @@
 define [
     'jquery'
 ], ($) ->
-    addBehavior = (selectedCarsCollection) ->
+    addItemBehavior = (selectedCarsCollection) ->
         return (model) ->
             return (event) ->
                 selectedCarsCollection.add model
