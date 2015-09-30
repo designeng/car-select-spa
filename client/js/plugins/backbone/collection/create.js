@@ -18,7 +18,7 @@ define(['underscore', 'backbone'], function(_, Backbone) {
     };
     storeInFacet = function(resolver, facet, wire) {
       return wire(facet.options).then(function(options) {
-        facet.target.on("add update reset", function(item) {
+        facet.target.on('add update reset', function(item) {
           var stringifiedCollection;
           stringifiedCollection = JSON.stringify(facet.target.toJSON());
           return localStorage.setItem(options.name, stringifiedCollection);
@@ -32,7 +32,7 @@ define(['underscore', 'backbone'], function(_, Backbone) {
       },
       facets: {
         storeIn: {
-          "ready": storeInFacet
+          'ready': storeInFacet
         }
       }
     };

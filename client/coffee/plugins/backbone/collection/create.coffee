@@ -18,7 +18,7 @@ define [
 
         storeInFacet = (resolver, facet, wire) ->
             wire(facet.options).then (options) ->
-                facet.target.on "add update reset", (item) ->
+                facet.target.on 'add update reset', (item) ->
                     stringifiedCollection = JSON.stringify facet.target.toJSON()
                     localStorage.setItem options.name, stringifiedCollection
                 resolver.resolve facet.target
@@ -28,6 +28,6 @@ define [
                 createCollection: createCollectionFactory
             facets:
                 storeIn:
-                    "ready"     : storeInFacet
+                    'ready'     : storeInFacet
 
         return pluginInstance
