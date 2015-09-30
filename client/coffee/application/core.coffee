@@ -57,15 +57,15 @@ define
         createCollection: [
             {
                 "id": 1,
-                "name": "Volvo S60",
-                "image": "volvo-s60.jpg",
-                "brand": "volvo"
+                "name": "Nissan",
+                "image": "assets/images/nissan-terrano.jpg",
+                "brand": "nissan"
             },
             {
                 "id": 2,
-                "name": "Volvo S80",
-                "image": "volvo-s80.jpg",
-                "brand": "volvo"
+                "name": "Ford",
+                "image": "assets/images/ford-endeavour.jpg",
+                "brand": "ford"
             }
         ]
         storage:
