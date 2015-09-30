@@ -14,11 +14,13 @@ define [
         className: ''
         childView: TableRowView
 
+        filters: {}
+
         initialize: (options) ->
             @childTemplate = options.childTemplate
 
         filterBy: (fieldName, value) =>
-            @[fieldName] = value
+            @filters[fieldName] = value
             @collection.fetch()
 
         childViewOptions: (model, index) ->
@@ -47,15 +49,15 @@ define [
         addFiltersFacet = (resolver, facet, wire) ->
             wire(facet.options).then (filters) ->
                 expression = _.map filters, (filterArgs, filterName) ->
-                    return "item.get('#{filterName}') == facet.target.#{filterName}"
-
+                    return "item.get('#{filterName}') == facet.target.filters.#{filterName}"
                 expression = expression.join(" and ")
 
                 facet.target.collection.on "sync", (collection, resp, options) ->
-                    collection.filter((item) ->
+                    models = collection.filter (item) ->
                         return eval(expression)
-                    )
 
+                    facet.target.collection.reset()
+                    facet.target.collection.add models
                     facet.target.render()
 
                 resolver.resolve facet.target

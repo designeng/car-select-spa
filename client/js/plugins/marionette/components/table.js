@@ -34,12 +34,14 @@ define(['underscore', 'backbone', 'marionette', 'hbs!templates/tableRow'], funct
 
     TableView.prototype.childView = TableRowView;
 
+    TableView.prototype.filters = {};
+
     TableView.prototype.initialize = function(options) {
       return this.childTemplate = options.childTemplate;
     };
 
     TableView.prototype.filterBy = function(fieldName, value) {
-      this[fieldName] = value;
+      this.filters[fieldName] = value;
       return this.collection.fetch();
     };
 
@@ -80,13 +82,16 @@ define(['underscore', 'backbone', 'marionette', 'hbs!templates/tableRow'], funct
       return wire(facet.options).then(function(filters) {
         var expression;
         expression = _.map(filters, function(filterArgs, filterName) {
-          return "item.get('" + filterName + "') == facet.target." + filterName;
+          return "item.get('" + filterName + "') == facet.target.filters." + filterName;
         });
         expression = expression.join(" and ");
         facet.target.collection.on("sync", function(collection, resp, options) {
-          collection.filter(function(item) {
+          var models;
+          models = collection.filter(function(item) {
             return eval(expression);
           });
+          facet.target.collection.reset();
+          facet.target.collection.add(models);
           return facet.target.render();
         });
         return resolver.resolve(facet.target);
