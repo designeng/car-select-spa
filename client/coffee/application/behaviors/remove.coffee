@@ -4,6 +4,5 @@ define [
     removeBehavior = (selectedCarsCollection) ->
         return (model) ->
             return (event) ->
-                id = model.get 'id'
-                selectedCarsCollection.remove(model)
+                selectedCarsCollection.remove(model.get 'id')
 

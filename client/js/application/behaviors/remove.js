@@ -3,9 +3,7 @@ define(['jquery'], function($) {
   return removeBehavior = function(selectedCarsCollection) {
     return function(model) {
       return function(event) {
-        var id;
-        id = model.get('id');
-        return selectedCarsCollection.remove(model);
+        return selectedCarsCollection.remove(model.get('id'));
       };
     };
   };
