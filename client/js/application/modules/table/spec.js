@@ -55,7 +55,7 @@ define({
       cellId: 'last',
       controlType: 'button',
       controlBehavior: {
-        $ref: 'addBehavior'
+        $ref: 'behavior'
       }
     },
     addFilters: {

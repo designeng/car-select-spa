@@ -13,13 +13,14 @@ define [
 
         channel: Radio.channel("container")
 
-        startModule: (module, moduleName) ->
+        startModule: (module, moduleName, environment) ->
             return When.promise (resolve, reject) =>
-                module({
+                environment = _.extend environment, {
                     sandbox:
                         literal:
                             channel: @createChannel(moduleName)
-                }).then (context) ->
+                }
+                module(environment).then (context) ->
                     resolve context
 
         stopModule: (name) ->
@@ -43,10 +44,11 @@ define [
         # wired context is cached (we should not wire the module twice!)
         registerModuleSandbox: (joinpoint) =>
             moduleName = joinpoint.args[0]
-            args = _.rest joinpoint.args
+            environment = joinpoint.args[1]
+            args = Array::slice.call(joinpoint.args, 2)
             context = @modules[moduleName]
             if !context?
-                @startModule(joinpoint.target[moduleName], moduleName).then (moduleContext) =>
+                @startModule(joinpoint.target[moduleName], moduleName, environment).then (moduleContext) =>
                     @modules[moduleName] = moduleContext
                     if moduleContext.publicApi?
                         moduleContext.wire(moduleContext.publicApi).then (api) ->

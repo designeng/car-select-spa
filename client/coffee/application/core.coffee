@@ -22,6 +22,8 @@ define
         properties:
             navigation          : {$ref: 'navigation'}
             table               : {$ref: 'table'}
+            addBehavior         : {$ref: 'addBehavior'}
+            removeBehavior      : {$ref: 'removeBehavior'}
             statistic           : {$ref: 'statistic'}
             notFoundPageLayer   : {$ref: "element!.not-found"}
         registerIntercessors: ['startModule', 'createTable', 'filterByBrand', 'emphasizeEntity']
@@ -77,8 +79,6 @@ define
             defer: true
             provide:
                 collection      : {$ref: 'carsCollection'}
-                addBehavior     : {$ref: 'addBehavior'}
-                removeBehavior  : {$ref: 'removeBehavior'}
                 region          : {$ref: 'appInstance.regions.mainAreaRegion'}
 
     statistic:

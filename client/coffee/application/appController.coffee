@@ -33,12 +33,14 @@ define [
             if brand? and _.indexOf(['volvo', 'ford', 'mitsubishi', 'nissan'], brand) == -1
                 console.debug "Unknown brand"
                 
-            if !brand and !id
-                @filterByBrand 'table', null
+            # if !brand and !id
+            #     @filterByBrand 'table', null
             if brand and !id
-                @filterByBrand 'table', brand
-            if brand and id
-                @emphasizeEntity 'table', brand, id
+                @filterByBrand 'table', {behavior: {$ref: 'addBehavior'}}, brand
+            # if brand and id
+            #     @emphasizeEntity 'table', brand, id
+
+            # @table
 
         selectedCarsHandler: ->
             @startModule 'selected'

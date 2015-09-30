@@ -44,14 +44,12 @@ define(['underscore', 'marionette', 'when'], function(_, Marionette, When) {
       if ((brand != null) && _.indexOf(['volvo', 'ford', 'mitsubishi', 'nissan'], brand) === -1) {
         console.debug("Unknown brand");
       }
-      if (!brand && !id) {
-        this.filterByBrand('table', null);
-      }
       if (brand && !id) {
-        this.filterByBrand('table', brand);
-      }
-      if (brand && id) {
-        return this.emphasizeEntity('table', brand, id);
+        return this.filterByBrand('table', {
+          behavior: {
+            $ref: 'addBehavior'
+          }
+        }, brand);
       }
     };
 

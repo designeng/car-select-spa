@@ -23,6 +23,12 @@ define({
       table: {
         $ref: 'table'
       },
+      addBehavior: {
+        $ref: 'addBehavior'
+      },
+      removeBehavior: {
+        $ref: 'removeBehavior'
+      },
       statistic: {
         $ref: 'statistic'
       },
@@ -99,12 +105,6 @@ define({
       provide: {
         collection: {
           $ref: 'carsCollection'
-        },
-        addBehavior: {
-          $ref: 'addBehavior'
-        },
-        removeBehavior: {
-          $ref: 'removeBehavior'
         },
         region: {
           $ref: 'appInstance.regions.mainAreaRegion'

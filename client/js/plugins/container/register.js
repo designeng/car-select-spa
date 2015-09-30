@@ -15,16 +15,17 @@ define(["underscore", "backbone.radio", "when", "meld"], function(_, Radio, When
 
     Container.prototype.channel = Radio.channel("container");
 
-    Container.prototype.startModule = function(module, moduleName) {
+    Container.prototype.startModule = function(module, moduleName, environment) {
       var _this = this;
       return When.promise(function(resolve, reject) {
-        return module({
+        environment = _.extend(environment, {
           sandbox: {
             literal: {
               channel: _this.createChannel(moduleName)
             }
           }
-        }).then(function(context) {
+        });
+        return module(environment).then(function(context) {
           return resolve(context);
         });
       });
@@ -60,13 +61,14 @@ define(["underscore", "backbone.radio", "when", "meld"], function(_, Radio, When
     };
 
     Container.prototype.registerModuleSandbox = function(joinpoint) {
-      var args, context, moduleName,
+      var args, context, environment, moduleName,
         _this = this;
       moduleName = joinpoint.args[0];
-      args = _.rest(joinpoint.args);
+      environment = joinpoint.args[1];
+      args = Array.prototype.slice.call(joinpoint.args, 2);
       context = this.modules[moduleName];
       if (context == null) {
-        return this.startModule(joinpoint.target[moduleName], moduleName).then(function(moduleContext) {
+        return this.startModule(joinpoint.target[moduleName], moduleName, environment).then(function(moduleContext) {
           _this.modules[moduleName] = moduleContext;
           if (moduleContext.publicApi != null) {
             return moduleContext.wire(moduleContext.publicApi).then(function(api) {
