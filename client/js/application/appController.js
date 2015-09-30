@@ -32,7 +32,9 @@ define(['underscore', 'marionette', 'when', 'meld'], function(_, Marionette, Whe
       }
     };
 
-    AppController.prototype.rootFragmentMutation = function(rootFragment) {
+    AppController.prototype.rootFragmentMutation = function() {
+      var rootFragment;
+      rootFragment = window.location.hash.split('/')[1];
       if (this.currentRootFragment !== rootFragment) {
         this.container.stopModule('table');
         return this.currentRootFragment = rootFragment;
@@ -45,7 +47,7 @@ define(['underscore', 'marionette', 'when', 'meld'], function(_, Marionette, Whe
         console.debug("Unknown brand");
         return;
       }
-      this.rootFragmentMutation(window.location.hash.split('/')[1]);
+      this.rootFragmentMutation();
       environment = {
         behavior: {
           $ref: 'addBehavior'
@@ -65,7 +67,7 @@ define(['underscore', 'marionette', 'when', 'meld'], function(_, Marionette, Whe
 
     AppController.prototype.selectedCarsHandler = function() {
       var environment;
-      this.rootFragmentMutation(window.location.hash.split('/')[1]);
+      this.rootFragmentMutation();
       environment = {
         behavior: {
           $ref: 'removeBehavior'

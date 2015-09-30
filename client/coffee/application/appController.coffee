@@ -22,7 +22,8 @@ define [
             @notFoundPageLayer.hide() unless path is '*notFound'
 
         # remove and destroy cached context if root fragment is changed
-        rootFragmentMutation: (rootFragment) ->
+        rootFragmentMutation: ->
+            rootFragment = window.location.hash.split('/')[1]
             if @currentRootFragment != rootFragment
                 @container.stopModule 'table'
                 @currentRootFragment = rootFragment
@@ -34,7 +35,7 @@ define [
                 console.debug "Unknown brand"
                 return
 
-            @rootFragmentMutation(window.location.hash.split('/')[1])
+            @rootFragmentMutation()
 
             environment =
                 behavior: {$ref: 'addBehavior'}
@@ -48,7 +49,7 @@ define [
                 @emphasizeEntity 'table', environment, brand, id
 
         selectedCarsHandler: ->
-            @rootFragmentMutation(window.location.hash.split('/')[1])
+            @rootFragmentMutation()
             environment =
                 behavior: {$ref: 'removeBehavior'}
                 controlLable: 'remove'
