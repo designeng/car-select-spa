@@ -599,3 +599,31 @@ code{
 img.car-image{
   width: 150px;
 }
+
+.navigation-tabs li{
+  display: inline-block;
+  padding-top: 14px;
+  padding-bottom: 16px;
+  padding-left: 20px;
+  padding-right: 20px;
+  border-right: 1px solid #ccc;
+}
+.navigation-tabs li a{
+  color: #fff;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.cars-filters li{
+  display: inline-block;
+  padding-top: 14px;
+  padding-bottom: 16px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.cars-filters li a{
+  /*color: #ccc;*/
+  font-size: 10px;
+  font-weight: bold;
+}
