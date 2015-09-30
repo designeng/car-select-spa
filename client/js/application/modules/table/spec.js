@@ -19,7 +19,10 @@ define({
       }
     },
     renderIn: {
-      $ref: 'region'
+      region: {
+        $ref: 'region'
+      },
+      preventDestroy: true
     },
     showInRegions: {
       'tabsRegion': {

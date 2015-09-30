@@ -14,8 +14,8 @@ define [
 
         # region, where the layout should be rendered
         renderInFacet = (resolver, facet, wire) ->
-            wire(facet.options).then (region) ->
-                resolver.resolve region.show(facet.target)
+            wire(facet.options).then (options) ->
+                resolver.resolve options.region.show(facet.target, {preventDestroy: options.preventDestroy})
 
         # what views the layout should show in its own regions
         showInRegionsFacet = (resolver, facet, wire) ->

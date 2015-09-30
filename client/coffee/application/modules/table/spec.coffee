@@ -18,7 +18,9 @@ define
                 tabsRegion      : '.cars-tabs-control-wrapper'
                 counterRegion   : '.cars-counter-control-wrapper'
                 tableRegion     : '.cars-table-control-wrapper'
-        renderIn: {$ref: 'region'}
+        renderIn: 
+            region: {$ref: 'region'}
+            preventDestroy: true
         showInRegions:
             'tabsRegion'    : {$ref: 'tabs'}
             'tableRegion'   : {$ref: 'table'}

@@ -13,8 +13,10 @@ define(['underscore', 'marionette'], function(_, Marionette) {
       });
     };
     renderInFacet = function(resolver, facet, wire) {
-      return wire(facet.options).then(function(region) {
-        return resolver.resolve(region.show(facet.target));
+      return wire(facet.options).then(function(options) {
+        return resolver.resolve(options.region.show(facet.target, {
+          preventDestroy: options.preventDestroy
+        }));
       });
     };
     showInRegionsFacet = function(resolver, facet, wire) {
