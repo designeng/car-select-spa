@@ -64,9 +64,12 @@ define [
 
         addControlsFacet = (resolver, facet, wire) ->
             wire(facet.options).then (options) ->
+
                 facet.target.onRender = ->
-                    _.each facet.target.$el.find('tr'), (tr) ->
-                        cells = tr.getElementsByTagName('td')
+                    console.debug "getChildren:::::", facet.target.getChildren()
+
+                    _.each facet.target.getChildren(), (child) ->
+                        cells = child.$el.find('td')
                         id = options.cellId
                         try
                             cell = _[id] cells  # give a chance for underscore methods 'first', 'last'

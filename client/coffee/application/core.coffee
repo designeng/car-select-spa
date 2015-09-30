@@ -71,10 +71,19 @@ define
 
     # BEHAVIOR STRATEGIES
     addBehavior:
-        module: 'application/behaviors/add'
+        create:
+            module: 'application/behaviors/add'
+            args: [
+                {$ref: 'carsCollection'}
+                {$ref: 'selectedCarsCollection'}
+            ]
 
     removeBehavior:
-        module: 'application/behaviors/remove'
+        create:
+            module: 'application/behaviors/remove'
+            args: [
+                {$ref: 'selectedCarsCollection'}
+            ]
 
     # APPLICATION MODULES
     navigation:
