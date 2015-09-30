@@ -1,4 +1,4 @@
-define(['jquery'], function($) {
+define(function() {
   var removeBehavior;
   return removeBehavior = function(selectedCarsCollection) {
     return function(model) {

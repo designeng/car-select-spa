@@ -1,6 +1,4 @@
-define [
-    'jquery'
-], ($) ->
+define ->
     removeBehavior = (selectedCarsCollection) ->
         return (model) ->
             return (event) ->
