@@ -7,12 +7,12 @@ define [
 ], (_, Backbone, Radio, Marionette, Handlebars) ->
 
     # overloaded for mocks
-    Backbone.ajax = (response) ->
-        url = response.url
+    # Backbone.ajax = (response) ->
+    #     url = response.url
 
-        if url.match new RegExp("/cars")
-            require ["json!../assets/api/response/cars.json"], (json) ->
-                response.success(json)
+    #     if url.match new RegExp("/cars")
+    #         require ["json!../assets/api/response/cars.json"], (json) ->
+    #             response.success(json)
 
     # all nessesary marionette hooks can be listed here
     Marionette.TemplateCache::compileTemplate = (rawTemplate) ->

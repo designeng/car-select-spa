@@ -66,6 +66,7 @@ module.exports = (grunt) ->
                     base: './client'
                     middleware: (connect, options) ->
                         return [
+                            connectMW.stubService
                             connectMW.folderMount(connect, options.base)
                         ]
             jasmine:

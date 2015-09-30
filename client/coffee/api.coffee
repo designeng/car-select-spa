@@ -1,6 +1,6 @@
 define ->
 
-    prefix = "localhost/"
+    prefix = "http://localhost:7788/api/v1/"
 
     api =
         getCarsCollectionUrl: ->

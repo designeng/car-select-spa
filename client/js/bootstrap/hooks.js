@@ -1,13 +1,4 @@
 define(["underscore", "backbone", "backbone.radio", "marionette", "handlebars"], function(_, Backbone, Radio, Marionette, Handlebars) {
-  Backbone.ajax = function(response) {
-    var url;
-    url = response.url;
-    if (url.match(new RegExp("/cars"))) {
-      return require(["json!../assets/api/response/cars.json"], function(json) {
-        return response.success(json);
-      });
-    }
-  };
   Marionette.TemplateCache.prototype.compileTemplate = function(rawTemplate) {
     return Handlebars.compile(rawTemplate);
   };
