@@ -40,7 +40,7 @@ define [
             environment =
                 collection      : {$ref: 'carsCollection'}
                 behavior        : {$ref: 'addBehavior'}
-                controlLable    : 'select'
+                controlLabel    : 'select'
                 controlsConfig  : ['table', 'tabs']
                 
             if !brand and !id
@@ -55,7 +55,7 @@ define [
             environment =
                 collection      : {$ref: 'selectedCarsCollection'}
                 behavior        : {$ref: 'removeBehavior'}
-                controlLable    : 'remove'
+                controlLabel    : 'remove'
                 controlsConfig  : ['table', 'counter']
             @startModule 'table', environment
 

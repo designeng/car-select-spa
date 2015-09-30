@@ -29,10 +29,10 @@ define [
     insertControl = (cell, controlType, controlBehavior) ->
         # noop function, not implemented for other control types
 
-    addControl = (cell, controlType, controlLable, controlBehavior) ->
+    addControl = (cell, controlType, controlLabel, controlBehavior) ->
         switch controlType
             when 'button'
-                $button = $('<button />').text controlLable
+                $button = $('<button />').text controlLabel
                 $(cell).append($button).on 'click', controlBehavior
             when 'select' then insertControl(cell, 'select', controlBehavior)
 
@@ -73,7 +73,7 @@ define [
                         catch e
                             cell = cells[id]
                         finally
-                            addControl(cell, options.controlType, options.controlLable, options.controlBehavior)
+                            addControl(cell, options.controlType, options.controlLabel, options.controlBehavior)
                 resolver.resolve facet.target
 
         pluginInstance = 

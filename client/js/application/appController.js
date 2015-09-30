@@ -55,7 +55,7 @@ define(['underscore', 'marionette', 'when', 'meld'], function(_, Marionette, Whe
         behavior: {
           $ref: 'addBehavior'
         },
-        controlLable: 'select',
+        controlLabel: 'select',
         controlsConfig: ['table', 'tabs']
       };
       if (!brand && !id) {
@@ -79,7 +79,7 @@ define(['underscore', 'marionette', 'when', 'meld'], function(_, Marionette, Whe
         behavior: {
           $ref: 'removeBehavior'
         },
-        controlLable: 'remove',
+        controlLabel: 'remove',
         controlsConfig: ['table', 'counter']
       };
       return this.startModule('table', environment);
