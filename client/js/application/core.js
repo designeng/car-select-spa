@@ -69,12 +69,9 @@ define({
   carsCollection: {
     create: 'application/collections/cars'
   },
-  selectedCarsStorageName: 'selected-cars',
   selectedCarsCollection: {
     createCollection: {
-      fromStorage: {
-        $ref: 'selectedCarsStorageName'
-      },
+      fromStorage: 'selected-cars',
       synchronize: true
     }
   },
