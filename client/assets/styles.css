@@ -629,3 +629,11 @@ img.car-image{
   font-size: 10px;
   font-weight: bold;
 }
+
+td.car-choose-button button{
+  width: 100px;
+  height: 30px;
+/*  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;*/
+}

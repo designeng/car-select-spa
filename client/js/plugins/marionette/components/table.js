@@ -100,6 +100,7 @@ define(['underscore', 'backbone', 'marionette', 'hbs!templates/tableRow'], funct
     addControlsFacet = function(resolver, facet, wire) {
       return wire(facet.options).then(function(options) {
         facet.target.onRender = function() {
+          console.debug("facet.target.onRender", facet.target.getChildren());
           return _.each(facet.target.getChildren(), function(child) {
             var cell, cells, e, id;
             cells = child.$el.find('td');

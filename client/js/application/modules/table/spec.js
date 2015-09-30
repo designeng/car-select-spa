@@ -3,7 +3,7 @@ define({
   publicApi: {
     literal: {
       filterBy: {
-        $ref: 'controller.filterBy'
+        $ref: 'table.filterBy'
       }
     }
   },
@@ -73,9 +73,6 @@ define({
     properties: {
       collection: {
         $ref: 'collection'
-      },
-      table: {
-        $ref: 'table'
       },
       tabs: {
         $ref: 'tabs'

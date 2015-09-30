@@ -9,7 +9,7 @@ define
 
     publicApi:
         literal:
-            filterBy       : {$ref: 'controller.filterBy'}
+            filterBy       : {$ref: 'table.filterBy'}
 
     layout:
         createLayout:
@@ -20,6 +20,7 @@ define
                 tableRegion     : '.cars-table-control-wrapper'
         renderIn: 
             region: {$ref: 'region'}
+            # bug?
             preventDestroy: true
         showInRegions:
             'tabsRegion'    : {$ref: 'tabs'}
@@ -53,7 +54,6 @@ define
         create: 'application/modules/table/controller'
         properties:
             collection          : {$ref: 'collection'}
-            table               : {$ref: 'table'}
             tabs                : {$ref: 'tabs'}
             counter             : {$ref: 'counter'}
         ready:

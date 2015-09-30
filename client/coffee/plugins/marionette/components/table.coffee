@@ -65,7 +65,10 @@ define [
 
         addControlsFacet = (resolver, facet, wire) ->
             wire(facet.options).then (options) ->
+
+                # TODO: bug
                 facet.target.onRender = ->
+                    console.debug "facet.target.onRender", facet.target.getChildren()
                     _.each facet.target.getChildren(), (child) ->
                         cells = child.$el.find('td')
                         id = options.cellId
