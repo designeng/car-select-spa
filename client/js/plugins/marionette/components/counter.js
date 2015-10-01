@@ -13,16 +13,17 @@ define(['underscore', 'backbone', 'marionette', 'hbs!templates/counter'], functi
 
     CounterView.prototype.template = counterTpl;
 
-    CounterView.prototype.initialize = function() {
-      return this.model = new Backbone.Model();
-    };
-
-    CounterView.prototype.onBeforeRender = function() {
+    CounterView.prototype.initialize = function(options) {
       var _this = this;
-      this.collection.on('update', function(collection) {
+      this.model = new Backbone.Model();
+      this.collection = options.collection;
+      return this.collection.on('update', function(collection) {
         _this.model.set('count', collection.length);
         return _this.render();
       });
+    };
+
+    CounterView.prototype.onBeforeRender = function() {
       return this.model.set('count', this.collection.length);
     };
 
@@ -35,6 +36,7 @@ define(['underscore', 'backbone', 'marionette', 'hbs!templates/counter'], functi
       return wire(compDef.options).then(function(options) {
         var counterView;
         counterView = new CounterView({
+          collection: options.collection,
           className: options.className
         });
         return resolver.resolve(counterView);

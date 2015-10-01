@@ -56,10 +56,9 @@ define
             synchronize: true
 
     counter:
-        createCounter: 
-            className   : 'cars-counter'
-        properties:
+        createCounter:
             collection  : {$ref: 'selectedCarsCollection'}
+            className   : 'cars-counter'
 
     # BEHAVIOR STRATEGIES
     addItemBehavior:

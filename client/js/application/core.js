@@ -77,12 +77,10 @@ define({
   },
   counter: {
     createCounter: {
-      className: 'cars-counter'
-    },
-    properties: {
       collection: {
         $ref: 'selectedCarsCollection'
-      }
+      },
+      className: 'cars-counter'
     }
   },
   addItemBehavior: {
