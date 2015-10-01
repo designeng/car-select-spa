@@ -4,16 +4,28 @@ define [
 ], (_, Backbone) ->
 
     return (options) ->
+        # options:
+        #   fromArray
+        #   fromStorage
+        #   initValues
+        #   synchronize
         createCollectionFactory = (resolver, compDef, wire) ->
             wire(compDef.options).then (options) ->
-                fromArray = options.fromArray
+                fromArray   = options.fromArray
                 fromStorage = options.fromStorage
+                initValues  = options.initValues
                 if fromArray and _.isArray options.fromArray
                     collection = new Backbone.Collection(options.fromArray)
                 else if fromStorage and _.isString fromStorage
-                    collection = new Backbone.Collection(JSON.parse localStorage.getItem(fromStorage))
+                    source = localStorage.getItem(fromStorage)
+                    console.debug "source::::::::", source
+                    if source?
+                        collection = new Backbone.Collection(JSON.parse source)
+                    else if initValues
+                        collection = new Backbone.Collection(initValues)
                     if options.synchronize
-                        collection.on 'add update reset', (item) ->
+                        collection.on 'add update reset change', (item) ->
+                            console.debug ">>>>>>>> add update reset ", item
                             localStorage.setItem fromStorage, JSON.stringify collection.toJSON()
                 else
                     collection = new Backbone.Collection()

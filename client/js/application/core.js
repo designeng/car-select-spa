@@ -70,12 +70,39 @@ define({
       synchronize: true
     }
   },
+  statisticCollection: {
+    createCollection: {
+      initValues: [
+        {
+          id: 0,
+          brand: 'volvo',
+          count: 0
+        }, {
+          id: 1,
+          brand: 'ford',
+          count: 0
+        }, {
+          id: 2,
+          brand: 'mitsubishi',
+          count: 0
+        }, {
+          id: 3,
+          brand: 'nissan',
+          count: 0
+        }
+      ],
+      fromStorage: 'statistic',
+      synchronize: true
+    }
+  },
   addItemBehavior: {
     create: {
       module: 'application/behaviors/add',
       args: [
         {
           $ref: 'selectedCarsCollection'
+        }, {
+          $ref: 'statisticCollection'
         }
       ]
     }
@@ -115,7 +142,12 @@ define({
   statistic: {
     wire: {
       spec: "application/modules/statistic/spec",
-      defer: true
+      defer: true,
+      provide: {
+        region: {
+          $ref: 'appInstance.regions.mainAreaRegion'
+        }
+      }
     }
   },
   preloader: {

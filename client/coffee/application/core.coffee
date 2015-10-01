@@ -42,7 +42,7 @@ define
                 '*notFound'         : 'notFoundHandler'
         onRoute: {$ref: 'appController.onRoute'}
 
-    # SHARED RESOURCES: COLLECTIONS
+    # COLLECTIONS
     carsCollection:
         create: 'application/collections/cars'
 
@@ -51,12 +51,24 @@ define
             fromStorage: 'selected-cars'
             synchronize: true
 
+    statisticCollection:
+        createCollection:
+            initValues: [
+                {id: 0, brand: 'volvo'         , count: 0}
+                {id: 1, brand: 'ford'          , count: 0}
+                {id: 2, brand: 'mitsubishi'    , count: 0}
+                {id: 3, brand: 'nissan'        , count: 0}
+            ]
+            fromStorage: 'statistic'
+            synchronize: true
+
     # BEHAVIOR STRATEGIES
     addItemBehavior:
         create:
             module: 'application/behaviors/add'
             args: [
                 {$ref: 'selectedCarsCollection'}
+                {$ref: 'statisticCollection'}
             ]
 
     removeItemBehavior:
@@ -85,6 +97,8 @@ define
         wire:
             spec: "application/modules/statistic/spec"
             defer: true
+            provide:
+                region          : {$ref: 'appInstance.regions.mainAreaRegion'}
     # /APPLICATION MODULES
 
     preloader:
