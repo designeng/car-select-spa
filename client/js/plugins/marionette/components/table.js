@@ -63,6 +63,9 @@ define(['underscore', 'backbone', 'marionette', 'hbs!templates/tableRow'], funct
           return result = item.get(key) === _this.filters[key];
         }, true);
       });
+      _.each(models, function(model) {
+        return console.debug("ID:", model.get('id'));
+      });
       this.collection.reset();
       this.collection.add(models);
       return this.render();

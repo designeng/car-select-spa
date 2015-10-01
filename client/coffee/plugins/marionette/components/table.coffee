@@ -35,6 +35,9 @@ define [
                     result = item.get(key) == @filters[key]
                 , true
 
+            _.each models, (model) ->
+                console.debug "ID:", model.get 'id'
+
             @collection.reset()
             @collection.add models
             @render()

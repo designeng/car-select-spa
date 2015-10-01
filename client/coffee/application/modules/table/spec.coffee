@@ -4,6 +4,7 @@ define
         'plugins/hbs'
         'plugins/marionette/layout'
         'plugins/marionette/components/tabs'
+        'plugins/marionette/components/counter'
         'plugins/marionette/components/table'
     ]
 
@@ -22,6 +23,7 @@ define
             region: {$ref: 'region'}
         showInRegions:
             'tabsRegion'    : {$ref: 'tabs'}
+            'counterRegion' : {$ref: 'counter'}
             'tableRegion'   : {$ref: 'table'}
 
     tabs:
@@ -35,7 +37,7 @@ define
             className: 'cars-filters'
 
     counter:
-        create: 'application/modules/table/counter'
+        createCounter: {}
 
     table:
         createTable:

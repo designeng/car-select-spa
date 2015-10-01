@@ -1,5 +1,5 @@
 define({
-  $plugins: ['wire/debug', 'plugins/hbs', 'plugins/marionette/layout', 'plugins/marionette/components/tabs', 'plugins/marionette/components/table'],
+  $plugins: ['wire/debug', 'plugins/hbs', 'plugins/marionette/layout', 'plugins/marionette/components/tabs', 'plugins/marionette/components/counter', 'plugins/marionette/components/table'],
   publicApi: {
     literal: {
       filterBy: {
@@ -27,6 +27,9 @@ define({
       'tabsRegion': {
         $ref: 'tabs'
       },
+      'counterRegion': {
+        $ref: 'counter'
+      },
       'tableRegion': {
         $ref: 'table'
       }
@@ -45,7 +48,7 @@ define({
     }
   },
   counter: {
-    create: 'application/modules/table/counter'
+    createCounter: {}
   },
   table: {
     createTable: {
