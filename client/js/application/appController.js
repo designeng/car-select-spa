@@ -80,6 +80,10 @@ define(['underscore', 'marionette', 'when', 'meld'], function(_, Marionette, Whe
     };
 
     AppController.prototype.statisticModuleHandler = function() {
+      this.configure('navigation', {}, {
+        brandTabs: false,
+        counter: false
+      });
       return this.startModule('statistic');
     };
 

@@ -7,7 +7,7 @@ define
     ]
 
     chart:
-        create: 
+        create:
             module: 'application/modules/statistic/chart'
             args: [
                 {$ref: 'region.$el'}

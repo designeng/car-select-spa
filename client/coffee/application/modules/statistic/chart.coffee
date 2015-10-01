@@ -12,18 +12,10 @@ define [
             yAxis:
                 min: 0
                 title:
-                    text: 'Total count'
+                    text: 'Selection count'
             series: [
                 {
-                    name: 'John'
+                    name: 'count'
                     data: [5, 3, 4, 7]
-                }
-                {
-                    name: 'Jane'
-                    data: [2, 2, 3, 2]
-                }
-                {
-                    name: 'Joe'
-                    data: [3, 4, 4, 2]
                 }
             ]

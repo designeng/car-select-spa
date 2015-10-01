@@ -55,6 +55,7 @@ define [
             @startModule 'table', environment
 
         statisticModuleHandler: ->
+            @configure 'navigation', {}, {brandTabs: false, counter: false}
             @startModule 'statistic'
 
         # 404 ERROR:
