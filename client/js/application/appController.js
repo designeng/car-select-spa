@@ -90,7 +90,7 @@ define(['underscore', 'marionette', 'when', 'meld'], function(_, Marionette, Whe
     AppController.prototype.startModule = function(sandbox) {};
 
     AppController.prototype.configure = function(sandbox, args) {
-      return sandbox.setLayoutConfiguration(args[0]);
+      return sandbox.configureLayout(args[0]);
     };
 
     AppController.prototype.filterBy = function(sandbox, args) {

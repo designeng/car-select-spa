@@ -68,7 +68,7 @@ define [
             # all is done in container/register plugin
 
         configure: (sandbox, args) ->
-            sandbox.setLayoutConfiguration args[0]
+            sandbox.configureLayout args[0]
 
         filterBy: (sandbox, args) ->
             sandbox.filterBy args[0], args[1]
