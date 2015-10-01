@@ -176,15 +176,6 @@ img.user-pic{
     background-color: #fff;
 }
 
-.main-area{
-    position: relative;
-    overflow: auto;
-    top: 47px;
-    margin:0px;
-    padding-left: 282px;
-    overflow-y: auto;
-}
-
 ul.listView{
     list-style:none none inside;
     margin:0px;
@@ -596,6 +587,16 @@ code{
 
 
 /* new styles */
+
+.main-area{
+    position: relative;
+    overflow: auto;
+    top: 100px;
+    margin:0px;
+    padding-left: 20px;
+    overflow-y: auto;
+}
+
 img.car-image{
   width: 150px;
 }

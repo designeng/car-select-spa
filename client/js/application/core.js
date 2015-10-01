@@ -1,5 +1,5 @@
 define({
-  $plugins: ['wire/debug', 'plugins/marionette/router', 'plugins/marionette/application', 'plugins/backbone/collection/create', 'plugins/container/register', 'plugins/element', 'plugins/marionette/components/counter'],
+  $plugins: ['wire/debug', 'plugins/marionette/router', 'plugins/marionette/application', 'plugins/backbone/collection/create', 'plugins/container/register', 'plugins/element'],
   appInstance: {
     createApplication: {
       withRegions: {
@@ -75,14 +75,6 @@ define({
       synchronize: true
     }
   },
-  counter: {
-    createCounter: {
-      collection: {
-        $ref: 'selectedCarsCollection'
-      },
-      className: 'cars-counter'
-    }
-  },
   addItemBehavior: {
     create: {
       module: 'application/behaviors/add',
@@ -110,9 +102,6 @@ define({
       provide: {
         region: {
           $ref: 'appInstance.regions.navigationRegion'
-        },
-        counter: {
-          $ref: 'counter'
         }
       }
     }
