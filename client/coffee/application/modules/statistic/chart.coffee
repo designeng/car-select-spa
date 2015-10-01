@@ -15,7 +15,8 @@ define [
                     text: 'Selection count'
             series: [
                 {
-                    name: 'count'
-                    data: [5, 3, 4, 7]
+                    name: 'common brand selections count'
+                    data: collection.map (model) ->
+                        model.get('count')
                 }
             ]
