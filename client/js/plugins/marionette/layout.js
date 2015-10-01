@@ -39,8 +39,7 @@ define(['underscore', 'marionette'], function(_, Marionette) {
       return wire(facet.options).then(function(options) {
         _.each(options, function(view, region) {
           var regionObject;
-          regionObject = facet.target.getRegion(region);
-          return view.__parentRegion__ = regionObject;
+          return regionObject = facet.target.getRegion(region);
         });
         return resolver.resolve(facet.target);
       });

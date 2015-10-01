@@ -33,7 +33,6 @@ define [
             wire(facet.options).then (options) ->
                 _.each options, (view, region) ->
                     regionObject = facet.target.getRegion(region)
-                    view.__parentRegion__ = regionObject
                 resolver.resolve facet.target
 
         pluginInstance = 

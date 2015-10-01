@@ -4,7 +4,6 @@ define
         'plugins/hbs'
         'plugins/marionette/layout'
         'plugins/marionette/components/tabs'
-        'plugins/marionette/components/counter'
         'plugins/marionette/components/table'
     ]
 
@@ -17,13 +16,11 @@ define
             fromTemplate: {$ref: 'hbs!templates/tableModuleLayout'}
             withRegions:
                 tabsRegion      : '.cars-tabs-control-wrapper'
-                counterRegion   : '.cars-counter-control-wrapper'
                 tableRegion     : '.cars-table-control-wrapper'
         renderIn: 
             region: {$ref: 'region'}
         showInRegions:
             'tabsRegion'    : {$ref: 'tabs'}
-            'counterRegion' : {$ref: 'counter'}
             'tableRegion'   : {$ref: 'table'}
 
     tabs:
@@ -36,9 +33,6 @@ define
                 'Nissan'        : 'cars/nissan'
             className: 'cars-filters'
 
-    counter:
-        createCounter: {}
-
     table:
         createTable:
             collection          : {$ref: 'collection'}
@@ -49,12 +43,15 @@ define
             controlBehavior: {$ref: 'behavior'}
         addFilters:
             'brand' : {}
+        properties:
+            sandbox: {$ref: 'sandbox'}
 
     controller:
         create: 'application/modules/table/controller'
         properties:
             collection          : {$ref: 'collection'}
             tabs                : {$ref: 'tabs'}
-            counter             : {$ref: 'counter'}
+            table               : {$ref: 'table'}
+            sandbox             : {$ref: 'sandbox'}
         ready:
             onReady: {}

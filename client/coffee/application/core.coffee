@@ -6,6 +6,7 @@ define
         'plugins/backbone/collection/create'
         'plugins/container/register'
         'plugins/element'
+        'plugins/marionette/components/counter'
     ]
 
     appInstance:
@@ -53,6 +54,11 @@ define
         createCollection:
             fromStorage: 'selected-cars'
             synchronize: true
+
+    counter:
+        createCounter: {}
+        properties:
+            collection          : {$ref: 'selectedCarsCollection'}
 
     # BEHAVIOR STRATEGIES
     addItemBehavior:

@@ -1,5 +1,5 @@
 define({
-  $plugins: ['wire/debug', 'plugins/hbs', 'plugins/marionette/layout', 'plugins/marionette/components/tabs', 'plugins/marionette/components/counter', 'plugins/marionette/components/table'],
+  $plugins: ['wire/debug', 'plugins/hbs', 'plugins/marionette/layout', 'plugins/marionette/components/tabs', 'plugins/marionette/components/table'],
   publicApi: {
     literal: {
       filterBy: {
@@ -14,7 +14,6 @@ define({
       },
       withRegions: {
         tabsRegion: '.cars-tabs-control-wrapper',
-        counterRegion: '.cars-counter-control-wrapper',
         tableRegion: '.cars-table-control-wrapper'
       }
     },
@@ -26,9 +25,6 @@ define({
     showInRegions: {
       'tabsRegion': {
         $ref: 'tabs'
-      },
-      'counterRegion': {
-        $ref: 'counter'
       },
       'tableRegion': {
         $ref: 'table'
@@ -46,9 +42,6 @@ define({
       },
       className: 'cars-filters'
     }
-  },
-  counter: {
-    createCounter: {}
   },
   table: {
     createTable: {
@@ -68,6 +61,11 @@ define({
     },
     addFilters: {
       'brand': {}
+    },
+    properties: {
+      sandbox: {
+        $ref: 'sandbox'
+      }
     }
   },
   controller: {
@@ -79,8 +77,11 @@ define({
       tabs: {
         $ref: 'tabs'
       },
-      counter: {
-        $ref: 'counter'
+      table: {
+        $ref: 'table'
+      },
+      sandbox: {
+        $ref: 'sandbox'
       }
     },
     ready: {

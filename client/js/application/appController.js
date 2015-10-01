@@ -55,8 +55,7 @@ define(['underscore', 'marionette', 'when', 'meld'], function(_, Marionette, Whe
         behavior: {
           $ref: 'addItemBehavior'
         },
-        controlLabel: 'select',
-        controlsConfig: ['table', 'tabs']
+        controlLabel: 'select'
       };
       this.filterBy('table', environment, 'brand', brand);
       if (brand && id) {
@@ -74,8 +73,7 @@ define(['underscore', 'marionette', 'when', 'meld'], function(_, Marionette, Whe
         behavior: {
           $ref: 'removeItemBehavior'
         },
-        controlLabel: 'remove',
-        controlsConfig: ['table', 'counter']
+        controlLabel: 'remove'
       };
       return this.startModule('table', environment);
     };

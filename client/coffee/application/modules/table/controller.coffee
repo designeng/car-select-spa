@@ -1,11 +1,11 @@
 define [
     "marionette"
-], (Marionette) ->
+    "meld"
+], (Marionette, meld) ->
 
     class Controller extends Marionette.Object
 
         onReady: ->
-            console.debug "READY....."
 
         # onDomRefresh: ->
         #     selectedCars = JSON.parse localStorage.getItem('selected-cars')

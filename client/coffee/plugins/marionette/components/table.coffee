@@ -35,12 +35,11 @@ define [
                     result = item.get(key) == @filters[key]
                 , true
 
-            _.each models, (model) ->
-                console.debug "ID:", model.get 'id'
-
             @collection.reset()
             @collection.add models
             @render()
+
+            @sandbox.channel.trigger 'onCollectionSync', @collection
 
     insertControl = (cell, controlType, controlBehavior, model) ->
         # noop function, not implemented for other control types
@@ -71,8 +70,6 @@ define [
 
         addControlsFacet = (resolver, facet, wire) ->
             wire(facet.options).then (options) ->
-
-                # TODO: bug
                 facet.target.onRender = ->
                     _.each facet.target.getChildren(), (child) ->
                         cells = child.$el.find('td')

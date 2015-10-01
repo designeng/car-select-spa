@@ -41,7 +41,6 @@ define [
                 collection      : {$ref: 'carsCollection'}
                 behavior        : {$ref: 'addItemBehavior'}
                 controlLabel    : 'select'
-                controlsConfig  : ['table', 'tabs']
 
             @filterBy 'table', environment, 'brand', brand
 
@@ -54,7 +53,7 @@ define [
                 collection      : {$ref: 'selectedCarsCollection'}
                 behavior        : {$ref: 'removeItemBehavior'}
                 controlLabel    : 'remove'
-                controlsConfig  : ['table', 'counter']
+                    
             @startModule 'table', environment
 
         statisticModuleHandler: ->
