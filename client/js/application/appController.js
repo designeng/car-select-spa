@@ -19,13 +19,6 @@ define(['underscore', 'marionette', 'when', 'meld'], function(_, Marionette, Whe
       return this.regions.mainAreaRegion.show(preloader);
     };
 
-    AppController.prototype.switchOn = function(modules) {
-      var _this = this;
-      return _.each(modules, function(options, module) {
-        return _this.startModule(module);
-      });
-    };
-
     AppController.prototype.onRoute = function(name, path, opts) {
       if (path !== '*notFound') {
         return this.notFoundPageLayer.hide();
@@ -43,11 +36,15 @@ define(['underscore', 'marionette', 'when', 'meld'], function(_, Marionette, Whe
 
     AppController.prototype.carsModuleHandler = function(brand, id) {
       var environment;
+      this.configure('navigation', {}, {
+        brandTabs: true,
+        counter: false
+      });
+      this.rootFragmentMutation();
       if ((brand != null) && _.indexOf(['volvo', 'ford', 'mitsubishi', 'nissan'], brand) === -1) {
         console.debug('Unknown brand');
         return;
       }
-      this.rootFragmentMutation();
       environment = {
         collection: {
           $ref: 'carsCollection'
@@ -65,6 +62,10 @@ define(['underscore', 'marionette', 'when', 'meld'], function(_, Marionette, Whe
 
     AppController.prototype.selectedCarsHandler = function() {
       var environment;
+      this.configure('navigation', {}, {
+        brandTabs: false,
+        counter: true
+      });
       this.rootFragmentMutation();
       environment = {
         collection: {

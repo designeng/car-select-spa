@@ -28,7 +28,6 @@ define(["underscore", "backbone.radio", "when", "meld"], function(_, Radio, When
             }
           }
         });
-        console.debug("moduleName::::", moduleName, environment);
         return module(environment).then(function(context) {
           return resolve(context);
         });
@@ -37,7 +36,6 @@ define(["underscore", "backbone.radio", "when", "meld"], function(_, Radio, When
 
     Container.prototype.stopModule = function(name) {
       var _ref;
-      console.debug("stopModule", name);
       if (Radio._channels[name]) {
         Radio.reset(name);
       }

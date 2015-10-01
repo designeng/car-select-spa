@@ -40,12 +40,7 @@ define({
     ready: {
       showPreloader: {
         $ref: 'preloader'
-      },
-      switchOn: [
-        {
-          "navigation": {}
-        }
-      ]
+      }
     }
   },
   router: {

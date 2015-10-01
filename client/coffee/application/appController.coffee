@@ -12,11 +12,6 @@ define [
         showPreloader: (preloader) ->
             @regions.mainAreaRegion.show preloader
 
-        # switch on all service modules
-        switchOn: (modules) ->
-            _.each modules, (options, module) =>
-                @startModule module
-
         # DEFAULT ROUTE HANDLER:
         onRoute: (name, path, opts) =>
             @notFoundPageLayer.hide() unless path is '*notFound'
@@ -31,11 +26,12 @@ define [
         # ROUTES HANDLERS:
 
         carsModuleHandler: (brand, id) ->
+            @configure 'navigation', {}, {brandTabs: true, counter: false}
+            @rootFragmentMutation()
+
             if brand? and _.indexOf(['volvo', 'ford', 'mitsubishi', 'nissan'], brand) == -1
                 console.debug 'Unknown brand'
                 return
-
-            @rootFragmentMutation()
 
             environment =
                 collection      : {$ref: 'carsCollection'}
@@ -44,21 +40,19 @@ define [
 
             @filterBy 'table', environment, 'brand', brand
 
-            # @configure 'navigation', {}, {brandTabs: true, counter: false}
-
             # to make accent on current model
             @emphasizeEntity 'table', environment, brand, id if brand and id
 
         selectedCarsHandler: ->
+            @configure 'navigation', {}, {brandTabs: false, counter: true}
             @rootFragmentMutation()
+
             environment =
                 collection      : {$ref: 'selectedCarsCollection'}
                 behavior        : {$ref: 'removeItemBehavior'}
                 controlLabel    : 'remove'
                     
             @startModule 'table', environment
-
-            # @configure 'navigation', {}, {brandTabs: false, counter: true}
 
         statisticModuleHandler: ->
             @startModule 'statistic'

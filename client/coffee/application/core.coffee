@@ -29,9 +29,6 @@ define
         registerIntercessors: ['startModule', 'configure', 'filterBy', 'emphasizeEntity']
         ready:
             showPreloader: {$ref: 'preloader'}
-            switchOn: [
-                "navigation"    : {}
-            ]
 
     router:
         createRouter:

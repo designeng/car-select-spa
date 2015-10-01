@@ -22,12 +22,10 @@ define [
                         literal:
                             channel: @createChannel(moduleName)
                 }
-                console.debug "moduleName::::", moduleName, environment
                 module(environment).then (context) ->
                     resolve context
 
         stopModule: (name) ->
-            console.debug "stopModule", name
             Radio.reset(name) if Radio._channels[name]
             delete @channels[name]
             @modules[name]?.destroy()
