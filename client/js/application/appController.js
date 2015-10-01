@@ -58,10 +58,6 @@ define(['underscore', 'marionette', 'when', 'meld'], function(_, Marionette, Whe
         controlLabel: 'select'
       };
       this.filterBy('table', environment, 'brand', brand);
-      this.configure('navigation', null, {
-        brandTabs: true,
-        counter: false
-      });
       if (brand && id) {
         return this.emphasizeEntity('table', environment, brand, id);
       }
@@ -79,11 +75,7 @@ define(['underscore', 'marionette', 'when', 'meld'], function(_, Marionette, Whe
         },
         controlLabel: 'remove'
       };
-      this.startModule('table', environment);
-      return this.configure('navigation', null, {
-        brandTabs: false,
-        counter: true
-      });
+      return this.startModule('table', environment);
     };
 
     AppController.prototype.statisticModuleHandler = function() {

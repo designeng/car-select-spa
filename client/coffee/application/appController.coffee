@@ -44,7 +44,7 @@ define [
 
             @filterBy 'table', environment, 'brand', brand
 
-            @configure 'navigation', null, {brandTabs: true, counter: false}
+            # @configure 'navigation', {}, {brandTabs: true, counter: false}
 
             # to make accent on current model
             @emphasizeEntity 'table', environment, brand, id if brand and id
@@ -58,7 +58,7 @@ define [
                     
             @startModule 'table', environment
 
-            @configure 'navigation', null, {brandTabs: false, counter: true}
+            # @configure 'navigation', {}, {brandTabs: false, counter: true}
 
         statisticModuleHandler: ->
             @startModule 'statistic'
