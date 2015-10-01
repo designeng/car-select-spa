@@ -20,8 +20,6 @@ define
                 tableRegion     : '.cars-table-control-wrapper'
         renderIn: 
             region: {$ref: 'region'}
-            # bug?
-            preventDestroy: true
         showInRegions:
             'tabsRegion'    : {$ref: 'tabs'}
             'tableRegion'   : {$ref: 'table'}

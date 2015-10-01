@@ -36,6 +36,10 @@ define(['underscore', 'backbone', 'marionette', 'hbs!templates/tableRow'], funct
 
     TableView.prototype.filters = {};
 
+    TableView.prototype.collectionEvents = {
+      'sync': 'onCollectionSync'
+    };
+
     TableView.prototype.initialize = function(options) {
       return this.childTemplate = options.childTemplate;
     };
@@ -49,6 +53,19 @@ define(['underscore', 'backbone', 'marionette', 'hbs!templates/tableRow'], funct
       return {
         template: this.childTemplate
       };
+    };
+
+    TableView.prototype.onCollectionSync = function(collection, resp, options) {
+      var models,
+        _this = this;
+      models = collection.filter(function(item) {
+        return !_this.filters.brand || _.reduce(_this.filters, function(result, value, key) {
+          return result = item.get(key) === _this.filters[key];
+        }, true);
+      });
+      this.collection.reset();
+      this.collection.add(models);
+      return this.render();
     };
 
     return TableView;
@@ -80,19 +97,8 @@ define(['underscore', 'backbone', 'marionette', 'hbs!templates/tableRow'], funct
     };
     addFiltersFacet = function(resolver, facet, wire) {
       return wire(facet.options).then(function(filters) {
-        var expression;
-        expression = _.map(filters, function(filterArgs, filterName) {
-          return "!facet.target.filters." + filterName + " || item.get('" + filterName + "') == facet.target.filters." + filterName;
-        });
-        expression = expression.join(" and ");
-        facet.target.collection.on("sync", function(collection, resp, options) {
-          var models;
-          models = collection.filter(function(item) {
-            return eval(expression);
-          });
-          facet.target.collection.reset();
-          facet.target.collection.add(models);
-          return facet.target.render();
+        _.each(filters, function(filterArgs, filterName) {
+          return facet.target.filters[filterName] = filterArgs;
         });
         return resolver.resolve(facet.target);
       });
@@ -100,7 +106,6 @@ define(['underscore', 'backbone', 'marionette', 'hbs!templates/tableRow'], funct
     addControlsFacet = function(resolver, facet, wire) {
       return wire(facet.options).then(function(options) {
         facet.target.onRender = function() {
-          console.debug("facet.target.onRender", facet.target.getChildren());
           return _.each(facet.target.getChildren(), function(child) {
             var cell, cells, e, id;
             cells = child.$el.find('td');

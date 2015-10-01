@@ -16,6 +16,9 @@ define [
 
         filters: {}
 
+        collectionEvents:
+            'sync': 'onCollectionSync'
+
         initialize: (options) ->
             @childTemplate = options.childTemplate
 
@@ -25,6 +28,16 @@ define [
 
         childViewOptions: (model, index) ->
             template: @childTemplate
+
+        onCollectionSync: (collection, resp, options) ->
+            models = collection.filter (item) =>
+                return !@filters.brand || _.reduce @filters, (result, value, key) =>
+                    result = item.get(key) == @filters[key]
+                , true
+
+            @collection.reset()
+            @collection.add models
+            @render()
 
     insertControl = (cell, controlType, controlBehavior, model) ->
         # noop function, not implemented for other control types
@@ -49,18 +62,8 @@ define [
 
         addFiltersFacet = (resolver, facet, wire) ->
             wire(facet.options).then (filters) ->
-                expression = _.map filters, (filterArgs, filterName) ->
-                    return "!facet.target.filters.#{filterName} || item.get('#{filterName}') == facet.target.filters.#{filterName}"
-                expression = expression.join(" and ")
-
-                facet.target.collection.on "sync", (collection, resp, options) ->
-                    models = collection.filter (item) ->
-                        return eval(expression)
-
-                    facet.target.collection.reset()
-                    facet.target.collection.add models
-                    facet.target.render()
-
+                _.each filters, (filterArgs, filterName) ->
+                    facet.target.filters[filterName] = filterArgs
                 resolver.resolve facet.target
 
         addControlsFacet = (resolver, facet, wire) ->
@@ -68,7 +71,6 @@ define [
 
                 # TODO: bug
                 facet.target.onRender = ->
-                    console.debug "facet.target.onRender", facet.target.getChildren()
                     _.each facet.target.getChildren(), (child) ->
                         cells = child.$el.find('td')
                         id = options.cellId
