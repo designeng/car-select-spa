@@ -62,7 +62,7 @@ define [
         notFoundHandler: ->
             @notFoundPageLayer.show()
 
-        # COMMON INTERCESSORS:
+        # INTERCESSORS:
 
         startModule: (sandbox) ->
             # all is done in container/register plugin
