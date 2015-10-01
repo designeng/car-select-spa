@@ -608,12 +608,29 @@ img.car-image{
   padding-right: 20px;
   border-right: 1px solid #ccc;
 }
+
 .navigation-tabs li a{
   color: #fff;
   font-size: 12px;
   font-weight: bold;
 }
+
 .navigation-tabs li a:active{
+}
+
+.navigation .selected-cars-counter{
+  position: absolute;
+  left: 450px;
+  top: 15px;
+}
+
+.cars-counter{
+  color: #fff;
+  font-size: 12px;
+}
+
+span.counter-number{
+  color: red;
 }
 
 .cars-filters li{

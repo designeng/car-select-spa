@@ -56,9 +56,10 @@ define
             synchronize: true
 
     counter:
-        createCounter: {}
+        createCounter: 
+            className   : 'cars-counter'
         properties:
-            collection          : {$ref: 'selectedCarsCollection'}
+            collection  : {$ref: 'selectedCarsCollection'}
 
     # BEHAVIOR STRATEGIES
     addItemBehavior:
@@ -82,6 +83,7 @@ define
             defer: true
             provide:
                 region          : {$ref: 'appInstance.regions.navigationRegion'}
+                counter         : {$ref: 'counter'}
 
     table:
         wire:

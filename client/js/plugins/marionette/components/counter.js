@@ -11,8 +11,6 @@ define(['underscore', 'backbone', 'marionette', 'hbs!templates/counter'], functi
       return _ref;
     }
 
-    CounterView.prototype.className = "cars-counter";
-
     CounterView.prototype.template = counterTpl;
 
     CounterView.prototype.initialize = function() {
@@ -22,9 +20,7 @@ define(['underscore', 'backbone', 'marionette', 'hbs!templates/counter'], functi
     CounterView.prototype.onBeforeRender = function() {
       var _this = this;
       this.collection.on('update', function(collection) {
-        console.debug("COLLECTION EVENT: ", collection, collection.length);
         _this.model.set('count', collection.length);
-        console.debug(">>>>>>>", _this.cid);
         return _this.render();
       });
       return this.model.set('count', this.collection.length);
@@ -38,7 +34,9 @@ define(['underscore', 'backbone', 'marionette', 'hbs!templates/counter'], functi
     createCounterFactory = function(resolver, compDef, wire) {
       return wire(compDef.options).then(function(options) {
         var counterView;
-        counterView = new CounterView();
+        counterView = new CounterView({
+          className: options.className
+        });
         return resolver.resolve(counterView);
       });
     };

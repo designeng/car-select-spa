@@ -6,7 +6,6 @@ define [
 ], (_, Backbone, Marionette, counterTpl) ->
 
     class CounterView extends Marionette.ItemView
-        className: "cars-counter"
         template: counterTpl
 
         initialize: ->
@@ -14,9 +13,7 @@ define [
 
         onBeforeRender: ->
             @collection.on 'update', (collection) =>
-                console.debug "COLLECTION EVENT: ", collection, collection.length
                 @model.set 'count', collection.length
-                console.debug ">>>>>>>", @.cid
                 @render()
 
             @model.set 'count', @collection.length
@@ -24,7 +21,9 @@ define [
     return (options) ->
         createCounterFactory = (resolver, compDef, wire) ->
             wire(compDef.options).then (options) ->
-                counterView = new CounterView()
+                counterView = new CounterView({
+                    className: options.className
+                })
                 resolver.resolve counterView
 
         pluginInstance = 

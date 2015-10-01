@@ -76,7 +76,9 @@ define({
     }
   },
   counter: {
-    createCounter: {},
+    createCounter: {
+      className: 'cars-counter'
+    },
     properties: {
       collection: {
         $ref: 'selectedCarsCollection'
@@ -110,6 +112,9 @@ define({
       provide: {
         region: {
           $ref: 'appInstance.regions.navigationRegion'
+        },
+        counter: {
+          $ref: 'counter'
         }
       }
     }
