@@ -29,7 +29,7 @@ define(['underscore', 'marionette', 'when', 'meld'], function(_, Marionette, Whe
       var rootFragment;
       rootFragment = window.location.hash.split('/')[1];
       if (this.currentRootFragment !== rootFragment) {
-        this.container.stopModule('table');
+        this.container.stopModules(['table', 'statistic']);
         return this.currentRootFragment = rootFragment;
       }
     };
@@ -84,6 +84,7 @@ define(['underscore', 'marionette', 'when', 'meld'], function(_, Marionette, Whe
         brandTabs: false,
         counter: false
       });
+      this.rootFragmentMutation();
       return this.startModule('statistic');
     };
 

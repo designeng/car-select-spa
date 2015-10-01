@@ -46,6 +46,13 @@ define(["underscore", "backbone.radio", "when", "meld"], function(_, Radio, When
       return delete this.modules[name];
     };
 
+    Container.prototype.stopModules = function(list) {
+      var _this = this;
+      return _.each(list, function(module) {
+        return _this.stopModule(module);
+      });
+    };
+
     Container.prototype.broadcastEvent = function(eventName, args) {
       return _.each(this.channels, function(channel) {
         return channel.trigger(eventName, args);

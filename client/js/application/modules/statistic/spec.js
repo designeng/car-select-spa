@@ -1,15 +1,31 @@
 define({
-  $plugins: ['wire/debug', 'plugins/hbs', 'plugins/marionette/layout', 'plugins/marionette/components/tabs'],
+  $plugins: ['wire/debug', 'plugins/hbs', 'plugins/marionette/layout'],
+  layout: {
+    createLayout: {
+      fromTemplate: {
+        $ref: 'hbs!templates/statisticLayout'
+      },
+      withRegions: {
+        chartRegion: '.chart-wrapper'
+      }
+    },
+    renderIn: {
+      region: {
+        $ref: 'region'
+      }
+    },
+    showInRegions: {
+      'chartRegion': {
+        $ref: 'chart'
+      }
+    }
+  },
   chart: {
-    create: {
-      module: 'application/modules/statistic/chart',
-      args: [
-        {
-          $ref: 'region.$el'
-        }, {
-          $ref: 'statisticCollection'
-        }
-      ]
+    create: 'application/modules/statistic/chart',
+    properties: {
+      collection: {
+        $ref: 'statisticCollection'
+      }
     }
   }
 });

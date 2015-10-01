@@ -20,7 +20,7 @@ define [
         rootFragmentMutation: ->
             rootFragment = window.location.hash.split('/')[1]
             if @currentRootFragment != rootFragment
-                @container.stopModule 'table'
+                @container.stopModules ['table', 'statistic']
                 @currentRootFragment = rootFragment
 
         # ROUTES HANDLERS:
@@ -56,6 +56,7 @@ define [
 
         statisticModuleHandler: ->
             @configure 'navigation', {}, {brandTabs: false, counter: false}
+            @rootFragmentMutation()
             @startModule 'statistic'
 
         # 404 ERROR:

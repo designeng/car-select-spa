@@ -31,6 +31,10 @@ define [
             @modules[name]?.destroy()
             delete @modules[name]
 
+        stopModules: (list) ->
+            _.each list, (module) =>
+                @stopModule module
+
         broadcastEvent: (eventName, args) ->
             _.each @channels, (channel) ->
                 channel.trigger eventName, args
