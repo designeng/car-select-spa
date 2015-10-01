@@ -15,11 +15,14 @@ define [
 
         startModule: (module, moduleName, environment) ->
             return When.promise (resolve, reject) =>
+                if typeof environment == 'undefined' || environment == null
+                    environment = {}
                 environment = _.extend environment, {
                     sandbox:
                         literal:
                             channel: @createChannel(moduleName)
                 }
+                console.debug "moduleName::::", moduleName, environment
                 module(environment).then (context) ->
                     resolve context
 

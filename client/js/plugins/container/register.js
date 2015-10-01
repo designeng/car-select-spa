@@ -18,6 +18,9 @@ define(["underscore", "backbone.radio", "when", "meld"], function(_, Radio, When
     Container.prototype.startModule = function(module, moduleName, environment) {
       var _this = this;
       return When.promise(function(resolve, reject) {
+        if (typeof environment === 'undefined' || environment === null) {
+          environment = {};
+        }
         environment = _.extend(environment, {
           sandbox: {
             literal: {
@@ -25,6 +28,7 @@ define(["underscore", "backbone.radio", "when", "meld"], function(_, Radio, When
             }
           }
         });
+        console.debug("moduleName::::", moduleName, environment);
         return module(environment).then(function(context) {
           return resolve(context);
         });

@@ -60,9 +60,6 @@ define({
       },
       table: {
         $ref: 'table'
-      },
-      sandbox: {
-        $ref: 'sandbox'
       }
     },
     ready: {

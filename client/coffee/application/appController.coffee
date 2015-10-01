@@ -32,7 +32,7 @@ define [
 
         carsModuleHandler: (brand, id) ->
             if brand? and _.indexOf(['volvo', 'ford', 'mitsubishi', 'nissan'], brand) == -1
-                console.debug "Unknown brand"
+                console.debug 'Unknown brand'
                 return
 
             @rootFragmentMutation()
@@ -43,6 +43,8 @@ define [
                 controlLabel    : 'select'
 
             @filterBy 'table', environment, 'brand', brand
+
+            @configure 'navigation', null, {brandTabs: true, counter: false}
 
             # to make accent on current model
             @emphasizeEntity 'table', environment, brand, id if brand and id
@@ -56,6 +58,8 @@ define [
                     
             @startModule 'table', environment
 
+            @configure 'navigation', null, {brandTabs: false, counter: true}
+
         statisticModuleHandler: ->
             @startModule 'statistic'
 
@@ -68,6 +72,9 @@ define [
 
         startModule: (sandbox) ->
             # all is done in container/register plugin
+
+        configure: (sandbox, args) ->
+            sandbox.setLayoutConfiguration args[0]
 
         filterBy: (sandbox, args) ->
             sandbox.filterBy args[0], args[1]

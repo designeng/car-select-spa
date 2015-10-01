@@ -630,6 +630,10 @@ img.car-image{
   font-size: 12px;
 }
 
+.brand-tabs{
+  background-color: #fff;
+}
+
 span.counter-number{
   color: red;
 }

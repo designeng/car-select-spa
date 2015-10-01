@@ -44,7 +44,7 @@ define(['underscore', 'marionette', 'when', 'meld'], function(_, Marionette, Whe
     AppController.prototype.carsModuleHandler = function(brand, id) {
       var environment;
       if ((brand != null) && _.indexOf(['volvo', 'ford', 'mitsubishi', 'nissan'], brand) === -1) {
-        console.debug("Unknown brand");
+        console.debug('Unknown brand');
         return;
       }
       this.rootFragmentMutation();
@@ -58,6 +58,10 @@ define(['underscore', 'marionette', 'when', 'meld'], function(_, Marionette, Whe
         controlLabel: 'select'
       };
       this.filterBy('table', environment, 'brand', brand);
+      this.configure('navigation', null, {
+        brandTabs: true,
+        counter: false
+      });
       if (brand && id) {
         return this.emphasizeEntity('table', environment, brand, id);
       }
@@ -75,7 +79,11 @@ define(['underscore', 'marionette', 'when', 'meld'], function(_, Marionette, Whe
         },
         controlLabel: 'remove'
       };
-      return this.startModule('table', environment);
+      this.startModule('table', environment);
+      return this.configure('navigation', null, {
+        brandTabs: false,
+        counter: true
+      });
     };
 
     AppController.prototype.statisticModuleHandler = function() {
@@ -87,6 +95,10 @@ define(['underscore', 'marionette', 'when', 'meld'], function(_, Marionette, Whe
     };
 
     AppController.prototype.startModule = function(sandbox) {};
+
+    AppController.prototype.configure = function(sandbox, args) {
+      return sandbox.setLayoutConfiguration(args[0]);
+    };
 
     AppController.prototype.filterBy = function(sandbox, args) {
       return sandbox.filterBy(args[0], args[1]);

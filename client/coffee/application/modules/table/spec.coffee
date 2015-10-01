@@ -39,6 +39,5 @@ define
         properties:
             collection          : {$ref: 'collection'}
             table               : {$ref: 'table'}
-            sandbox             : {$ref: 'sandbox'}
         ready:
             onReady: {}
