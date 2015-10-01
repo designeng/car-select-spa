@@ -1,6 +1,6 @@
 var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
-define(["underscore", "backbone.radio", "when", "meld"], function(_, Radio, When, meld) {
+define(['underscore', 'backbone.radio', 'when', 'meld'], function(_, Radio, When, meld) {
   var Container;
   Container = (function() {
     function Container() {
@@ -13,7 +13,7 @@ define(["underscore", "backbone.radio", "when", "meld"], function(_, Radio, When
 
     Container.prototype.channels = {};
 
-    Container.prototype.channel = Radio.channel("container");
+    Container.prototype.channel = Radio.channel('container');
 
     Container.prototype.startModule = function(module, moduleName, environment) {
       var _this = this;
@@ -64,7 +64,7 @@ define(["underscore", "backbone.radio", "when", "meld"], function(_, Radio, When
         _this = this;
       channel = Radio.channel(name);
       this.channels[name] = channel;
-      channel.reply("default", function(requestName, module, args) {
+      channel.reply('default', function(requestName, module, args) {
         return _this.channel.trigger(requestName, module, args);
       });
       return channel;
@@ -87,7 +87,7 @@ define(["underscore", "backbone.radio", "when", "meld"], function(_, Radio, When
               });
               return joinpoint.proceed(moduleContext.sandbox, args);
             }, function(rejectReason) {
-              throw new Error("Public api error: " + rejectReason);
+              throw new Error('Public api error: ' + rejectReason);
             });
           } else {
             return joinpoint.proceed(moduleContext.sandbox, args);
@@ -123,8 +123,8 @@ define(["underscore", "backbone.radio", "when", "meld"], function(_, Radio, When
     pluginInstance = {
       facets: {
         registerIntercessors: {
-          "ready": registerIntercessorsFacet,
-          "destroy": destroyFacet
+          'ready': registerIntercessorsFacet,
+          'destroy': destroyFacet
         }
       }
     };

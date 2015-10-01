@@ -1,8 +1,8 @@
 define [
-    "underscore"
-    "backbone.radio"
-    "when"
-    "meld"
+    'underscore'
+    'backbone.radio'
+    'when'
+    'meld'
 ], (_, Radio, When, meld) ->
 
     class Container
@@ -11,7 +11,7 @@ define [
         modules     : {}
         channels    : {}
 
-        channel: Radio.channel("container")
+        channel: Radio.channel('container')
 
         startModule: (module, moduleName, environment) ->
             return When.promise (resolve, reject) =>
@@ -42,7 +42,7 @@ define [
         createChannel: (name) ->
             channel = Radio.channel(name)
             @channels[name] = channel
-            channel.reply "default", (requestName, module, args) =>
+            channel.reply 'default', (requestName, module, args) =>
                 @channel.trigger requestName, module, args
             return channel
 
@@ -62,7 +62,7 @@ define [
                                 moduleContext.sandbox[methodName] = method
                             joinpoint.proceed(moduleContext.sandbox, args)
                         , (rejectReason) ->
-                            throw new Error("Public api error: " + rejectReason)
+                            throw new Error('Public api error: ' + rejectReason)
                     else
                         joinpoint.proceed(moduleContext.sandbox, args)
             else
@@ -90,7 +90,7 @@ define [
         pluginInstance = 
             facets:
                 registerIntercessors:
-                    "ready"     : registerIntercessorsFacet
-                    "destroy"   : destroyFacet
+                    'ready'     : registerIntercessorsFacet
+                    'destroy'   : destroyFacet
 
         return pluginInstance
