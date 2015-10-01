@@ -11,7 +11,6 @@ define(['underscore', 'backbone'], function(_, Backbone) {
           collection = new Backbone.Collection(options.fromArray);
         } else if (fromStorage && _.isString(fromStorage)) {
           source = localStorage.getItem(fromStorage);
-          console.debug("source::::::::", source);
           if (source != null) {
             collection = new Backbone.Collection(JSON.parse(source));
           } else if (initValues) {
@@ -19,7 +18,6 @@ define(['underscore', 'backbone'], function(_, Backbone) {
           }
           if (options.synchronize) {
             collection.on('add update reset change', function(item) {
-              console.debug(">>>>>>>> add update reset ", item);
               return localStorage.setItem(fromStorage, JSON.stringify(collection.toJSON()));
             });
           }

@@ -18,14 +18,12 @@ define [
                     collection = new Backbone.Collection(options.fromArray)
                 else if fromStorage and _.isString fromStorage
                     source = localStorage.getItem(fromStorage)
-                    console.debug "source::::::::", source
                     if source?
                         collection = new Backbone.Collection(JSON.parse source)
                     else if initValues
                         collection = new Backbone.Collection(initValues)
                     if options.synchronize
                         collection.on 'add update reset change', (item) ->
-                            console.debug ">>>>>>>> add update reset ", item
                             localStorage.setItem fromStorage, JSON.stringify collection.toJSON()
                 else
                     collection = new Backbone.Collection()
