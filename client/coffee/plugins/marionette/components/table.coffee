@@ -54,6 +54,9 @@ define [
             when 'select' then insertControl(cell, 'select', controlBehavior, model)
             # and so on
 
+    addCellBehavior = (cell, cellBehavior) ->
+        cellBehavior(cell)
+
     return (options) ->
         createTableFactory = (resolver, compDef, wire) ->
             wire(compDef.options).then (options) ->
@@ -84,6 +87,21 @@ define [
                             addControl(cell, child.model, options.controlType, options.controlLabel, options.controlBehavior)
                 resolver.resolve facet.target
 
+        addCellBehaviorFacet = (resolver, facet, wire) ->
+            wire(facet.options).then (options) ->
+                facet.target.onBeforeRender = ->
+                    _.each facet.target.getChildren(), (child) ->
+                        cells = child.$el.find('td')
+                        id = options.cellId
+                        try
+                            cell = _[id] cells  # give a chance for underscore methods 'first', 'last'
+                        catch e
+                            cell = cells[id]
+                        finally
+                            addCellBehavior(cell, options.cellBehavior)
+
+                resolver.resolve facet.target
+
         pluginInstance = 
             factories: 
                 createTable: createTableFactory
@@ -92,5 +110,7 @@ define [
                     'ready:after': addFiltersFacet
                 addControls:
                     'ready:after': addControlsFacet
+                addCellBehavior:
+                    'ready:after': addCellBehaviorFacet
 
         return pluginInstance

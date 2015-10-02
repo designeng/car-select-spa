@@ -30,10 +30,16 @@ define
             controlType: 'button'
             controlLabel: {$ref: 'controlLabel'}
             controlBehavior: {$ref: 'behavior'}
+        addCellBehavior:
+            cellId: 'first'
+            cellBehavior: {$ref: 'imageCellBehavior'}
         addFilters:
             'brand' : {}
         properties:
             sandbox: {$ref: 'sandbox'}
+
+    imageCellBehavior:
+        module: 'application/behaviors/imageCellBehavior'
 
     controller:
         create: 'application/modules/table/controller'

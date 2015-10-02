@@ -3,7 +3,7 @@ var __hasProp = {}.hasOwnProperty,
   __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 define(['underscore', 'backbone', 'marionette', 'hbs!templates/tableRow'], function(_, Backbone, Marionette, tableRowTpl) {
-  var TableRowView, TableView, addControl, insertControl, _ref, _ref1;
+  var TableRowView, TableView, addCellBehavior, addControl, insertControl, _ref, _ref1;
   TableRowView = (function(_super) {
     __extends(TableRowView, _super);
 
@@ -87,8 +87,11 @@ define(['underscore', 'backbone', 'marionette', 'hbs!templates/tableRow'], funct
         return insertControl(cell, 'select', controlBehavior, model);
     }
   };
+  addCellBehavior = function(cell, cellBehavior) {
+    return cellBehavior(cell);
+  };
   return function(options) {
-    var addControlsFacet, addFiltersFacet, createTableFactory, pluginInstance;
+    var addCellBehaviorFacet, addControlsFacet, addFiltersFacet, createTableFactory, pluginInstance;
     createTableFactory = function(resolver, compDef, wire) {
       return wire(compDef.options).then(function(options) {
         var tabsView;
@@ -128,6 +131,26 @@ define(['underscore', 'backbone', 'marionette', 'hbs!templates/tableRow'], funct
         return resolver.resolve(facet.target);
       });
     };
+    addCellBehaviorFacet = function(resolver, facet, wire) {
+      return wire(facet.options).then(function(options) {
+        facet.target.onBeforeRender = function() {
+          return _.each(facet.target.getChildren(), function(child) {
+            var cell, cells, e, id;
+            cells = child.$el.find('td');
+            id = options.cellId;
+            try {
+              return cell = _[id](cells);
+            } catch (_error) {
+              e = _error;
+              return cell = cells[id];
+            } finally {
+              addCellBehavior(cell, options.cellBehavior);
+            }
+          });
+        };
+        return resolver.resolve(facet.target);
+      });
+    };
     pluginInstance = {
       factories: {
         createTable: createTableFactory
@@ -138,6 +161,9 @@ define(['underscore', 'backbone', 'marionette', 'hbs!templates/tableRow'], funct
         },
         addControls: {
           'ready:after': addControlsFacet
+        },
+        addCellBehavior: {
+          'ready:after': addCellBehaviorFacet
         }
       }
     };
