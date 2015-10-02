@@ -190,6 +190,19 @@ table.cars td.car-name{
   width: 25%;
 }
 
+table.cars td.car-description{
+  position: relative;
+  width: 40%;
+}
+
+table.cars td.car-description p{
+  padding-left: 10px;
+  padding-right: 10px;
+  display: table-cell; 
+  vertical-align: top;
+  text-align: top;
+}
+
 img.car-image{
   margin-top: 10px;
   margin-left: 10px;
@@ -204,6 +217,10 @@ img.car-image{
   border: 1px solid #e0e4e7;
 }
 
+span.car-description-title{
+  font-style: italic;
+}
+
 .car-image-big-wrapper img{
   width: 300px;
 }
@@ -214,7 +231,7 @@ img.car-image{
   height: 30px;
   position: absolute;
   top: 45%;
-  left: 60%;
+  left: 65%;
   transform: translate(-50%, -50%);
   z-index: 1;
 }

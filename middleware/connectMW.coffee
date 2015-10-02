@@ -1,5 +1,23 @@
 path = require "path"
 grunt = require "grunt"
+_ = require "underscore"
+
+Rwg = require "random-word-generator"
+generator = new Rwg()
+
+generateRandomText = (length) ->
+    result = ""
+    length = 100 unless length
+    while (length--)
+        cropRandLength = getRandomInt(0, 10)
+        result += generator.generate().slice(cropRandLength) + " "
+    return capitalizeFirstLetter(result)
+
+getRandomInt = (min, max) ->
+    Math.floor(Math.random() * (max - min + 1)) + min
+
+capitalizeFirstLetter = (string) ->
+    string.charAt(0).toUpperCase() + string.slice(1)
 
 sendResult = (res, json) ->
     res.setHeader "Content-Type", "application/json; charset=utf-8"
@@ -13,7 +31,11 @@ ConnectMW.folderMount = (connect, point) ->
 
 ConnectMW.stubService = (req, res, next) ->
     if (req.url).match new RegExp("api/v1/cars")
-        return sendResult res, grunt.file.readJSON(require("path").resolve("middleware/response", "cars.json"))
+        json = grunt.file.readJSON(require("path").resolve("middleware/response", "cars.json"))
+        json.data.cars = _.map json.data.cars, (model) ->
+            model['description'] = generateRandomText(50)
+            return model
+        return sendResult res, json
     else
         next()
 
