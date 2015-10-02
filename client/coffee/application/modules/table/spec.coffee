@@ -24,6 +24,7 @@ define
     table:
         createTable:
             collection          : {$ref: 'collection'}
+            className           : 'cars'
         addControls:
             cellId: 'last'
             controlType: 'button'

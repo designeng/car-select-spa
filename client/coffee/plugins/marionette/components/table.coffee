@@ -11,7 +11,6 @@ define [
 
     class TableView extends Marionette.CollectionView
         tagName: 'table'
-        className: ''
         childView: TableRowView
         childViewContainer: 'tbody'
 

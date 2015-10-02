@@ -31,7 +31,8 @@ define({
     createTable: {
       collection: {
         $ref: 'collection'
-      }
+      },
+      className: 'cars'
     },
     addControls: {
       cellId: 'last',

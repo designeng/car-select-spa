@@ -28,11 +28,6 @@ html, body {
   font-size: 12px;
 }
 
-body {
-    background: #fff;
-    background-color: #f3f5f6;
-}
-
 a {
   text-decoration: none;
   font-family: verdana;
@@ -480,120 +475,21 @@ th.header-list-item{
   height: 28px;
 }
 
-.board-body-column-item {
-    position: relative;
-    min-height: 40px;
-    margin: 0;
-    border-bottom: 1px solid #e0e4e7;
-    padding-top: 9px;
-}
-
-.board-body-cell-sum, .board-body-cell-organizationName{
-  font-size: 10px;
-  padding-left: 12px;
-  padding-right: 12px;
-}
-
-.board-body-column-item img {
-  height: 16px;
-  margin: 1px 5px 0 0;
-  vertical-align: top;
-}
-
 .activeCell{
   background-color: #99FF00;
 }
 
-.board-body-cell-additional-info{
-  display: none;
-  padding-top: 5px;
-  padding-bottom: 10px;
-  background-color: #CCFFCC;
-  font-size: 10px;
-}
-
-.board-body-cell-title{
-  padding-left: 12px;
-  padding-right: 12px;
-}
-
-.board-body-cell-subtitle{
-  margin-bottom: 10px;
-}
-
-.board-body-cell-additional-info{
-  padding-left: 22px;
-}
-
-/* markdown */
-pre {
-    white-space: pre-wrap;       /* css-3 */
-    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
-    white-space: -pre-wrap;      /* Opera 4-6 */
-    white-space: -o-pre-wrap;    /* Opera 7 */
-    word-wrap: break-word;        Internet Explorer 5.5+ 
-    background-color: #f8f8f8;
-    /*border: 1px solid #dfdfdf;*/
-    margin-top: 1.5em;
-    margin-bottom: 1.5em;
-    padding: 0.125rem 0.3125rem 0.0625rem;
-    width: 800px;
-}
-
-pre code {
-    background-color: red;
-    border: 0;
-    padding: 0;
-    font-size: 12px;
-    /*font-weight: bold;  */
-}
-
-code{
-  /*background-color: #FFCC66;*/
-    padding: 0;
-    padding-top: 0.2em;
-    padding-bottom: 0.2em;
-    margin: 0;
-    background-color: rgba(0,0,0,0.08);
-    border-radius: 3px;
-}
-
-.markdown{
-  padding-left: 10px;
-  padding-top: 10px;
-  padding-bottom: 20px;
-}
-
-.markdown h1, .markdown h2, .markdown h3{
-  font-weight: bold;
-}
-
-.markdown strong{
-  font-weight: bold;
-}
-
-.markdown em{
-  font-style: italic;
-}
-
-.markdown p{
-  padding-top: 10px;
-}
-
-.scheme{
-  padding-top: 10px;
-}
-/* /markdown */
-
-
 /* new styles */
+
+body {
+    background: #fff;
+}
 
 .main-area{
     position: relative;
     overflow: auto;
     top: 100px;
     margin:0px;
-    padding-left: 20px;
     overflow-y: auto;
 }
 
@@ -621,12 +517,11 @@ img.car-image{
 
 .navigation .selected-cars-counter{
   position: absolute;
-  left: 450px;
-  top: 15px;
+  left: 20px;
+  top: 60px;
 }
 
 .cars-counter{
-  color: #fff;
   font-size: 12px;
 }
 
@@ -636,6 +531,10 @@ img.car-image{
 
 span.counter-number{
   color: red;
+}
+
+ul.cars-filters{
+  border-bottom: 1px solid #e0e4e7;
 }
 
 .cars-filters li{
@@ -658,4 +557,32 @@ td.car-choose-button button{
 /*  -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
   border-radius: 5px;*/
+}
+
+table.cars{
+  width: 100%;
+  border-collapse:collapse;
+  border: 1px solid #e0e4e7;
+  background-color: #f3f5f6;
+}
+
+table.cars tr{
+  border-bottom: 1px solid #e0e4e7;
+}
+
+table.cars td{
+  border-right: 1px solid #e0e4e7;
+}
+
+table.cars td.car-image{
+  width: 170px;
+}
+
+table.cars td.car-name{
+  width: 25%;
+}
+
+img.car-image{
+  margin-top: 10px;
+  margin-left: 10px;
 }

@@ -30,8 +30,6 @@ define(['underscore', 'backbone', 'marionette', 'hbs!templates/tableRow'], funct
 
     TableView.prototype.tagName = 'table';
 
-    TableView.prototype.className = '';
-
     TableView.prototype.childView = TableRowView;
 
     TableView.prototype.childViewContainer = 'tbody';
