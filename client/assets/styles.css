@@ -148,6 +148,8 @@ td.car-choose-button, td.car-name{
 }
 
 td.car-name span{
+  font-weight: bold;
+  font-size: 10px;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -180,6 +182,7 @@ table.cars td{
 
 table.cars td.car-image{
   width: 170px;
+  background-color: #fff;
 }
 
 table.cars td.car-name{
