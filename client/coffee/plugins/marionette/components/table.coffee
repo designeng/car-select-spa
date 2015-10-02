@@ -48,7 +48,9 @@ define [
         switch controlType
             when 'button'
                 $button = $("<button />").text controlLabel
-                $(cell).append($button).on 'click', controlBehavior(model)
+                behavior = controlBehavior(model, $button)
+                behavior.prop() if behavior.prop?
+                $(cell).append($button).click behavior.click
             when 'select' then insertControl(cell, 'select', controlBehavior, model)
             # and so on
 

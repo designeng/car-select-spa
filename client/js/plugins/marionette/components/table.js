@@ -74,11 +74,15 @@ define(['underscore', 'backbone', 'marionette', 'hbs!templates/tableRow'], funct
   })(Marionette.CollectionView);
   insertControl = function(cell, controlType, controlBehavior, model) {};
   addControl = function(cell, model, controlType, controlLabel, controlBehavior) {
-    var $button;
+    var $button, behavior;
     switch (controlType) {
       case 'button':
         $button = $("<button />").text(controlLabel);
-        return $(cell).append($button).on('click', controlBehavior(model));
+        behavior = controlBehavior(model, $button);
+        if (behavior.prop != null) {
+          behavior.prop();
+        }
+        return $(cell).append($button).click(behavior.click);
       case 'select':
         return insertControl(cell, 'select', controlBehavior, model);
     }
