@@ -25,14 +25,15 @@ define
         createTable:
             collection          : {$ref: 'collection'}
             className           : 'cars'
-        addControls:
-            cellId: 'last'
-            controlType: 'button'
-            controlLabel: {$ref: 'controlLabel'}
-            controlBehavior: {$ref: 'behavior'}
-        addCellBehavior:
-            cellId: 'first'
-            cellBehavior: {$ref: 'imageCellBehavior'}
+        addBehaviors:
+            'buttonToCell':
+                cellId: 'last'
+                controlType: 'button'
+                controlLabel: {$ref: 'controlLabel'}
+                controlBehavior: {$ref: 'behavior'}
+            'zoomImage':
+                cellId: 'first'
+                cellBehavior: {$ref: 'imageCellBehavior'}
         addFilters:
             'brand' : {}
         properties:

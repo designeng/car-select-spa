@@ -34,20 +34,22 @@ define({
       },
       className: 'cars'
     },
-    addControls: {
-      cellId: 'last',
-      controlType: 'button',
-      controlLabel: {
-        $ref: 'controlLabel'
+    addBehaviors: {
+      'buttonToCell': {
+        cellId: 'last',
+        controlType: 'button',
+        controlLabel: {
+          $ref: 'controlLabel'
+        },
+        controlBehavior: {
+          $ref: 'behavior'
+        }
       },
-      controlBehavior: {
-        $ref: 'behavior'
-      }
-    },
-    addCellBehavior: {
-      cellId: 'first',
-      cellBehavior: {
-        $ref: 'imageCellBehavior'
+      'zoomImage': {
+        cellId: 'first',
+        cellBehavior: {
+          $ref: 'imageCellBehavior'
+        }
       }
     },
     addFilters: {

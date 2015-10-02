@@ -87,19 +87,23 @@ define [
                             addControl(cell, child.model, options.controlType, options.controlLabel, options.controlBehavior)
                 resolver.resolve facet.target
 
-        addCellBehaviorFacet = (resolver, facet, wire) ->
+        addBehaviorsFacet = (resolver, facet, wire) ->
             wire(facet.options).then (options) ->
-                facet.target.onBeforeRender = ->
-                    _.each facet.target.getChildren(), (child) ->
-                        cells = child.$el.find('td')
-                        id = options.cellId
-                        try
-                            cell = _[id] cells  # give a chance for underscore methods 'first', 'last'
-                        catch e
-                            cell = cells[id]
-                        finally
-                            addCellBehavior(cell, options.cellBehavior)
-
+                facet.target.onRender = ->
+                    children = facet.target.getChildren()
+                    _.each options, (opts, behaviorName) ->
+                        _.each children, (child) ->
+                            cells = child.$el.find('td')
+                            id = opts.cellId
+                            try
+                                cell = _[id] cells
+                            catch e
+                                cell = cells[id]
+                            finally
+                                if opts.cellBehavior
+                                    addCellBehavior(cell, opts.cellBehavior)
+                                else if opts.controlType and opts.controlBehavior
+                                    addControl(cell, child.model, opts.controlType, opts.controlLabel, opts.controlBehavior)
                 resolver.resolve facet.target
 
         pluginInstance = 
@@ -108,9 +112,7 @@ define [
             facets:
                 addFilters:
                     'ready:after': addFiltersFacet
-                addControls:
-                    'ready:after': addControlsFacet
-                addCellBehavior:
-                    'ready:after': addCellBehaviorFacet
+                addBehaviors:
+                    'ready:after': addBehaviorsFacet
 
         return pluginInstance
