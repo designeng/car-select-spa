@@ -3,4 +3,6 @@ define [
 ], ($) ->
     imageCellBehavior = (cell, model) ->
         $(cell).find('img').on 'mouseover', (event) ->
-            console.debug "over", model.get 'id'
+            $(event.target).next().show()
+        $(cell).find('img').on 'mouseout', (event) ->
+            $(event.target).next().hide()

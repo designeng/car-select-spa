@@ -181,6 +181,7 @@ table.cars td{
 }
 
 table.cars td.car-image{
+  position: relative;
   width: 170px;
   background-color: #fff;
 }
@@ -192,4 +193,15 @@ table.cars td.car-name{
 img.car-image{
   margin-top: 10px;
   margin-left: 10px;
+}
+.car-image-big-wrapper{
+  display: none;
+  position: absolute;
+  z-index: 100;
+  top: 10px;
+  left: 180px;
+  border: 1px solid #e0e4e7;
+}
+.car-image-big-wrapper img{
+  width: 300px;
 }
