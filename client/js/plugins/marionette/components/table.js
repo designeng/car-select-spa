@@ -79,10 +79,11 @@ define(['underscore', 'backbone', 'marionette', 'hbs!templates/tableRow'], funct
       case 'button':
         $button = $("<button />").text(controlLabel);
         behavior = controlBehavior(model, $button);
+        $(cell).append($button).click(behavior.click);
         if (behavior.prop != null) {
-          behavior.prop();
+          return behavior.prop();
         }
-        return $(cell).append($button).click(behavior.click);
+        break;
       case 'select':
         return insertControl(cell, 'select', controlBehavior, model);
     }

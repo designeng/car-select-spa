@@ -194,6 +194,7 @@ img.car-image{
   margin-top: 10px;
   margin-left: 10px;
 }
+
 .car-image-big-wrapper{
   display: none;
   position: absolute;
@@ -202,6 +203,18 @@ img.car-image{
   left: 180px;
   border: 1px solid #e0e4e7;
 }
+
 .car-image-big-wrapper img{
   width: 300px;
+}
+
+.green-tick{
+  display: none;
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  top: 45%;
+  left: 60%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
 }

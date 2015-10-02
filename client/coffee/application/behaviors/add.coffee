@@ -1,12 +1,17 @@
 define [
     'jquery'
 ], ($) ->
+    setChoosedState = (el) ->
+        $el = $(el)         # normalize first
+        $el.prop('disabled', true)
+        $el.prev().show()
+
     addItemBehavior = (selectedCarsCollection, statisticCollection) ->
         return (model, $button) ->
             behavior = 
                 click: (event) ->
                     selectedCarsCollection.add model
-                    $(event.target).prop('disabled', true)
+                    setChoosedState event.target
 
                     # update statistic brand count
                     brand = model.get('brand')
@@ -16,7 +21,7 @@ define [
                     statisticCollection.add brandModel, {merge: true}
                 prop: ->
                     if selectedCarsCollection.find({id: model.get 'id'})
-                        $button.prop('disabled', true)
+                        setChoosedState $button
 
             return behavior
 

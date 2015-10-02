@@ -49,8 +49,8 @@ define [
             when 'button'
                 $button = $("<button />").text controlLabel
                 behavior = controlBehavior(model, $button)
-                behavior.prop() if behavior.prop?
                 $(cell).append($button).click behavior.click
+                behavior.prop() if behavior.prop?
             when 'select' then insertControl(cell, 'select', controlBehavior, model)
             # and so on
 
