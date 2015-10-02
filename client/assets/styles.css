@@ -67,132 +67,6 @@ a {
   background-color: #f3f5f6; 
 }
 
-/* pipelineStages */
-#pipelineStages .pipeline{
-    position: absolute;
-    top: 50px;
-    left: 0;
-    right: 0;
-    bottom: 0;
-}
-
-.header-list-item{
-  display: table-cell;
-}
-
-.dealsTable{
-  height: 100%;
-  display: table;
-  border-collapse: collapse;
-  table-layout: fixed;
-}
-
-.stageDeals{
-  display: table-cell;
-}
-
-.stages{
-  /*display: table-cell;*/
-  border-top: 1px #c2c8cd solid;
-  border-bottom: 1px #c2c8cd solid;
-}
-
-.stages.ready ul {
-    -webkit-transition: opacity 0.14s ease-in;
-    -moz-transition: opacity 0.14s ease-in;
-    -ms-transition: opacity 0.14s ease-in;
-    -o-transition: opacity 0.14s ease-in;
-    transition: opacity 0.14s ease-in;
-    opacity: 1;
-}
-
-.stages ul {
-  width: 100%;
-  height: 45px;
-}
-
-.stages ul {
-    width: 100%;
-}
-
-.stages ul li {
-    display: table-cell;
-    text-align: left;
-    color: #000000;
-    padding: 6px 25px 6px 12px;
-    background-color: #f3f5f6;
-    background: url(stage-arrow.png) no-repeat 100% 0, linear-gradient(#ffffff, #f3f5f6);
-    background-size: 20px 100%, 100% 100%;
-    border-right: 1px #c2c8cd solid;
-    line-height: 1.3em;
-    overflow: visible;
-    vertical-align: middle;
-}
-
-.stages ul li{
-  /*width: 10%;*/
-}
-
-.stages ul li .stagename {
-    font-size: 16px;
-    line-height: 21px;
-    font-weight: 600;
-    width: 100%;
-    display: inline-block;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-}
-
-/* thin border table */
-table.dealsBoard{
-  width: 100%;
-  border: 1px solid #e0e4e7;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -ms-box-sizing: border-box;
-  -o-box-sizing: border-box;
-  box-sizing: border-box;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  border-radius: 4px;
-}
-
-table.dealsBoard td, table.dealsBoard th
-{   
-  border: 1px solid #e0e4e7;
-  border-width: 1px 1px 0 0;
-  margin: 0;
-}
-
-table.dealsBoard thead th{
-  width: 20%;
-  background: #efefef;
-  font-weight: bold;
-}
-table.dealsBoard thead th{
-    text-align: left;
-    color: #000000;
-    padding: 6px 25px 6px 12px;
-    background-color: #f3f5f6;
-    background: url(stage-arrow.png) no-repeat 100% 0, linear-gradient(#ffffff, #f3f5f6);
-    background-size: 20px 100%, 100% 100%;
-    border-right: 1px #c2c8cd solid;
-    line-height: 1.3em;
-    overflow: visible;
-    vertical-align: middle;
-}
-
-table.dealsBoard tr:nth-child(even) {background: #efefef}
-table.dealsBoard tr:nth-child(odd) {background: #FFF}
-
-table.dealsBoard th, table.dealsBoard td{
-}
-
-th.header-list-item{
-  height: 28px;
-}
-
 .activeCell{
   background-color: #99FF00;
 }
@@ -200,7 +74,7 @@ th.header-list-item{
 /* new styles */
 
 body {
-    background: #fff;
+    background-color: #fff;
 }
 
 .main-area{
@@ -269,12 +143,16 @@ ul.cars-filters{
   font-weight: bold;
 }
 
+td.car-choose-button{
+  position: relative;
+}
+
 td.car-choose-button button{
   width: 100px;
   height: 30px;
-/*  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
-  border-radius: 5px;*/
+  position: absolute;
+  top: 50%;
+  left: 50%;
 }
 
 table.cars{
