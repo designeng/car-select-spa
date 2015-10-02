@@ -31,7 +31,7 @@ define
                 controlType: 'button'
                 controlLabel: {$ref: 'controlLabel'}
                 controlBehavior: {$ref: 'behavior'}
-            'zoomImage':
+            'imageZoom':
                 cellId: 'first'
                 cellBehavior: {$ref: 'imageCellBehavior'}
         addFilters:

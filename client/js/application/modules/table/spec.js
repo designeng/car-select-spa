@@ -45,7 +45,7 @@ define({
           $ref: 'behavior'
         }
       },
-      'zoomImage': {
+      'imageZoom': {
         cellId: 'first',
         cellBehavior: {
           $ref: 'imageCellBehavior'
