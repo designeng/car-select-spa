@@ -143,8 +143,15 @@ ul.cars-filters{
   font-weight: bold;
 }
 
-td.car-choose-button{
+td.car-choose-button, td.car-name{
   position: relative;
+}
+
+td.car-name span{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 td.car-choose-button button{
@@ -153,6 +160,7 @@ td.car-choose-button button{
   position: absolute;
   top: 50%;
   left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 table.cars{
