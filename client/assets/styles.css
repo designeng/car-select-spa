@@ -17,7 +17,6 @@ ol, ul {
 }
 
 html, body {
-  /*overflow: hidden;*/
   position: absolute;
   left: 0;
   right: 0;
@@ -26,6 +25,10 @@ html, body {
   margin: 0;
   font-family: verdana;
   font-size: 12px;
+}
+
+body {
+    background-color: #fff;
 }
 
 a {
@@ -69,12 +72,6 @@ a {
 
 .activeCell{
   background-color: #99FF00;
-}
-
-/* new styles */
-
-body {
-    background-color: #fff;
 }
 
 .main-area{
