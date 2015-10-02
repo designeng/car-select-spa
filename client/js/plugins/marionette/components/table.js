@@ -87,11 +87,11 @@ define(['underscore', 'backbone', 'marionette', 'hbs!templates/tableRow'], funct
         return insertControl(cell, 'select', controlBehavior, model);
     }
   };
-  addCellBehavior = function(cell, cellBehavior) {
-    return cellBehavior(cell);
+  addCellBehavior = function(cell, model, cellBehavior) {
+    return cellBehavior(cell, model);
   };
   return function(options) {
-    var addBehaviorsFacet, addControlsFacet, addFiltersFacet, createTableFactory, pluginInstance;
+    var addBehaviorsFacet, addFiltersFacet, createTableFactory, pluginInstance;
     createTableFactory = function(resolver, compDef, wire) {
       return wire(compDef.options).then(function(options) {
         var tabsView;
@@ -108,26 +108,6 @@ define(['underscore', 'backbone', 'marionette', 'hbs!templates/tableRow'], funct
         _.each(filters, function(filterArgs, filterName) {
           return facet.target.filters[filterName] = filterArgs;
         });
-        return resolver.resolve(facet.target);
-      });
-    };
-    addControlsFacet = function(resolver, facet, wire) {
-      return wire(facet.options).then(function(options) {
-        facet.target.onRender = function() {
-          return _.each(facet.target.getChildren(), function(child) {
-            var cell, cells, e, id;
-            cells = child.$el.find('td');
-            id = options.cellId;
-            try {
-              return cell = _[id](cells);
-            } catch (_error) {
-              e = _error;
-              return cell = cells[id];
-            } finally {
-              addControl(cell, child.model, options.controlType, options.controlLabel, options.controlBehavior);
-            }
-          });
-        };
         return resolver.resolve(facet.target);
       });
     };
@@ -148,7 +128,7 @@ define(['underscore', 'backbone', 'marionette', 'hbs!templates/tableRow'], funct
                 return cell = cells[id];
               } finally {
                 if (opts.cellBehavior) {
-                  addCellBehavior(cell, opts.cellBehavior);
+                  addCellBehavior(cell, child.model, opts.cellBehavior);
                 } else if (opts.controlType && opts.controlBehavior) {
                   addControl(cell, child.model, opts.controlType, opts.controlLabel, opts.controlBehavior);
                 }

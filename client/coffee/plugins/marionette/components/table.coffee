@@ -54,8 +54,8 @@ define [
             when 'select' then insertControl(cell, 'select', controlBehavior, model)
             # and so on
 
-    addCellBehavior = (cell, cellBehavior) ->
-        cellBehavior(cell)
+    addCellBehavior = (cell, model, cellBehavior) ->
+        cellBehavior(cell, model)
 
     return (options) ->
         createTableFactory = (resolver, compDef, wire) ->
@@ -73,20 +73,6 @@ define [
                     facet.target.filters[filterName] = filterArgs
                 resolver.resolve facet.target
 
-        addControlsFacet = (resolver, facet, wire) ->
-            wire(facet.options).then (options) ->
-                facet.target.onRender = ->
-                    _.each facet.target.getChildren(), (child) ->
-                        cells = child.$el.find('td')
-                        id = options.cellId
-                        try
-                            cell = _[id] cells  # give a chance for underscore methods 'first', 'last'
-                        catch e
-                            cell = cells[id]
-                        finally
-                            addControl(cell, child.model, options.controlType, options.controlLabel, options.controlBehavior)
-                resolver.resolve facet.target
-
         addBehaviorsFacet = (resolver, facet, wire) ->
             wire(facet.options).then (options) ->
                 facet.target.onRender = ->
@@ -101,7 +87,7 @@ define [
                                 cell = cells[id]
                             finally
                                 if opts.cellBehavior
-                                    addCellBehavior(cell, opts.cellBehavior)
+                                    addCellBehavior(cell, child.model, opts.cellBehavior)
                                 else if opts.controlType and opts.controlBehavior
                                     addControl(cell, child.model, opts.controlType, opts.controlLabel, opts.controlBehavior)
                 resolver.resolve facet.target
