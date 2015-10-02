@@ -35,7 +35,7 @@ define({
       className: 'cars'
     },
     addBehaviors: {
-      'buttonToCell': {
+      'chooseButton': {
         cellId: 'last',
         controlType: 'button',
         controlLabel: {

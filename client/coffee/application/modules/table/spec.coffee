@@ -26,7 +26,7 @@ define
             collection          : {$ref: 'collection'}
             className           : 'cars'
         addBehaviors:
-            'buttonToCell':
+            'chooseButton':
                 cellId: 'last'
                 controlType: 'button'
                 controlLabel: {$ref: 'controlLabel'}
