@@ -28,11 +28,13 @@ define(['underscore', 'backbone', 'marionette', 'hbs!templates/tableRow'], funct
       return _ref1;
     }
 
-    TableView.prototype.tagName = 'tbody';
+    TableView.prototype.tagName = 'table';
 
     TableView.prototype.className = '';
 
     TableView.prototype.childView = TableRowView;
+
+    TableView.prototype.childViewContainer = 'tbody';
 
     TableView.prototype.filters = {};
 

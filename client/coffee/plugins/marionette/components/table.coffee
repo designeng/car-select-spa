@@ -10,9 +10,10 @@ define [
         template: tableRowTpl
 
     class TableView extends Marionette.CollectionView
-        tagName: 'tbody'
+        tagName: 'table'
         className: ''
         childView: TableRowView
+        childViewContainer: 'tbody'
 
         filters: {}
 
