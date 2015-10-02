@@ -47,7 +47,10 @@ define(['wire', 'when', 'backbone', 'jasmine-jquery'], function(wire, When, Back
   define('/controls/button/behavior', function() {
     var buttonControlBehavior;
     return buttonControlBehavior = function() {
-      return buttonControlBehaviorSpy();
+      return {
+        click: buttonControlBehaviorSpy,
+        prop: function() {}
+      };
     };
   });
   spec = {
@@ -68,11 +71,13 @@ define(['wire', 'when', 'backbone', 'jasmine-jquery'], function(wire, When, Back
           $ref: 'hbs!templates/tableRow'
         }
       },
-      addControls: {
-        cellId: 'last',
-        controlType: 'button',
-        controlBehavior: {
-          $ref: 'buttonControlBehavior'
+      addBehaviors: {
+        'button-behavior': {
+          cellId: 'last',
+          controlType: 'button',
+          controlBehavior: {
+            $ref: 'buttonControlBehavior'
+          }
         }
       },
       extend: {

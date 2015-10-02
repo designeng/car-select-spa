@@ -20,7 +20,10 @@ define [
 
     define '/controls/button/behavior', ->
         buttonControlBehavior = ->
-            buttonControlBehaviorSpy()
+            return {
+                click: buttonControlBehaviorSpy
+                prop: ->
+            }
 
     spec = 
         $plugins:[
@@ -41,10 +44,11 @@ define [
                 collection: {$ref: 'collection'}
                 className: 'cars-table'
                 childTemplate: {$ref: 'hbs!templates/tableRow'}
-            addControls:
-                cellId: 'last'
-                controlType: 'button'
-                controlBehavior: {$ref: 'buttonControlBehavior'}
+            addBehaviors:
+                'button-behavior':
+                    cellId: 'last'
+                    controlType: 'button'
+                    controlBehavior: {$ref: 'buttonControlBehavior'}
             extend:
                 getRowsCount: ->
                     @$el.find('tr').length
