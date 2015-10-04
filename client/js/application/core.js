@@ -1,5 +1,5 @@
 define({
-  $plugins: ['wire/debug', 'plugins/marionette/router', 'plugins/marionette/application', 'plugins/backbone/collection/create', 'plugins/container/register', 'plugins/element'],
+  $plugins: ['plugins/marionette/router', 'plugins/marionette/application', 'plugins/backbone/collection/create', 'plugins/container/register', 'plugins/element'],
   appInstance: {
     createApplication: {
       withRegions: {

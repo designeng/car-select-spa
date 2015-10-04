@@ -1,6 +1,6 @@
 define
     $plugins: [
-        'wire/debug'
+        # 'wire/debug'
         'plugins/marionette/router'
         'plugins/marionette/application'
         'plugins/backbone/collection/create'

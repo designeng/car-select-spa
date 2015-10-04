@@ -1,6 +1,6 @@
 define
     $plugins: [
-        'wire/debug'
+        # 'wire/debug'
         'plugins/hbs'
         'plugins/marionette/layout'
     ]
