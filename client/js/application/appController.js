@@ -15,10 +15,6 @@ define(['underscore', 'marionette', 'when', 'meld'], function(_, Marionette, Whe
 
     AppController.prototype.currentRootFragment = null;
 
-    AppController.prototype.showPreloader = function(preloader) {
-      return this.regions.mainAreaRegion.show(preloader);
-    };
-
     AppController.prototype.onRoute = function(name, path, opts) {
       if (path !== '*notFound') {
         return this.notFoundPageLayer.hide();

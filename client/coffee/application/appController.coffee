@@ -9,9 +9,6 @@ define [
 
         currentRootFragment: null
 
-        showPreloader: (preloader) ->
-            @regions.mainAreaRegion.show preloader
-
         # DEFAULT ROUTE HANDLER:
         onRoute: (name, path, opts) =>
             @notFoundPageLayer.hide() unless path is '*notFound'

@@ -36,12 +36,7 @@ define({
         $ref: "element!.not-found"
       }
     },
-    registerIntercessors: ['startModule', 'configure', 'filterBy'],
-    ready: {
-      showPreloader: {
-        $ref: 'preloader'
-      }
-    }
+    registerIntercessors: ['startModule', 'configure', 'filterBy']
   },
   router: {
     createRouter: {
@@ -149,9 +144,6 @@ define({
         }
       }
     }
-  },
-  preloader: {
-    create: "blocks/views/preloader/index"
   },
   start: function() {
     return this.appInstance.start();

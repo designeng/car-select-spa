@@ -27,8 +27,6 @@ define
             statistic           : {$ref: 'statistic'}
             notFoundPageLayer   : {$ref: "element!.not-found"}
         registerIntercessors: ['startModule', 'configure', 'filterBy']
-        ready:
-            showPreloader: {$ref: 'preloader'}
 
     router:
         createRouter:
@@ -100,9 +98,6 @@ define
             provide:
                 region          : {$ref: 'appInstance.regions.mainAreaRegion'}
     # /APPLICATION MODULES
-
-    preloader:
-        create: "blocks/views/preloader/index"
 
     start: ->
         @appInstance.start()
