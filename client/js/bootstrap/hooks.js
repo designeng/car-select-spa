@@ -1,4 +1,11 @@
-define(["underscore", "backbone", "backbone.radio", "marionette", "handlebars"], function(_, Backbone, Radio, Marionette, Handlebars, carsJSON) {
+define(["underscore", "backbone", "backbone.radio", "marionette", "handlebars", "json!../../assets/api/response/cars.json"], function(_, Backbone, Radio, Marionette, Handlebars, carsJSON) {
+  Backbone.ajax = function(response) {
+    var url;
+    url = response.url;
+    if (url.match(new RegExp("/cars"))) {
+      return response.success(carsJSON);
+    }
+  };
   Marionette.TemplateCache.prototype.compileTemplate = function(rawTemplate) {
     return Handlebars.compile(rawTemplate);
   };
