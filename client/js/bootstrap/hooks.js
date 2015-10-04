@@ -1,4 +1,4 @@
-define(["underscore", "backbone", "backbone.radio", "marionette", "handlebars"], function(_, Backbone, Radio, Marionette, Handlebars) {
+define(["underscore", "backbone", "backbone.radio", "marionette", "handlebars"], function(_, Backbone, Radio, Marionette, Handlebars, carsJSON) {
   Marionette.TemplateCache.prototype.compileTemplate = function(rawTemplate) {
     return Handlebars.compile(rawTemplate);
   };

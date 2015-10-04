@@ -4,7 +4,8 @@ define [
     "backbone.radio"
     "marionette"
     "handlebars"
-], (_, Backbone, Radio, Marionette, Handlebars) ->
+    # "json!../assets/api/response/cars.json"
+], (_, Backbone, Radio, Marionette, Handlebars, carsJSON) ->
 
     # overloaded for mocks
     # Backbone.ajax = (response) ->
