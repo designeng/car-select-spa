@@ -34,7 +34,7 @@ define(['underscore', 'marionette', 'when', 'meld'], function(_, Marionette, Whe
       }
     };
 
-    AppController.prototype.carsModuleHandler = function(brand, id) {
+    AppController.prototype.carsModuleHandler = function(brand) {
       var environment;
       this.configure('navigation', {}, {
         brandTabs: true,
@@ -54,10 +54,7 @@ define(['underscore', 'marionette', 'when', 'meld'], function(_, Marionette, Whe
         },
         controlLabel: 'select'
       };
-      this.filterBy('table', environment, 'brand', brand);
-      if (brand && id) {
-        return this.emphasizeEntity('table', environment, brand, id);
-      }
+      return this.filterBy('table', environment, 'brand', brand);
     };
 
     AppController.prototype.selectedCarsHandler = function() {
@@ -89,6 +86,10 @@ define(['underscore', 'marionette', 'when', 'meld'], function(_, Marionette, Whe
     };
 
     AppController.prototype.notFoundHandler = function() {
+      this.configure('navigation', {}, {
+        brandTabs: false,
+        counter: false
+      });
       return this.notFoundPageLayer.show();
     };
 
@@ -100,10 +101,6 @@ define(['underscore', 'marionette', 'when', 'meld'], function(_, Marionette, Whe
 
     AppController.prototype.filterBy = function(sandbox, args) {
       return sandbox.filterBy(args[0], args[1]);
-    };
-
-    AppController.prototype.emphasizeEntity = function(sandbox, args) {
-      return console.debug('brand, id:::::', args[0], args[1]);
     };
 
     return AppController;

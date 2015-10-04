@@ -36,7 +36,7 @@ define({
         $ref: "element!.not-found"
       }
     },
-    registerIntercessors: ['startModule', 'configure', 'filterBy', 'emphasizeEntity'],
+    registerIntercessors: ['startModule', 'configure', 'filterBy'],
     ready: {
       showPreloader: {
         $ref: 'preloader'
@@ -51,7 +51,6 @@ define({
       routes: {
         'cars': 'carsModuleHandler',
         'cars/:brand': 'carsModuleHandler',
-        'cars/:brand/:id': 'carsModuleHandler',
         'selected': 'selectedCarsHandler',
         'statistic': 'statisticModuleHandler',
         '*notFound': 'notFoundHandler'
@@ -66,6 +65,7 @@ define({
   },
   selectedCarsCollection: {
     createCollection: {
+      initValues: [],
       fromStorage: 'selected-cars',
       synchronize: true
     }

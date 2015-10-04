@@ -25,7 +25,7 @@ define [
 
         # ROUTES HANDLERS:
 
-        carsModuleHandler: (brand, id) ->
+        carsModuleHandler: (brand) ->
             @configure 'navigation', {}, {brandTabs: true, counter: false}
             @rootFragmentMutation()
 
@@ -39,9 +39,6 @@ define [
                 controlLabel    : 'select'
 
             @filterBy 'table', environment, 'brand', brand
-
-            # to make accent on current model
-            @emphasizeEntity 'table', environment, brand, id if brand and id
 
         selectedCarsHandler: ->
             @configure 'navigation', {}, {brandTabs: false, counter: true}
@@ -62,6 +59,7 @@ define [
         # 404 ERROR:
 
         notFoundHandler: ->
+            @configure 'navigation', {}, {brandTabs: false, counter: false}
             @notFoundPageLayer.show()
 
         # INTERCESSORS:
@@ -74,6 +72,3 @@ define [
 
         filterBy: (sandbox, args) ->
             sandbox.filterBy args[0], args[1]
-
-        emphasizeEntity: (sandbox, args) ->
-            console.debug 'brand, id:::::', args[0], args[1]

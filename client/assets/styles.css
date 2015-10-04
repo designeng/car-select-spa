@@ -38,8 +38,8 @@ a {
 
 .not-found {
   position: fixed;
-  top: 47px;
-  z-index:404;
+  top: 44px;
+  z-index: 3;
   width: 100%;
   height: 100%;
   background-color: pink;
@@ -48,15 +48,15 @@ a {
 
 .not-found p{
   font-weight: bold;
-  padding-left: 280px;
-  padding-top: 10px;
+  font-size: 10px;
+  padding-left: 20px;
+  padding-top: 18px;
 }
 
 .navigation {
   position: fixed;
   z-index: 100;
   width: 100%;
-  /*height: 47px;*/
   background-color: #343434;
 }
 
