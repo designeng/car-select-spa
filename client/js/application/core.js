@@ -44,11 +44,17 @@ define({
         $ref: 'appController'
       },
       routes: {
-        'cars': 'carsModuleHandler',
-        'cars/:brand': 'carsModuleHandler',
-        'selected': 'selectedCarsHandler',
-        'statistic': 'statisticModuleHandler',
-        '*notFound': 'notFoundHandler'
+        'cars': 'carsRouteHandler',
+        'cars/:brand': 'carsRouteHandler',
+        'selected': 'selectedCarsRouteHandler',
+        'statistic': 'statisticRouteHandler',
+        '*notFound': 'notFoundRouteHandler'
+      },
+      precede: {
+        handlers: '*',
+        withMethod: {
+          $ref: 'appController.handlersPreceder'
+        }
       }
     },
     onRoute: {

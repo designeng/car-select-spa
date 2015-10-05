@@ -15,6 +15,35 @@ define(['underscore', 'marionette'], function(_, Marionette) {
 
     AppController.prototype.currentRootFragment = null;
 
+    AppController.prototype.handlersPreceder = function(handlerName) {
+      switch (handlerName) {
+        case 'carsRouteHandler':
+          this.configure('navigation', {}, {
+            brandTabs: true,
+            counter: false
+          });
+          break;
+        case 'selectedCarsRouteHandler':
+          this.configure('navigation', {}, {
+            brandTabs: false,
+            counter: true
+          });
+          break;
+        case 'statisticRouteHandler':
+          this.configure('navigation', {}, {
+            brandTabs: false,
+            counter: false
+          });
+          break;
+        case 'notFoundRouteHandler':
+          this.configure('navigation', {}, {
+            brandTabs: false,
+            counter: false
+          });
+      }
+      return this.rootFragmentMutation();
+    };
+
     AppController.prototype.onRoute = function(name, path, opts) {
       if (path !== '*notFound') {
         return this.notFoundPageLayer.hide();
@@ -30,13 +59,8 @@ define(['underscore', 'marionette'], function(_, Marionette) {
       }
     };
 
-    AppController.prototype.carsModuleHandler = function(brand) {
+    AppController.prototype.carsRouteHandler = function(brand) {
       var environment;
-      this.configure('navigation', {}, {
-        brandTabs: true,
-        counter: false
-      });
-      this.rootFragmentMutation();
       if ((brand != null) && _.indexOf(['volvo', 'ford', 'mitsubishi', 'nissan'], brand) === -1) {
         console.debug('Unknown brand');
         return;
@@ -53,13 +77,8 @@ define(['underscore', 'marionette'], function(_, Marionette) {
       return this.filterBy('table', environment, 'brand', brand);
     };
 
-    AppController.prototype.selectedCarsHandler = function() {
+    AppController.prototype.selectedCarsRouteHandler = function() {
       var environment;
-      this.configure('navigation', {}, {
-        brandTabs: false,
-        counter: true
-      });
-      this.rootFragmentMutation();
       environment = {
         collection: {
           $ref: 'selectedCarsCollection'
@@ -72,20 +91,11 @@ define(['underscore', 'marionette'], function(_, Marionette) {
       return this.startModule('table', environment);
     };
 
-    AppController.prototype.statisticModuleHandler = function() {
-      this.configure('navigation', {}, {
-        brandTabs: false,
-        counter: false
-      });
-      this.rootFragmentMutation();
+    AppController.prototype.statisticRouteHandler = function() {
       return this.startModule('statistic');
     };
 
-    AppController.prototype.notFoundHandler = function() {
-      this.configure('navigation', {}, {
-        brandTabs: false,
-        counter: false
-      });
+    AppController.prototype.notFoundRouteHandler = function() {
       return this.notFoundPageLayer.show();
     };
 

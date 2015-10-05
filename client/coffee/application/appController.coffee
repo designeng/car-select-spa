@@ -7,6 +7,19 @@ define [
 
         currentRootFragment: null
 
+        # will be invoked before any '...RouteHandler' method
+        handlersPreceder: (handlerName) ->
+            switch handlerName
+                when 'carsRouteHandler'
+                    @configure 'navigation', {}, {brandTabs: true, counter: false}
+                when 'selectedCarsRouteHandler'
+                    @configure 'navigation', {}, {brandTabs: false, counter: true}
+                when 'statisticRouteHandler'
+                    @configure 'navigation', {}, {brandTabs: false, counter: false}
+                when 'notFoundRouteHandler'
+                    @configure 'navigation', {}, {brandTabs: false, counter: false}
+            @rootFragmentMutation()
+
         # DEFAULT ROUTE HANDLER:
         onRoute: (name, path, opts) =>
             @notFoundPageLayer.hide() unless path is '*notFound'
@@ -20,10 +33,7 @@ define [
 
         # ROUTES HANDLERS:
 
-        carsModuleHandler: (brand) ->
-            @configure 'navigation', {}, {brandTabs: true, counter: false}
-            @rootFragmentMutation()
-
+        carsRouteHandler: (brand) ->
             if brand? and _.indexOf(['volvo', 'ford', 'mitsubishi', 'nissan'], brand) == -1
                 console.debug 'Unknown brand'
                 return
@@ -35,10 +45,7 @@ define [
 
             @filterBy 'table', environment, 'brand', brand
 
-        selectedCarsHandler: ->
-            @configure 'navigation', {}, {brandTabs: false, counter: true}
-            @rootFragmentMutation()
-
+        selectedCarsRouteHandler: ->
             environment =
                 collection      : {$ref: 'selectedCarsCollection'}
                 behavior        : {$ref: 'removeItemBehavior'}
@@ -46,15 +53,12 @@ define [
                     
             @startModule 'table', environment
 
-        statisticModuleHandler: ->
-            @configure 'navigation', {}, {brandTabs: false, counter: false}
-            @rootFragmentMutation()
+        statisticRouteHandler: ->
             @startModule 'statistic'
 
         # 404 ERROR:
 
-        notFoundHandler: ->
-            @configure 'navigation', {}, {brandTabs: false, counter: false}
+        notFoundRouteHandler: ->
             @notFoundPageLayer.show()
 
         # INTERCESSORS:

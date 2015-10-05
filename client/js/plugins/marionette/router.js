@@ -1,4 +1,4 @@
-define(['underscore', 'marionette'], function(_, Marionette) {
+define(['underscore', 'marionette', 'meld'], function(_, Marionette, meld) {
   return function(options) {
     var createRouterFactory, onRouteFacet, pluginInstance;
     createRouterFactory = function(resolver, compDef, wire) {
@@ -10,10 +10,28 @@ define(['underscore', 'marionette'], function(_, Marionette) {
           throw new Error('#{opt} option should be provided for createRouter factory!');
         }
       }
-      return wire(compDef.options.controller).then(function(routerController) {
-        var router;
+      return wire(compDef.options).then(function(opts) {
+        var handlers, method, precededMethods, router;
+        if (opts.precede) {
+          handlers = opts.precede.handlers;
+          precededMethods = [];
+          if (handlers === '*' || handlers[0] === '*') {
+            for (method in opts.controller) {
+              if (method.slice(-12) === 'RouteHandler') {
+                precededMethods.push(method);
+              }
+            }
+          } else if (_.isArray(handlers)) {
+            precededMethods = handlers;
+          }
+          _.each(precededMethods, function(method) {
+            return meld.before(opts.controller, method, function() {
+              return opts.precede.withMethod.call(opts.controller, method);
+            });
+          });
+        }
         router = new Marionette.AppRouter({
-          controller: routerController,
+          controller: opts.controller,
           appRoutes: compDef.options.routes
         });
         return resolver.resolve(router);

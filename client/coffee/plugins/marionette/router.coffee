@@ -1,7 +1,8 @@
 define [
     'underscore'
     'marionette'
-], (_, Marionette) ->
+    'meld'
+], (_, Marionette, meld) ->
 
     return (options) ->
 
@@ -12,10 +13,25 @@ define [
                 if !compDef.options[opt]?
                     throw new Error '#{opt} option should be provided for createRouter factory!'
 
-            wire(compDef.options.controller).then (routerController) ->
+            wire(compDef.options).then (opts) ->
+                if opts.precede
+                    handlers = opts.precede.handlers
+                    precededMethods = []
+                    if handlers == '*' or handlers[0] == '*'
+                        for method of opts.controller
+                            if method.slice(-12) == 'RouteHandler'
+                                precededMethods.push method
+                    else if _.isArray(handlers)
+                        precededMethods = handlers
+
+                    _.each precededMethods, (method) ->
+                        meld.before opts.controller, method, () ->
+                            opts.precede.withMethod.call(opts.controller, method)
+
                 router = new Marionette.AppRouter
-                    controller: routerController
+                    controller: opts.controller
                     appRoutes: compDef.options.routes
+
                 resolver.resolve(router)
 
         onRouteFacet = (resolver, facet, wire) ->
