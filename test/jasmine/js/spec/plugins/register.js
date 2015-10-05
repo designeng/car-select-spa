@@ -1,6 +1,6 @@
 var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
-define(["wire", "when", "backbone.radio"], function(wire, When, Radio) {
+define(["wire", "when"], function(wire, When) {
   var sandboxCoreSpec, sandboxDeferred, startModuleSpy;
   sandboxDeferred = When.defer();
   startModuleSpy = jasmine.createSpy("startModuleSpy");
@@ -36,16 +36,16 @@ define(["wire", "when", "backbone.radio"], function(wire, When, Radio) {
     }
   });
   define('test/plugins/register/core/controller', function() {
-    var CoreController;
-    return CoreController = (function() {
-      function CoreController() {}
+    var AppController;
+    return AppController = (function() {
+      function AppController() {}
 
-      CoreController.prototype.startModule = function(sandbox, args) {
+      AppController.prototype.startModule = function(sandbox, args) {
         startModuleSpy(args[0]);
         return sandboxDeferred.resolve(sandbox);
       };
 
-      return CoreController;
+      return AppController;
 
     })();
   });
@@ -78,8 +78,10 @@ define(["wire", "when", "backbone.radio"], function(wire, When, Radio) {
       });
     });
     it("intercessor should interact directly with module sandbox", function(done) {
-      var _this = this;
-      this.ctx.appController.startModule("moduleOne", "some_arg");
+      var env,
+        _this = this;
+      env = {};
+      this.ctx.appController.startModule("moduleOne", env, "some_arg");
       return When(sandboxDeferred.promise).then(function() {
         expect(startModuleSpy).toHaveBeenCalledWith("some_arg");
         return done();

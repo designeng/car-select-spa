@@ -1,8 +1,7 @@
 define [
     "wire"
     "when"
-    "backbone.radio"
-], (wire, When, Radio) ->
+], (wire, When) ->
 
     sandboxDeferred = When.defer()
 
@@ -28,7 +27,7 @@ define [
                 sandbox: {$ref: 'sandbox'}
 
     define 'test/plugins/register/core/controller', ->
-        class CoreController
+        class AppController
 
             startModule: (sandbox, args) ->
                 startModuleSpy(args[0])
@@ -65,7 +64,8 @@ define [
                 console.log "ERROR", err
 
         it "intercessor should interact directly with module sandbox", (done) ->
-            @ctx.appController.startModule "moduleOne", "some_arg"
+            env = {}
+            @ctx.appController.startModule "moduleOne", env, "some_arg"
             When(sandboxDeferred.promise).then () =>
                 expect(startModuleSpy).toHaveBeenCalledWith "some_arg"
                 done()
