@@ -57,11 +57,6 @@ require.config
             location: "vendors/meld"
         }
         {
-            name: "moment"
-            main: "moment"
-            location: "vendors/moment"
-        }
-        {
             name: "json"
             main: "json"
             location: "vendors/requirejs-json"
