@@ -2,3 +2,5 @@
 node_modules/*
 client/js/vendors/*
 *.pdf
+
+client/build/*
