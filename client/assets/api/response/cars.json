@@ -5,121 +5,141 @@
                 "id": 1,
                 "name": "Volvo S60",
                 "image": "volvo-s60.jpg",
-                "brand": "volvo"
+                "brand": "volvo",
+                "description": "Umogojuba eme qisula goputicu uze asipe nopufo iya e i qegoku a Kaliguqoke ke nizaze Dubihegapi iciwalisa ube yulacuqu qono ogehugopa ego xaqareqa ayorusudo jipa itakefi monoyu fo xo aru ale co cayivele bu mubome emibanoke xepumo ozojaki u eye asemapo ku axi aviwiga"
             },
             {
                 "id": 2,
                 "name": "Volvo S80",
                 "image": "volvo-s80.jpg",
-                "brand": "volvo"
+                "brand": "volvo",
+                "description": "Josiguyufe Rayiyevuda femu e ixiwijo ixeneja Wobenixode ubuni si jirewawe ezizulo qacojiqo ye ehegado zowaza izadate emu Jewupoyetu o vucuceba ihu rifuyi we emojavale Xopajifolu akehayodo era cuvijo tuziwi po fesopu izami ukixehi Naxenakeci uhi Tunacorama dupuxu hibemu fuwixo Dajaqicoqa o ludu izumiwoxi hulowoda docaxi kevapeha"
             },
             {
                 "id": 3,
                 "name": "Volvo V40",
                 "image": "volvo-v40.jpg",
-                "brand": "volvo"
+                "brand": "volvo",
+                "description": "Likagibowe vaka i ijosicazo lojuni alizopeco eciyexi pohiniju aruge sajote Gowowalope ohi obayo umufo e niyida wugaja yori itolefene bunudu xuciva ipicikavu Mucuqinuze utuhe gade pokiboke purotoda kiha oboja be wumo citito cehe ci odu ile oqobe igiseqo oha kuqujule cawo yeciha oyeqi imafofotu hexu kesosene"
             },
             {
                 "id": 4,
                 "name": "Volvo XC60",
                 "image": "volvo-xc60.jpg",
-                "brand": "volvo"
+                "brand": "volvo",
+                "description": " I asukekupe eceru oxoxepo aji codiduma Jufibehiza ako akobiqu gi to gi vanadoqu a uju oyetaza i unuyafu osoze vuxamebi ovemalaza xayi akura bufe obe Puzuzoyice ati a oxixo Rabizosuho moze ihufe u itesa utulosi a Xodidaziya i Kukuzomego ati oya e u ukiniwe ufefuwo okowaxu"
             },
             {
                 "id": 5,
                 "name": "Volvo XC90",
                 "image": "volvo-xc90.jpg",
-                "brand": "volvo"
+                "brand": "volvo",
+                "description": "Faqu madadavu ka vanama owaleko ewa i ecuse pi ocareda za jomonaxu yugo uxefika erigi i xala iri Zegofaxequ atahexa dadeyowo ya a emefu u Bogawofiwi aza hebusa Lujeyumogu jafi owiko beqivo Hapirezeno Jenoqumevo Yozetiguge egayupu ufu Bukekewovi mo luzizu ovosivu ita jaka"
             },
             {
                 "id": 6,
                 "name": "Ford Ecosport",
                 "image": "ford-ecosport.jpg",
-                "brand": "ford"
+                "brand": "ford",
+                "description": "Umogojuba eme qisula goputicu uze asipe nopufo iya e i qegoku a Kaliguqoke ke nizaze Dubihegapi iciwalisa ube yulacuqu qono ogehugopa ego xaqareqa ayorusudo jipa itakefi monoyu fo xo aru ale co cayivele bu mubome emibanoke xepumo ozojaki u eye asemapo ku axi aviwiga"
             },
             {
                 "id": 7,
                 "name": "Ford Endeavour",
                 "image": "ford-endeavour.jpg",
-                "brand": "ford"
+                "brand": "ford",
+                "description": "Likagibowe vaka i ijosicazo lojuni alizopeco eciyexi pohiniju aruge sajote Gowowalope ohi obayo umufo e niyida wugaja yori itolefene bunudu xuciva ipicikavu Mucuqinuze utuhe gade pokiboke purotoda kiha oboja be wumo citito cehe ci odu ile oqobe igiseqo oha kuqujule cawo yeciha oyeqi imafofotu hexu kesosene"
             },
             {
                 "id": 8,
                 "name": "Ford Fiesta Classic",
                 "image": "ford-fiesta-classic.jpg",
-                "brand": "ford"
+                "brand": "ford",
+                "description": " I asukekupe eceru oxoxepo aji codiduma Jufibehiza ako akobiqu gi to gi vanadoqu a uju oyetaza i unuyafu osoze vuxamebi ovemalaza xayi akura bufe obe Puzuzoyice ati a oxixo Rabizosuho moze ihufe u itesa utulosi a Xodidaziya i Kukuzomego ati oya e u ukiniwe ufefuwo okowaxu"
             },
             {
                 "id": 9,
                 "name": "Ford Fiesta",
                 "image": "ford-fiesta.jpg",
-                "brand": "ford"
+                "brand": "ford",
+                "description": " I asukekupe eceru oxoxepo aji codiduma Jufibehiza ako akobiqu gi to gi vanadoqu a uju oyetaza i unuyafu osoze vuxamebi ovemalaza xayi akura bufe obe Puzuzoyice ati a oxixo Rabizosuho moze ihufe u itesa utulosi a Xodidaziya i Kukuzomego ati oya e u ukiniwe ufefuwo okowaxu"
             },
             {
                 "id": 10,
                 "name": "Ford Fake Mustang",
                 "image": "ford-fake-mustang.jpg",
-                "brand": "ford"
+                "brand": "ford",
+                "description": "Likagibowe vaka i ijosicazo lojuni alizopeco eciyexi pohiniju aruge sajote Gowowalope ohi obayo umufo e niyida wugaja yori itolefene bunudu xuciva ipicikavu Mucuqinuze utuhe gade pokiboke purotoda kiha oboja be wumo citito cehe ci odu ile oqobe igiseqo oha kuqujule cawo yeciha oyeqi imafofotu hexu kesosene"
             },
             {
                 "id": 11,
                 "name": "Mitsubishi Pajero",
                 "image": "mitsubishi-pajero.jpg",
-                "brand": "mitsubishi"
+                "brand": "mitsubishi",
+                "description": "Josiguyufe Rayiyevuda femu e ixiwijo ixeneja Wobenixode ubuni si jirewawe ezizulo qacojiqo ye ehegado zowaza izadate emu Jewupoyetu o vucuceba ihu rifuyi we emojavale Xopajifolu akehayodo era cuvijo tuziwi po fesopu izami ukixehi Naxenakeci uhi Tunacorama dupuxu hibemu fuwixo Dajaqicoqa o ludu izumiwoxi hulowoda docaxi kevapeha"
             },
             {
                 "id": 12,
                 "name": "Mitsubishi Mock Macro",
                 "image": "mitsubishi-mock-macro.jpg",
-                "brand": "mitsubishi"
+                "brand": "mitsubishi",
+                "description": " I asukekupe eceru oxoxepo aji codiduma Jufibehiza ako akobiqu gi to gi vanadoqu a uju oyetaza i unuyafu osoze vuxamebi ovemalaza xayi akura bufe obe Puzuzoyice ati a oxixo Rabizosuho moze ihufe u itesa utulosi a Xodidaziya i Kukuzomego ati oya e u ukiniwe ufefuwo okowaxu"
             },
             {
                 "id": 13,
                 "name": "Mitsubishi Mock Wild Horse",
                 "image": "mitsubishi-mock-wild-horse.jpg",
-                "brand": "mitsubishi"
+                "brand": "mitsubishi",
+                "description": "Likagibowe vaka i ijosicazo lojuni alizopeco eciyexi pohiniju aruge sajote Gowowalope ohi obayo umufo e niyida wugaja yori itolefene bunudu xuciva ipicikavu Mucuqinuze utuhe gade pokiboke purotoda kiha oboja be wumo citito cehe ci odu ile oqobe igiseqo oha kuqujule cawo yeciha oyeqi imafofotu hexu kesosene"
             },
             {
                 "id": 14,
                 "name": "Mitsubishi Fake Trollo",
                 "image": "mitsubishi-fake-trollo.jpg",
-                "brand": "mitsubishi"
+                "brand": "mitsubishi",
+                "description": "Faqu madadavu ka vanama owaleko ewa i ecuse pi ocareda za jomonaxu yugo uxefika erigi i xala iri Zegofaxequ atahexa dadeyowo ya a emefu u Bogawofiwi aza hebusa Lujeyumogu jafi owiko beqivo Hapirezeno Jenoqumevo Yozetiguge egayupu ufu Bukekewovi mo luzizu ovosivu ita jaka"
             },
             {
                 "id": 15,
                 "name": "Mitsubishi Mock Suzzi",
                 "image": "mitsubishi-mock-suzzi.jpg",
-                "brand": "mitsubishi"
+                "brand": "mitsubishi",
+                "description": "Jomonaxu yugo uxefika erigi i xala iri Zegofaxequ atahexa dadeyowo ya a emefu u Bogawofiwi aza hebusa Lujeyumogu jafi owiko beqivo Hapirezeno Jenoqumevo Yozetiguge egayupu ufu Bukekewovi mo luzizu ovosivu ita jaka"
             },
             {
                 "id": 16,
                 "name": "Nissan Evalia",
                 "image": "nissan-evalia.jpg",
-                "brand": "nissan"
+                "brand": "nissan",
+                "description": " I asukekupe eceru oxoxepo aji codiduma Jufibehiza ako akobiqu gi to gi vanadoqu a uju oyetaza i unuyafu osoze vuxamebi ovemalaza xayi akura bufe obe Puzuzoyice ati a oxixo Rabizosuho moze ihufe u itesa utulosi a Xodidaziya i Kukuzomego ati oya e u ukiniwe ufefuwo okowaxu"
             },
             {
                 "id": 17,
                 "name": "Nissan Micra Active",
                 "image": "nissan-micra-active.jpg",
-                "brand": "nissan"
+                "brand": "nissan",
+                "description": "Faqu madadavu ka vanama owaleko ewa i ecuse pi ocareda za jomonaxu yugo uxefika erigi i xala iri Zegofaxequ atahexa dadeyowo ya a emefu u Bogawofiwi aza hebusa Lujeyumogu jafi owiko beqivo Hapirezeno Jenoqumevo Yozetiguge egayupu ufu Bukekewovi mo luzizu ovosivu ita jaka"
             },
             {
                 "id": 18,
                 "name": "Nissan Micra",
                 "image": "nissan-micra.jpg",
-                "brand": "nissan"
+                "brand": "nissan",
+                "description": "Likagibowe vaka i ijosicazo lojuni alizopeco eciyexi pohiniju aruge sajote Gowowalope ohi obayo umufo e niyida wugaja yori itolefene bunudu xuciva ipicikavu Mucuqinuze utuhe gade pokiboke purotoda kiha oboja be wumo citito cehe ci odu ile oqobe igiseqo oha kuqujule cawo yeciha oyeqi imafofotu hexu kesosene"
             },
             {
                 "id": 19,
                 "name": "Nissan Sunny",
                 "image": "nissan-sunny.jpg",
-                "brand": "nissan"
+                "brand": "nissan",
+                "description": "Josiguyufe Rayiyevuda femu e ixiwijo ixeneja Wobenixode ubuni si jirewawe ezizulo qacojiqo ye ehegado zowaza izadate emu Jewupoyetu o vucuceba ihu rifuyi we emojavale Xopajifolu akehayodo era cuvijo tuziwi po fesopu izami ukixehi Naxenakeci uhi Tunacorama dupuxu hibemu fuwixo Dajaqicoqa o ludu izumiwoxi hulowoda docaxi kevapeha"
             },
             {
                 "id": 20,
                 "name": "Nissan Terrano",
                 "image": "nissan-terrano.jpg",
-                "brand": "nissan"
+                "brand": "nissan",
+                "description": "Wobenixode ubuni si jirewawe ezizulo qacojiqo ye ehegado zowaza izadate emu Jewupoyetu o vucuceba ihu rifuyi we emojavale Xopajifolu akehayodo era cuvijo tuziwi po fesopu izami ukixehi Naxenakeci uhi Tunacorama dupuxu hibemu fuwixo Dajaqicoqa o ludu izumiwoxi hulowoda docaxi kevapeha"
             }
         ]
     }

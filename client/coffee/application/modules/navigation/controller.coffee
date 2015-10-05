@@ -1,7 +1,6 @@
 define [
     "marionette"
-    "meld"
-], (Marionette, meld) ->
+], (Marionette) ->
 
     class Controller extends Marionette.Object
 
