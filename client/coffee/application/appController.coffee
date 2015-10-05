@@ -35,6 +35,7 @@ define [
 
         carsRouteHandler: (brand) ->
             if brand? and _.indexOf(['volvo', 'ford', 'mitsubishi', 'nissan'], brand) == -1
+                # TODO: display error information
                 console.debug 'Unknown brand'
                 return
 
