@@ -2,13 +2,12 @@ define [
     'underscore'
     'backbone'
     'marionette'
-    'hbs!templates/counter'
-], (_, Backbone, Marionette, counterTpl) ->
+], (_, Backbone, Marionette) ->
 
     class CounterView extends Marionette.ItemView
-        template: counterTpl
 
         initialize: (options) ->
+            @template = options.template
             @model = new Backbone.Model()
             @collection = options.collection
             @collection.on 'update', (collection) =>
@@ -22,6 +21,7 @@ define [
         createCounterFactory = (resolver, compDef, wire) ->
             wire(compDef.options).then (options) ->
                 counterView = new CounterView({
+                    template    : options.template
                     collection  : options.collection
                     className   : options.className
                 })

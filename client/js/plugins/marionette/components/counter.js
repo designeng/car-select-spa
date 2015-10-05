@@ -1,7 +1,7 @@
 var __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-define(['underscore', 'backbone', 'marionette', 'hbs!templates/counter'], function(_, Backbone, Marionette, counterTpl) {
+define(['underscore', 'backbone', 'marionette'], function(_, Backbone, Marionette) {
   var CounterView, _ref;
   CounterView = (function(_super) {
     __extends(CounterView, _super);
@@ -11,10 +11,9 @@ define(['underscore', 'backbone', 'marionette', 'hbs!templates/counter'], functi
       return _ref;
     }
 
-    CounterView.prototype.template = counterTpl;
-
     CounterView.prototype.initialize = function(options) {
       var _this = this;
+      this.template = options.template;
       this.model = new Backbone.Model();
       this.collection = options.collection;
       return this.collection.on('update', function(collection) {
@@ -36,6 +35,7 @@ define(['underscore', 'backbone', 'marionette', 'hbs!templates/counter'], functi
       return wire(compDef.options).then(function(options) {
         var counterView;
         counterView = new CounterView({
+          template: options.template,
           collection: options.collection,
           className: options.className
         });

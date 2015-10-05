@@ -59,6 +59,9 @@ define({
   },
   counter: {
     createCounter: {
+      template: {
+        $ref: 'hbs!templates/counter'
+      },
       collection: {
         $ref: 'selectedCarsCollection'
       },
