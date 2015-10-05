@@ -21156,7 +21156,602 @@ return /******/ (function(modules) { // webpackBootstrap
 ;
 define('handlebars', ['handlebars/handlebars'], function (main) { return main; });
 
-define('bootstrap/hooks',["underscore", "backbone", "backbone.radio", "marionette", "handlebars"], function(_, Backbone, Radio, Marionette, Handlebars) {
+/**
+ * @license RequireJS text 2.0.14 Copyright (c) 2010-2014, The Dojo Foundation All Rights Reserved.
+ * Available via the MIT or new BSD license.
+ * see: http://github.com/requirejs/text for details
+ */
+/*jslint regexp: true */
+/*global require, XMLHttpRequest, ActiveXObject,
+  define, window, process, Packages,
+  java, location, Components, FileUtils */
+
+define('text',['module'], function (module) {
+    'use strict';
+
+    var text, fs, Cc, Ci, xpcIsWindows,
+        progIds = ['Msxml2.XMLHTTP', 'Microsoft.XMLHTTP', 'Msxml2.XMLHTTP.4.0'],
+        xmlRegExp = /^\s*<\?xml(\s)+version=[\'\"](\d)*.(\d)*[\'\"](\s)*\?>/im,
+        bodyRegExp = /<body[^>]*>\s*([\s\S]+)\s*<\/body>/im,
+        hasLocation = typeof location !== 'undefined' && location.href,
+        defaultProtocol = hasLocation && location.protocol && location.protocol.replace(/\:/, ''),
+        defaultHostName = hasLocation && location.hostname,
+        defaultPort = hasLocation && (location.port || undefined),
+        buildMap = {},
+        masterConfig = (module.config && module.config()) || {};
+
+    text = {
+        version: '2.0.14',
+
+        strip: function (content) {
+            //Strips <?xml ...?> declarations so that external SVG and XML
+            //documents can be added to a document without worry. Also, if the string
+            //is an HTML document, only the part inside the body tag is returned.
+            if (content) {
+                content = content.replace(xmlRegExp, "");
+                var matches = content.match(bodyRegExp);
+                if (matches) {
+                    content = matches[1];
+                }
+            } else {
+                content = "";
+            }
+            return content;
+        },
+
+        jsEscape: function (content) {
+            return content.replace(/(['\\])/g, '\\$1')
+                .replace(/[\f]/g, "\\f")
+                .replace(/[\b]/g, "\\b")
+                .replace(/[\n]/g, "\\n")
+                .replace(/[\t]/g, "\\t")
+                .replace(/[\r]/g, "\\r")
+                .replace(/[\u2028]/g, "\\u2028")
+                .replace(/[\u2029]/g, "\\u2029");
+        },
+
+        createXhr: masterConfig.createXhr || function () {
+            //Would love to dump the ActiveX crap in here. Need IE 6 to die first.
+            var xhr, i, progId;
+            if (typeof XMLHttpRequest !== "undefined") {
+                return new XMLHttpRequest();
+            } else if (typeof ActiveXObject !== "undefined") {
+                for (i = 0; i < 3; i += 1) {
+                    progId = progIds[i];
+                    try {
+                        xhr = new ActiveXObject(progId);
+                    } catch (e) {}
+
+                    if (xhr) {
+                        progIds = [progId];  // so faster next time
+                        break;
+                    }
+                }
+            }
+
+            return xhr;
+        },
+
+        /**
+         * Parses a resource name into its component parts. Resource names
+         * look like: module/name.ext!strip, where the !strip part is
+         * optional.
+         * @param {String} name the resource name
+         * @returns {Object} with properties "moduleName", "ext" and "strip"
+         * where strip is a boolean.
+         */
+        parseName: function (name) {
+            var modName, ext, temp,
+                strip = false,
+                index = name.lastIndexOf("."),
+                isRelative = name.indexOf('./') === 0 ||
+                             name.indexOf('../') === 0;
+
+            if (index !== -1 && (!isRelative || index > 1)) {
+                modName = name.substring(0, index);
+                ext = name.substring(index + 1);
+            } else {
+                modName = name;
+            }
+
+            temp = ext || modName;
+            index = temp.indexOf("!");
+            if (index !== -1) {
+                //Pull off the strip arg.
+                strip = temp.substring(index + 1) === "strip";
+                temp = temp.substring(0, index);
+                if (ext) {
+                    ext = temp;
+                } else {
+                    modName = temp;
+                }
+            }
+
+            return {
+                moduleName: modName,
+                ext: ext,
+                strip: strip
+            };
+        },
+
+        xdRegExp: /^((\w+)\:)?\/\/([^\/\\]+)/,
+
+        /**
+         * Is an URL on another domain. Only works for browser use, returns
+         * false in non-browser environments. Only used to know if an
+         * optimized .js version of a text resource should be loaded
+         * instead.
+         * @param {String} url
+         * @returns Boolean
+         */
+        useXhr: function (url, protocol, hostname, port) {
+            var uProtocol, uHostName, uPort,
+                match = text.xdRegExp.exec(url);
+            if (!match) {
+                return true;
+            }
+            uProtocol = match[2];
+            uHostName = match[3];
+
+            uHostName = uHostName.split(':');
+            uPort = uHostName[1];
+            uHostName = uHostName[0];
+
+            return (!uProtocol || uProtocol === protocol) &&
+                   (!uHostName || uHostName.toLowerCase() === hostname.toLowerCase()) &&
+                   ((!uPort && !uHostName) || uPort === port);
+        },
+
+        finishLoad: function (name, strip, content, onLoad) {
+            content = strip ? text.strip(content) : content;
+            if (masterConfig.isBuild) {
+                buildMap[name] = content;
+            }
+            onLoad(content);
+        },
+
+        load: function (name, req, onLoad, config) {
+            //Name has format: some.module.filext!strip
+            //The strip part is optional.
+            //if strip is present, then that means only get the string contents
+            //inside a body tag in an HTML string. For XML/SVG content it means
+            //removing the <?xml ...?> declarations so the content can be inserted
+            //into the current doc without problems.
+
+            // Do not bother with the work if a build and text will
+            // not be inlined.
+            if (config && config.isBuild && !config.inlineText) {
+                onLoad();
+                return;
+            }
+
+            masterConfig.isBuild = config && config.isBuild;
+
+            var parsed = text.parseName(name),
+                nonStripName = parsed.moduleName +
+                    (parsed.ext ? '.' + parsed.ext : ''),
+                url = req.toUrl(nonStripName),
+                useXhr = (masterConfig.useXhr) ||
+                         text.useXhr;
+
+            // Do not load if it is an empty: url
+            if (url.indexOf('empty:') === 0) {
+                onLoad();
+                return;
+            }
+
+            //Load the text. Use XHR if possible and in a browser.
+            if (!hasLocation || useXhr(url, defaultProtocol, defaultHostName, defaultPort)) {
+                text.get(url, function (content) {
+                    text.finishLoad(name, parsed.strip, content, onLoad);
+                }, function (err) {
+                    if (onLoad.error) {
+                        onLoad.error(err);
+                    }
+                });
+            } else {
+                //Need to fetch the resource across domains. Assume
+                //the resource has been optimized into a JS module. Fetch
+                //by the module name + extension, but do not include the
+                //!strip part to avoid file system issues.
+                req([nonStripName], function (content) {
+                    text.finishLoad(parsed.moduleName + '.' + parsed.ext,
+                                    parsed.strip, content, onLoad);
+                });
+            }
+        },
+
+        write: function (pluginName, moduleName, write, config) {
+            if (buildMap.hasOwnProperty(moduleName)) {
+                var content = text.jsEscape(buildMap[moduleName]);
+                write.asModule(pluginName + "!" + moduleName,
+                               "define(function () { return '" +
+                                   content +
+                               "';});\n");
+            }
+        },
+
+        writeFile: function (pluginName, moduleName, req, write, config) {
+            var parsed = text.parseName(moduleName),
+                extPart = parsed.ext ? '.' + parsed.ext : '',
+                nonStripName = parsed.moduleName + extPart,
+                //Use a '.js' file name so that it indicates it is a
+                //script that can be loaded across domains.
+                fileName = req.toUrl(parsed.moduleName + extPart) + '.js';
+
+            //Leverage own load() method to load plugin value, but only
+            //write out values that do not have the strip argument,
+            //to avoid any potential issues with ! in file names.
+            text.load(nonStripName, req, function (value) {
+                //Use own write() method to construct full module value.
+                //But need to create shell that translates writeFile's
+                //write() to the right interface.
+                var textWrite = function (contents) {
+                    return write(fileName, contents);
+                };
+                textWrite.asModule = function (moduleName, contents) {
+                    return write.asModule(moduleName, fileName, contents);
+                };
+
+                text.write(pluginName, nonStripName, textWrite, config);
+            }, config);
+        }
+    };
+
+    if (masterConfig.env === 'node' || (!masterConfig.env &&
+            typeof process !== "undefined" &&
+            process.versions &&
+            !!process.versions.node &&
+            !process.versions['node-webkit'] &&
+            !process.versions['atom-shell'])) {
+        //Using special require.nodeRequire, something added by r.js.
+        fs = require.nodeRequire('fs');
+
+        text.get = function (url, callback, errback) {
+            try {
+                var file = fs.readFileSync(url, 'utf8');
+                //Remove BOM (Byte Mark Order) from utf8 files if it is there.
+                if (file[0] === '\uFEFF') {
+                    file = file.substring(1);
+                }
+                callback(file);
+            } catch (e) {
+                if (errback) {
+                    errback(e);
+                }
+            }
+        };
+    } else if (masterConfig.env === 'xhr' || (!masterConfig.env &&
+            text.createXhr())) {
+        text.get = function (url, callback, errback, headers) {
+            var xhr = text.createXhr(), header;
+            xhr.open('GET', url, true);
+
+            //Allow plugins direct access to xhr headers
+            if (headers) {
+                for (header in headers) {
+                    if (headers.hasOwnProperty(header)) {
+                        xhr.setRequestHeader(header.toLowerCase(), headers[header]);
+                    }
+                }
+            }
+
+            //Allow overrides specified in config
+            if (masterConfig.onXhr) {
+                masterConfig.onXhr(xhr, url);
+            }
+
+            xhr.onreadystatechange = function (evt) {
+                var status, err;
+                //Do not explicitly handle errors, those should be
+                //visible via console output in the browser.
+                if (xhr.readyState === 4) {
+                    status = xhr.status || 0;
+                    if (status > 399 && status < 600) {
+                        //An http 4xx or 5xx error. Signal an error.
+                        err = new Error(url + ' HTTP status: ' + status);
+                        err.xhr = xhr;
+                        if (errback) {
+                            errback(err);
+                        }
+                    } else {
+                        callback(xhr.responseText);
+                    }
+
+                    if (masterConfig.onXhrComplete) {
+                        masterConfig.onXhrComplete(xhr, url);
+                    }
+                }
+            };
+            xhr.send(null);
+        };
+    } else if (masterConfig.env === 'rhino' || (!masterConfig.env &&
+            typeof Packages !== 'undefined' && typeof java !== 'undefined')) {
+        //Why Java, why is this so awkward?
+        text.get = function (url, callback) {
+            var stringBuffer, line,
+                encoding = "utf-8",
+                file = new java.io.File(url),
+                lineSeparator = java.lang.System.getProperty("line.separator"),
+                input = new java.io.BufferedReader(new java.io.InputStreamReader(new java.io.FileInputStream(file), encoding)),
+                content = '';
+            try {
+                stringBuffer = new java.lang.StringBuffer();
+                line = input.readLine();
+
+                // Byte Order Mark (BOM) - The Unicode Standard, version 3.0, page 324
+                // http://www.unicode.org/faq/utf_bom.html
+
+                // Note that when we use utf-8, the BOM should appear as "EF BB BF", but it doesn't due to this bug in the JDK:
+                // http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4508058
+                if (line && line.length() && line.charAt(0) === 0xfeff) {
+                    // Eat the BOM, since we've already found the encoding on this file,
+                    // and we plan to concatenating this buffer with others; the BOM should
+                    // only appear at the top of a file.
+                    line = line.substring(1);
+                }
+
+                if (line !== null) {
+                    stringBuffer.append(line);
+                }
+
+                while ((line = input.readLine()) !== null) {
+                    stringBuffer.append(lineSeparator);
+                    stringBuffer.append(line);
+                }
+                //Make sure we return a JavaScript string and not a Java string.
+                content = String(stringBuffer.toString()); //String
+            } finally {
+                input.close();
+            }
+            callback(content);
+        };
+    } else if (masterConfig.env === 'xpconnect' || (!masterConfig.env &&
+            typeof Components !== 'undefined' && Components.classes &&
+            Components.interfaces)) {
+        //Avert your gaze!
+        Cc = Components.classes;
+        Ci = Components.interfaces;
+        Components.utils['import']('resource://gre/modules/FileUtils.jsm');
+        xpcIsWindows = ('@mozilla.org/windows-registry-key;1' in Cc);
+
+        text.get = function (url, callback) {
+            var inStream, convertStream, fileObj,
+                readData = {};
+
+            if (xpcIsWindows) {
+                url = url.replace(/\//g, '\\');
+            }
+
+            fileObj = new FileUtils.File(url);
+
+            //XPCOM, you so crazy
+            try {
+                inStream = Cc['@mozilla.org/network/file-input-stream;1']
+                           .createInstance(Ci.nsIFileInputStream);
+                inStream.init(fileObj, 1, 0, false);
+
+                convertStream = Cc['@mozilla.org/intl/converter-input-stream;1']
+                                .createInstance(Ci.nsIConverterInputStream);
+                convertStream.init(inStream, "utf-8", inStream.available(),
+                Ci.nsIConverterInputStream.DEFAULT_REPLACEMENT_CHARACTER);
+
+                convertStream.readString(inStream.available(), readData);
+                convertStream.close();
+                inStream.close();
+                callback(readData.value);
+            } catch (e) {
+                throw new Error((fileObj && fileObj.path || '') + ': ' + e);
+            }
+        };
+    }
+    return text;
+});
+
+/** @license
+ * RequireJS plugin for loading JSON files
+ * - depends on Text plugin and it was HEAVILY "inspired" by it as well.
+ * Author: Miller Medeiros
+ * Version: 0.4.0 (2014/04/10)
+ * Released under the MIT license
+ */
+define('json/json',['text'], function(text){
+
+    var CACHE_BUST_QUERY_PARAM = 'bust',
+        CACHE_BUST_FLAG = '!bust',
+        jsonParse = (typeof JSON !== 'undefined' && typeof JSON.parse === 'function')? JSON.parse : function(val){
+            return eval('('+ val +')'); //quick and dirty
+        },
+        buildMap = {};
+
+    function cacheBust(url){
+        url = url.replace(CACHE_BUST_FLAG, '');
+        url += (url.indexOf('?') < 0)? '?' : '&';
+        return url + CACHE_BUST_QUERY_PARAM +'='+ Math.round(2147483647 * Math.random());
+    }
+
+    //API
+    return {
+
+        load : function(name, req, onLoad, config) {
+            if (( config.isBuild && (config.inlineJSON === false || name.indexOf(CACHE_BUST_QUERY_PARAM +'=') !== -1)) || (req.toUrl(name).indexOf('empty:') === 0)) {
+                //avoid inlining cache busted JSON or if inlineJSON:false
+                //and don't inline files marked as empty!
+                onLoad(null);
+            } else {
+                text.get(req.toUrl(name), function(data){
+                    if (config.isBuild) {
+                        buildMap[name] = data;
+                        onLoad(data);
+                    } else {
+                        onLoad(jsonParse(data));
+                    }
+                },
+                    onLoad.error, {
+                        accept: 'application/json'
+                    }
+                );
+            }
+        },
+
+        normalize : function (name, normalize) {
+            // used normalize to avoid caching references to a "cache busted" request
+            if (name.indexOf(CACHE_BUST_FLAG) !== -1) {
+                name = cacheBust(name);
+            }
+            // resolve any relative paths
+            return normalize(name);
+        },
+
+        //write method based on RequireJS official text plugin by James Burke
+        //https://github.com/jrburke/requirejs/blob/master/text.js
+        write : function(pluginName, moduleName, write){
+            if(moduleName in buildMap){
+                var content = buildMap[moduleName];
+                write('define("'+ pluginName +'!'+ moduleName +'", function(){ return '+ content +';});\n');
+            }
+        }
+
+    };
+});
+define('json', ['json/json'], function (main) { return main; });
+
+
+define("json/json!bootstrap/../../assets/api/response/cars.json", function(){ return {
+    "data": {
+        "cars":[
+            {
+                "id": 1,
+                "name": "Volvo S60",
+                "image": "volvo-s60.jpg",
+                "brand": "volvo"
+            },
+            {
+                "id": 2,
+                "name": "Volvo S80",
+                "image": "volvo-s80.jpg",
+                "brand": "volvo"
+            },
+            {
+                "id": 3,
+                "name": "Volvo V40",
+                "image": "volvo-v40.jpg",
+                "brand": "volvo"
+            },
+            {
+                "id": 4,
+                "name": "Volvo XC60",
+                "image": "volvo-xc60.jpg",
+                "brand": "volvo"
+            },
+            {
+                "id": 5,
+                "name": "Volvo XC90",
+                "image": "volvo-xc90.jpg",
+                "brand": "volvo"
+            },
+            {
+                "id": 6,
+                "name": "Ford Ecosport",
+                "image": "ford-ecosport.jpg",
+                "brand": "ford"
+            },
+            {
+                "id": 7,
+                "name": "Ford Endeavour",
+                "image": "ford-endeavour.jpg",
+                "brand": "ford"
+            },
+            {
+                "id": 8,
+                "name": "Ford Fiesta Classic",
+                "image": "ford-fiesta-classic.jpg",
+                "brand": "ford"
+            },
+            {
+                "id": 9,
+                "name": "Ford Fiesta",
+                "image": "ford-fiesta.jpg",
+                "brand": "ford"
+            },
+            {
+                "id": 10,
+                "name": "Ford Fake Mustang",
+                "image": "ford-fake-mustang.jpg",
+                "brand": "ford"
+            },
+            {
+                "id": 11,
+                "name": "Mitsubishi Pajero",
+                "image": "mitsubishi-pajero.jpg",
+                "brand": "mitsubishi"
+            },
+            {
+                "id": 12,
+                "name": "Mitsubishi Mock Macro",
+                "image": "mitsubishi-mock-macro.jpg",
+                "brand": "mitsubishi"
+            },
+            {
+                "id": 13,
+                "name": "Mitsubishi Mock Wild Horse",
+                "image": "mitsubishi-mock-wild-horse.jpg",
+                "brand": "mitsubishi"
+            },
+            {
+                "id": 14,
+                "name": "Mitsubishi Fake Trollo",
+                "image": "mitsubishi-fake-trollo.jpg",
+                "brand": "mitsubishi"
+            },
+            {
+                "id": 15,
+                "name": "Mitsubishi Mock Suzzi",
+                "image": "mitsubishi-mock-suzzi.jpg",
+                "brand": "mitsubishi"
+            },
+            {
+                "id": 16,
+                "name": "Nissan Evalia",
+                "image": "nissan-evalia.jpg",
+                "brand": "nissan"
+            },
+            {
+                "id": 17,
+                "name": "Nissan Micra Active",
+                "image": "nissan-micra-active.jpg",
+                "brand": "nissan"
+            },
+            {
+                "id": 18,
+                "name": "Nissan Micra",
+                "image": "nissan-micra.jpg",
+                "brand": "nissan"
+            },
+            {
+                "id": 19,
+                "name": "Nissan Sunny",
+                "image": "nissan-sunny.jpg",
+                "brand": "nissan"
+            },
+            {
+                "id": 20,
+                "name": "Nissan Terrano",
+                "image": "nissan-terrano.jpg",
+                "brand": "nissan"
+            }
+        ]
+    }
+};});
+
+define('bootstrap/hooks',["underscore", "backbone", "backbone.radio", "marionette", "handlebars", "json!../../assets/api/response/cars.json"], function(_, Backbone, Radio, Marionette, Handlebars, carsJSON) {
+  Backbone.ajax = function(response) {
+    var url;
+    url = response.url;
+    if (url.match(new RegExp("/cars"))) {
+      return response.success(carsJSON);
+    }
+  };
   Marionette.TemplateCache.prototype.compileTemplate = function(rawTemplate) {
     return Handlebars.compile(rawTemplate);
   };
@@ -21182,8 +21777,8 @@ define('bootstrap/hooks',["underscore", "backbone", "backbone.radio", "marionett
 });
 
 
-define('application/core', ['wire/debug', 'plugins/marionette/router', 'plugins/marionette/application', 'plugins/backbone/collection/create', 'plugins/container/register', 'plugins/element', 'application/appController', 'application/collections/cars', 'application/behaviors/add', 'application/behaviors/remove', 'application/modules/navigation/spec', 'application/modules/table/spec', 'application/modules/statistic/spec', 'blocks/views/preloader/index'], {
-  $plugins: ['wire/debug', 'plugins/marionette/router', 'plugins/marionette/application', 'plugins/backbone/collection/create', 'plugins/container/register', 'plugins/element'],
+define('application/core', ['plugins/marionette/router', 'plugins/marionette/application', 'plugins/backbone/collection/create', 'plugins/container/register', 'plugins/element', 'application/appController', 'application/collections/cars', 'application/behaviors/add', 'application/behaviors/remove', 'application/modules/navigation/spec', 'application/modules/table/spec', 'application/modules/statistic/spec'], {
+  $plugins: ['plugins/marionette/router', 'plugins/marionette/application', 'plugins/backbone/collection/create', 'plugins/container/register', 'plugins/element'],
   appInstance: {
     createApplication: {
       withRegions: {
@@ -21220,12 +21815,7 @@ define('application/core', ['wire/debug', 'plugins/marionette/router', 'plugins/
         $ref: "element!.not-found"
       }
     },
-    registerIntercessors: ['startModule', 'configure', 'filterBy', 'emphasizeEntity'],
-    ready: {
-      showPreloader: {
-        $ref: 'preloader'
-      }
-    }
+    registerIntercessors: ['startModule', 'configure', 'filterBy']
   },
   router: {
     createRouter: {
@@ -21235,7 +21825,6 @@ define('application/core', ['wire/debug', 'plugins/marionette/router', 'plugins/
       routes: {
         'cars': 'carsModuleHandler',
         'cars/:brand': 'carsModuleHandler',
-        'cars/:brand/:id': 'carsModuleHandler',
         'selected': 'selectedCarsHandler',
         'statistic': 'statisticModuleHandler',
         '*notFound': 'notFoundHandler'
@@ -21250,6 +21839,7 @@ define('application/core', ['wire/debug', 'plugins/marionette/router', 'plugins/
   },
   selectedCarsCollection: {
     createCollection: {
+      initValues: [],
       fromStorage: 'selected-cars',
       synchronize: true
     }
@@ -21334,1176 +21924,10 @@ define('application/core', ['wire/debug', 'plugins/marionette/router', 'plugins/
       }
     }
   },
-  preloader: {
-    create: "blocks/views/preloader/index"
-  },
   start: function() {
     return this.appInstance.start();
   }
 });
-
-/** @license MIT License (c) copyright 2011-2013 original author or authors */
-
-/**
- * meld
- * Aspect Oriented Programming for Javascript
- *
- * meld is part of the cujo.js family of libraries (http://cujojs.com/)
- *
- * Licensed under the MIT License at:
- * http://www.opensource.org/licenses/mit-license.php
- *
- * @author Brian Cavalier
- * @author John Hann
- * @version 1.3.1
- */
-(function (define) {
-define('meld/meld',[],function () {
-
-	//
-	// Public API
-	//
-
-	// Add a single, specific type of advice
-	// returns a function that will remove the newly-added advice
-	meld.before =         adviceApi('before');
-	meld.around =         adviceApi('around');
-	meld.on =             adviceApi('on');
-	meld.afterReturning = adviceApi('afterReturning');
-	meld.afterThrowing =  adviceApi('afterThrowing');
-	meld.after =          adviceApi('after');
-
-	// Access to the current joinpoint in advices
-	meld.joinpoint =      joinpoint;
-
-	// DEPRECATED: meld.add(). Use meld() instead
-	// Returns a function that will remove the newly-added aspect
-	meld.add =            function() { return meld.apply(null, arguments); };
-
-	/**
-	 * Add an aspect to all matching methods of target, or to target itself if
-	 * target is a function and no pointcut is provided.
-	 * @param {object|function} target
-	 * @param {string|array|RegExp|function} [pointcut]
-	 * @param {object} aspect
-	 * @param {function?} aspect.before
-	 * @param {function?} aspect.on
-	 * @param {function?} aspect.around
-	 * @param {function?} aspect.afterReturning
-	 * @param {function?} aspect.afterThrowing
-	 * @param {function?} aspect.after
-	 * @returns {{ remove: function }|function} if target is an object, returns a
-	 *  remover { remove: function } whose remove method will remove the added
-	 *  aspect. If target is a function, returns the newly advised function.
-	 */
-	function meld(target, pointcut, aspect) {
-		var pointcutType, remove;
-
-		if(arguments.length < 3) {
-			return addAspectToFunction(target, pointcut);
-		} else {
-			if (isArray(pointcut)) {
-				remove = addAspectToAll(target, pointcut, aspect);
-			} else {
-				pointcutType = typeof pointcut;
-
-				if (pointcutType === 'string') {
-					if (typeof target[pointcut] === 'function') {
-						remove = addAspectToMethod(target, pointcut, aspect);
-					}
-
-				} else if (pointcutType === 'function') {
-					remove = addAspectToAll(target, pointcut(target), aspect);
-
-				} else {
-					remove = addAspectToMatches(target, pointcut, aspect);
-				}
-			}
-
-			return remove;
-		}
-
-	}
-
-	function Advisor(target, func) {
-
-		var orig, advisor, advised;
-
-		this.target = target;
-		this.func = func;
-		this.aspects = {};
-
-		orig = this.orig = target[func];
-		advisor = this;
-
-		advised = this.advised = function() {
-			var context, joinpoint, args, callOrig, afterType;
-
-			// If called as a constructor (i.e. using "new"), create a context
-			// of the correct type, so that all advice types (including before!)
-			// are called with the correct context.
-			if(this instanceof advised) {
-				// shamelessly derived from https://github.com/cujojs/wire/blob/c7c55fe50238ecb4afbb35f902058ab6b32beb8f/lib/component.js#L25
-				context = objectCreate(orig.prototype);
-				callOrig = function (args) {
-					return applyConstructor(orig, context, args);
-				};
-
-			} else {
-				context = this;
-				callOrig = function(args) {
-					return orig.apply(context, args);
-				};
-
-			}
-
-			args = slice.call(arguments);
-			afterType = 'afterReturning';
-
-			// Save the previous joinpoint and set the current joinpoint
-			joinpoint = pushJoinpoint({
-				target: context,
-				method: func,
-				args: args
-			});
-
-			try {
-				advisor._callSimpleAdvice('before', context, args);
-
-				try {
-					joinpoint.result = advisor._callAroundAdvice(context, func, args, callOrigAndOn);
-				} catch(e) {
-					joinpoint.result = joinpoint.exception = e;
-					// Switch to afterThrowing
-					afterType = 'afterThrowing';
-				}
-
-				args = [joinpoint.result];
-
-				callAfter(afterType, args);
-				callAfter('after', args);
-
-				if(joinpoint.exception) {
-					throw joinpoint.exception;
-				}
-
-				return joinpoint.result;
-
-			} finally {
-				// Restore the previous joinpoint, if necessary.
-				popJoinpoint();
-			}
-
-			function callOrigAndOn(args) {
-				var result = callOrig(args);
-				advisor._callSimpleAdvice('on', context, args);
-
-				return result;
-			}
-
-			function callAfter(afterType, args) {
-				advisor._callSimpleAdvice(afterType, context, args);
-			}
-		};
-
-		defineProperty(advised, '_advisor', { value: advisor, configurable: true });
-	}
-
-	Advisor.prototype = {
-
-		/**
-		 * Invoke all advice functions in the supplied context, with the supplied args
-		 *
-		 * @param adviceType
-		 * @param context
-		 * @param args
-		 */
-		_callSimpleAdvice: function(adviceType, context, args) {
-
-			// before advice runs LIFO, from most-recently added to least-recently added.
-			// All other advice is FIFO
-			var iterator, advices;
-
-			advices = this.aspects[adviceType];
-			if(!advices) {
-				return;
-			}
-
-			iterator = iterators[adviceType];
-
-			iterator(this.aspects[adviceType], function(aspect) {
-				var advice = aspect.advice;
-				advice && advice.apply(context, args);
-			});
-		},
-
-		/**
-		 * Invoke all around advice and then the original method
-		 *
-		 * @param context
-		 * @param method
-		 * @param args
-		 * @param applyOriginal
-		 */
-		_callAroundAdvice: function (context, method, args, applyOriginal) {
-			var len, aspects;
-
-			aspects = this.aspects.around;
-			len = aspects ? aspects.length : 0;
-
-			/**
-			 * Call the next function in the around chain, which will either be another around
-			 * advice, or the orig method.
-			 * @param i {Number} index of the around advice
-			 * @param args {Array} arguments with with to call the next around advice
-			 */
-			function callNext(i, args) {
-				// If we exhausted all aspects, finally call the original
-				// Otherwise, if we found another around, call it
-				return i < 0
-					? applyOriginal(args)
-					: callAround(aspects[i].advice, i, args);
-			}
-
-			function callAround(around, i, args) {
-				var proceedCalled, joinpoint;
-
-				proceedCalled = 0;
-
-				// Joinpoint is immutable
-				// TODO: Use Object.freeze once v8 perf problem is fixed
-				joinpoint = pushJoinpoint({
-					target: context,
-					method: method,
-					args: args,
-					proceed: proceedCall,
-					proceedApply: proceedApply,
-					proceedCount: proceedCount
-				});
-
-				try {
-					// Call supplied around advice function
-					return around.call(context, joinpoint);
-				} finally {
-					popJoinpoint();
-				}
-
-				/**
-				 * The number of times proceed() has been called
-				 * @return {Number}
-				 */
-				function proceedCount() {
-					return proceedCalled;
-				}
-
-				/**
-				 * Proceed to the original method/function or the next around
-				 * advice using original arguments or new argument list if
-				 * arguments.length > 0
-				 * @return {*} result of original method/function or next around advice
-				 */
-				function proceedCall(/* newArg1, newArg2... */) {
-					return proceed(arguments.length > 0 ? slice.call(arguments) : args);
-				}
-
-				/**
-				 * Proceed to the original method/function or the next around
-				 * advice using original arguments or new argument list if
-				 * newArgs is supplied
-				 * @param [newArgs] {Array} new arguments with which to proceed
-				 * @return {*} result of original method/function or next around advice
-				 */
-				function proceedApply(newArgs) {
-					return proceed(newArgs || args);
-				}
-
-				/**
-				 * Create proceed function that calls the next around advice, or
-				 * the original.  May be called multiple times, for example, in retry
-				 * scenarios
-				 * @param [args] {Array} optional arguments to use instead of the
-				 * original arguments
-				 */
-				function proceed(args) {
-					proceedCalled++;
-					return callNext(i - 1, args);
-				}
-
-			}
-
-			return callNext(len - 1, args);
-		},
-
-		/**
-		 * Adds the supplied aspect to the advised target method
-		 *
-		 * @param aspect
-		 */
-		add: function(aspect) {
-
-			var advisor, aspects;
-
-			advisor = this;
-			aspects = advisor.aspects;
-
-			insertAspect(aspects, aspect);
-
-			return {
-				remove: function () {
-					var remaining = removeAspect(aspects, aspect);
-
-					// If there are no aspects left, restore the original method
-					if (!remaining) {
-						advisor.remove();
-					}
-				}
-			};
-		},
-
-		/**
-		 * Removes the Advisor and thus, all aspects from the advised target method, and
-		 * restores the original target method, copying back all properties that may have
-		 * been added or updated on the advised function.
-		 */
-		remove: function () {
-			delete this.advised._advisor;
-			this.target[this.func] = this.orig;
-		}
-	};
-
-	/**
-	 * Returns the advisor for the target object-function pair.  A new advisor
-	 * will be created if one does not already exist.
-	 * @param target {*} target containing a method with the supplied methodName
-	 * @param methodName {String} name of method on target for which to get an advisor
-	 * @return {Object|undefined} existing or newly created advisor for the supplied method
-	 */
-	Advisor.get = function(target, methodName) {
-		if(!(methodName in target)) {
-			return;
-		}
-
-		var advisor, advised;
-
-		advised = target[methodName];
-
-		if(typeof advised !== 'function') {
-			throw new Error('Advice can only be applied to functions: ' + methodName);
-		}
-
-		advisor = advised._advisor;
-		if(!advisor) {
-			advisor = new Advisor(target, methodName);
-			target[methodName] = advisor.advised;
-		}
-
-		return advisor;
-	};
-
-	/**
-	 * Add an aspect to a pure function, returning an advised version of it.
-	 * NOTE: *only the returned function* is advised.  The original (input) function
-	 * is not modified in any way.
-	 * @param func {Function} function to advise
-	 * @param aspect {Object} aspect to add
-	 * @return {Function} advised function
-	 */
-	function addAspectToFunction(func, aspect) {
-		var name, placeholderTarget;
-
-		name = func.name || '_';
-
-		placeholderTarget = {};
-		placeholderTarget[name] = func;
-
-		addAspectToMethod(placeholderTarget, name, aspect);
-
-		return placeholderTarget[name];
-
-	}
-
-	function addAspectToMethod(target, method, aspect) {
-		var advisor = Advisor.get(target, method);
-
-		return advisor && advisor.add(aspect);
-	}
-
-	function addAspectToAll(target, methodArray, aspect) {
-		var removers, added, f, i;
-
-		removers = [];
-		i = 0;
-
-		while((f = methodArray[i++])) {
-			added = addAspectToMethod(target, f, aspect);
-			added && removers.push(added);
-		}
-
-		return createRemover(removers);
-	}
-
-	function addAspectToMatches(target, pointcut, aspect) {
-		var removers = [];
-		// Assume the pointcut is a an object with a .test() method
-		for (var p in target) {
-			// TODO: Decide whether hasOwnProperty is correct here
-			// Only apply to own properties that are functions, and match the pointcut regexp
-			if (typeof target[p] == 'function' && pointcut.test(p)) {
-				// if(object.hasOwnProperty(p) && typeof object[p] === 'function' && pointcut.test(p)) {
-				removers.push(addAspectToMethod(target, p, aspect));
-			}
-		}
-
-		return createRemover(removers);
-	}
-
-	function createRemover(removers) {
-		return {
-			remove: function() {
-				for (var i = removers.length - 1; i >= 0; --i) {
-					removers[i].remove();
-				}
-			}
-		};
-	}
-
-	// Create an API function for the specified advice type
-	function adviceApi(type) {
-		return function(target, method, adviceFunc) {
-			var aspect = {};
-
-			if(arguments.length === 2) {
-				aspect[type] = method;
-				return meld(target, aspect);
-			} else {
-				aspect[type] = adviceFunc;
-				return meld(target, method, aspect);
-			}
-		};
-	}
-
-	/**
-	 * Insert the supplied aspect into aspectList
-	 * @param aspectList {Object} list of aspects, categorized by advice type
-	 * @param aspect {Object} aspect containing one or more supported advice types
-	 */
-	function insertAspect(aspectList, aspect) {
-		var adviceType, advice, advices;
-
-		for(adviceType in iterators) {
-			advice = aspect[adviceType];
-
-			if(advice) {
-				advices = aspectList[adviceType];
-				if(!advices) {
-					aspectList[adviceType] = advices = [];
-				}
-
-				advices.push({
-					aspect: aspect,
-					advice: advice
-				});
-			}
-		}
-	}
-
-	/**
-	 * Remove the supplied aspect from aspectList
-	 * @param aspectList {Object} list of aspects, categorized by advice type
-	 * @param aspect {Object} aspect containing one or more supported advice types
-	 * @return {Number} Number of *advices* left on the advised function.  If
-	 *  this returns zero, then it is safe to remove the advisor completely.
-	 */
-	function removeAspect(aspectList, aspect) {
-		var adviceType, advices, remaining;
-
-		remaining = 0;
-
-		for(adviceType in iterators) {
-			advices = aspectList[adviceType];
-			if(advices) {
-				remaining += advices.length;
-
-				for (var i = advices.length - 1; i >= 0; --i) {
-					if (advices[i].aspect === aspect) {
-						advices.splice(i, 1);
-						--remaining;
-						break;
-					}
-				}
-			}
-		}
-
-		return remaining;
-	}
-
-	function applyConstructor(C, instance, args) {
-		try {
-			// Try to define a constructor, but don't care if it fails
-			defineProperty(instance, 'constructor', {
-				value: C,
-				enumerable: false
-			});
-		} catch(e) {
-			// ignore
-		}
-
-		C.apply(instance, args);
-
-		return instance;
-	}
-
-	var currentJoinpoint, joinpointStack,
-		ap, prepend, append, iterators, slice, isArray, defineProperty, objectCreate;
-
-	// TOOD: Freeze joinpoints when v8 perf problems are resolved
-//	freeze = Object.freeze || function (o) { return o; };
-
-	joinpointStack = [];
-
-	ap      = Array.prototype;
-	prepend = ap.unshift;
-	append  = ap.push;
-	slice   = ap.slice;
-
-	isArray = Array.isArray || function(it) {
-		return Object.prototype.toString.call(it) == '[object Array]';
-	};
-
-	// Check for a *working* Object.defineProperty, fallback to
-	// simple assignment.
-	defineProperty = definePropertyWorks()
-		? Object.defineProperty
-		: function(obj, prop, descriptor) {
-		obj[prop] = descriptor.value;
-	};
-
-	objectCreate = Object.create ||
-		(function() {
-			function F() {}
-			return function(proto) {
-				F.prototype = proto;
-				var instance = new F();
-				F.prototype = null;
-				return instance;
-			};
-		}());
-
-	iterators = {
-		// Before uses reverse iteration
-		before: forEachReverse,
-		around: false
-	};
-
-	// All other advice types use forward iteration
-	// Around is a special case that uses recursion rather than
-	// iteration.  See Advisor._callAroundAdvice
-	iterators.on
-		= iterators.afterReturning
-		= iterators.afterThrowing
-		= iterators.after
-		= forEach;
-
-	function forEach(array, func) {
-		for (var i = 0, len = array.length; i < len; i++) {
-			func(array[i]);
-		}
-	}
-
-	function forEachReverse(array, func) {
-		for (var i = array.length - 1; i >= 0; --i) {
-			func(array[i]);
-		}
-	}
-
-	function joinpoint() {
-		return currentJoinpoint;
-	}
-
-	function pushJoinpoint(newJoinpoint) {
-		joinpointStack.push(currentJoinpoint);
-		return currentJoinpoint = newJoinpoint;
-	}
-
-	function popJoinpoint() {
-		return currentJoinpoint = joinpointStack.pop();
-	}
-
-	function definePropertyWorks() {
-		try {
-			return 'x' in Object.defineProperty({}, 'x', {});
-		} catch (e) { /* return falsey */ }
-	}
-
-	return meld;
-
-});
-})(typeof define == 'function' && define.amd ? define : function (factory) { module.exports = factory(); }
-);
-
-define('meld', ['meld/meld'], function (main) { return main; });
-
-/** @license MIT License (c) copyright B Cavalier & J Hann */
-
-/*jshint sub:true*/
-/*global Node:true*/
-
-/**
- * debug
- * wire plugin that logs timing and debug information about wiring context and object
- * lifecycle events (e.g. creation, properties set, initialized, etc.).
- *
- * wire is part of the cujo.js family of libraries (http://cujojs.com/)
- *
- * Licensed under the MIT License at:
- * http://www.opensource.org/licenses/mit-license.php
- *
- * Usage:
- * {
- *     module: 'wire/debug',
- *
- *     // verbose (Optional)
- *     // If set to true, even more (a LOT) info will be output.
- *     // Default is false if not specified.
- *     verbose: false,
- *
- *     // timeout (Optional)
- *     // Milliseconds to wait for wiring to finish before reporting
- *     // failed components.  There may be failures caused by 3rd party
- *     // wire plugins and components that wire.js cannot detect.  This
- *     // provides a last ditch way to try to report those failures.
- *     // Default is 5000ms (5 seconds)
- *     timeout: 5000,
- *
- *     // filter (Optional)
- *     // String or RegExp to match against a component's name.  Only
- *     // components whose path matches will be reported in the debug
- *     // diagnostic output.
- *     // All components will still be tracked for failures.
- *     // This can be useful in reducing the amount of diagnostic output and
- *     // focusing it on specific components.
- *     // Defaults to matching all components
- *     // Examples:
- *     //   filter: ".*View"
- *     //   filter: /.*View/
- *     //   filter: "[fF]oo[bB]ar"
- *     filter: ".*"
- *
- *     // trace (Optional)
- *     // Enables application component tracing that will log information about component
- *     // method calls while your application runs.  This provides a powerful way to watch
- *     // and debug your application as it runs.
- *     // To enable full tracing, which is a LOT of information:
- *     trace: true
- *     // Or, specify options to enable more focused tracing:
- *     trace: {
- *          // filter (Optional)
- *          // Similar to above, can be string pattern or RegExp
- *          // If not specified, the general debug filter is used (see above)
- *          filter: ".*View",
- *
- *          // pointcut (Optional)
- *          // Matches *method names*.  Can be used with or without specifying filter
- *          // When filter is not specified, this will match methods across all components.
- *          // For example, if all your components name their event emitters "on<Event>", e.g. "onClick"
- *          // you could trace all your event emitters:
- *          // Default: "^[^_]" (all methods not starting with '_')
- *          pointcut: "on.*",
- *
- *          // step (Optional)
- *          // At what step in the wiring process should tracing start.  This can be helpful
- *          // if you need to trace a component during wiring.
- *          // Values: 'create', 'configure', 'initialize', 'ready', 'destroy'
- *          // NOTE: This defines when tracing *begins*.  For example, if this is set to
- *          // 'configure' (the default), anything that happens to components during and
- *          // after the configure step, until that component is destroyed, will be traced.
- *          // Default: 'configure'
- *          step: 'configure'
- *     }
- * }
- */
-(function(global, define) {
-define('wire/debug',['require','meld'],function(require) {
-	var meld, timer, defaultTimeout, logger, createTracer, ownProp;
-
-	meld = require('meld');
-
-	function noop() {}
-
-	ownProp = Object.prototype.hasOwnProperty.call.bind(Object.prototype.hasOwnProperty);
-
-	// Setup console for node, sane browsers, or IE
-	logger = typeof console != 'undefined'
-		? console
-		: global['console'] || { log:noop, error:noop };
-
-	// TODO: Consider using stacktrace.js
-	// https://github.com/eriwen/javascript-stacktrace
-	// For now, quick and dirty, based on how stacktrace.js chooses the appropriate field
-	// and log using console.error
-	function logStack(e) {
-		var stack = e.stack || e.stacktrace;
-		if(!stack) {
-			// If e.sourceURL and e.line are available, this is probably Safari, so
-			// we can build a clickable source:line
-			// Fallback to message if available
-			// If all else fails, just use e itself
-			stack = e.sourceURL && e.line
-				? e.sourceURL + ':' + e.line
-				: e.message || e;
-		}
-
-		logger.error(stack);
-	}
-
-	timer = createTimer();
-
-	// If we don't see any wiring progress in this amount of time
-	// since the last time we saw something happen, then we'll log
-	// an error.
-	defaultTimeout = 5000;
-
-	/**
-	 * Builds a string with timing info and a message for debug output
-	 *
-	 * @param text {String} message
-	 * @param contextTimer per-context timer information
-	 *
-	 * @returns A formatted string for output
-	 */
-	function time(text, contextTimer) {
-		var all, timing;
-
-		all = timer();
-		timing = "(total: " +
-				 (contextTimer
-					 ? all.total + "ms, context: " + contextTimer()
-					 : all)
-			+ "): ";
-
-		return "DEBUG " + timing + text;
-	}
-
-	/**
-	 * Creates a timer function that, when called, returns an object containing
-	 * the total elapsed time since the timer was created, and the split time
-	 * since the last time the timer was called.  All times in milliseconds
-	 *
-	 * @returns timer
-	 */
-	function createTimer() {
-		var start, split;
-
-		start = new Date().getTime();
-		split = start;
-
-		/**
-		 * Returns the total elapsed time since this timer was created, and the
-		 * split time since this getTime was last called.
-		 *
-		 * @returns Object containing total and split times in milliseconds, plus a
-		 * toString() function that is useful in logging the time.
-		 */
-		return function getTime() {
-			var now, total, splitTime;
-
-			now = new Date().getTime();
-			total = now - start;
-			splitTime = now - split;
-			split = now;
-
-			return {
-				total:total,
-				split:splitTime,
-				toString:function () {
-					return '' + splitTime + 'ms / ' + total + 'ms';
-				}
-			};
-		};
-	}
-
-	function defaultFilter(path) {
-		return !!path;
-	}
-
-	function createPathFilter(filter) {
-		if (!filter) {
-			return defaultFilter;
-		}
-
-		var rx = filter.test ? filter : new RegExp(filter);
-
-		return function (path) {
-			return rx.test(path);
-		};
-
-	}
-
-	/**
-	 * Returns true if it is a Node
-	 * Adapted from: http://stackoverflow.com/questions/384286/javascript-isdom-how-do-you-check-if-a-javascript-object-is-a-dom-object
-	 * @param it anything
-	 * @return true iff it is a Node
-	 */
-	function isNode(it) {
-		return typeof Node === "object"
-			? it instanceof Node
-			: it && typeof it === "object" && typeof it.nodeType === "number" && typeof it.nodeName==="string";
-	}
-
-	function isObject(it) {
-		// In IE7 tos.call(null) is '[object Object]'
-		// so we need to check to see if 'it' is
-		// even set
-		return it && Object.prototype.toString.call(it) == '[object Object]';
-	}
-
-	/**
-	 * Function that applies tracing AOP to components being wired
-	 * @function
-	 * @param options {Object} tracing options
-	 * @param plugin {Object} debug plugin instance to which to add tracing functionality
-	 */
-	createTracer = (function() {
-		var depth, padding, defaultStep, defaultPointcut;
-
-		/** Current trace depth */
-		depth = 0;
-
-		/** Padding character for indenting traces */
-		padding =  '.';
-
-		/** 2^8 padding = 128 */
-		for(var i=0; i<8; i++) {
-			padding += padding;
-		}
-
-		/** Default lifecycle step at which to begin tracing */
-		defaultStep = 'configure';
-
-		/** Default pointcut query to match methods that will be traced */
-		defaultPointcut = /^[^_]/;
-
-		function logAfter(context, tag, start, val) {
-			console.log(context + tag + (new Date().getTime() - start.getTime()) + 'ms): ', val);
-		}
-
-		/**
-		 * Creates an aspect to be applied to components that are being traced
-		 * @param path {String} component path
-		 */
-		function createTraceAspect(path) {
-			return {
-				around:function (joinpoint) {
-					var val, context, start, indent;
-
-					// Setup current indent level
-					indent = padding.substr(0, depth);
-					// Form full path to invoked method
-					context = indent + 'DEBUG: ' + path + '.' + joinpoint.method;
-
-					// Increase the depth before proceeding so that nested traces will be indented
-					++depth;
-
-					logger.log(context, joinpoint.args);
-
-					try {
-						start = new Date();
-						val = joinpoint.proceed();
-
-						logAfter(context, ' RETURN (', start, val);
-
-						// return result
-						return val;
-
-					} catch (e) {
-
-						// rethrow
-						logAfter(context, ' THROW (', start, e ? e.toString() : e);
-
-						throw e;
-
-					} finally {
-						// And now decrease the depth after
-						--depth;
-					}
-				}
-			};
-		}
-
-		/**
-		 * Implementation of createTracer
-		 */
-		return function(options, plugin, filter) {
-			var trace, untrace, traceStep, traceFilter, tracePointcut, traceAspects;
-
-			traceFilter = options.trace.filter ? createPathFilter(options.trace.filter) : filter;
-			tracePointcut = options.trace.pointcut || defaultPointcut;
-			traceStep = options.trace.step || defaultStep;
-
-			function isTraceable(target, prop) {
-				return isObject(target) && typeof target[prop] === 'function'
-					&& prop !== 'wire$plugin'
-					&& tracePointcut.test(prop);
-			}
-
-			/**
-			 * Trace pointcut query function that filters out wire plugins
-			 * @param target {Object} target object to query for methods to advise
-			 */
-			function pointcut(target) {
-				var matches = [];
-
-				if(isNode(target)) {
-					return matches;
-				}
-
-				for (var p in target) {
-					// Only match functions, exclude wire plugins, and then apply
-					// the supplied tracePointcut regexp
-					if (isTraceable(target, p)) {
-						matches.push(p);
-					}
-				}
-
-				return matches;
-			}
-
-			traceAspects = [];
-			trace = function (path, target) {
-				if (traceFilter(path)) {
-					// Create the aspect, if the path matched
-					traceAspects.push(meld.add(target, pointcut, createTraceAspect(path)));
-				}
-				// trace intentionally does not resolve the promise
-				// trace relies on the existing plugin method to resolve it
-			};
-
-			untrace = function () {
-				for (var i = traceAspects.length-1; i >= 0; --i) {
-					traceAspects[i].remove();
-				}
-			};
-
-			// Defend against changes to the plugin in future revs
-			var orig = plugin[traceStep] || function (promise) { promise.resolve(); };
-
-			// Replace the plugin listener method with one that will call trace()
-			// and add traceAspect
-			plugin[traceStep] = function (promise, proxy, wire) {
-				trace(proxy.path, proxy.target);
-				orig(promise, proxy, wire);
-			};
-
-			return { trace: trace, untrace: untrace };
-		};
-
-	})();
-
-	function logSeparator() {
-		logger.log('---------------------------------------------------');
-	}
-
-	return function wireDebug(options) {
-
-		var contextTimer, timeout, paths, count, tag,
-			logCreated, logDestroyed, checkPathsTimeout,
-			verbose, filter, plugin, context, tracer;
-
-		verbose = options.verbose;
-		contextTimer = createTimer();
-
-		count = 0;
-		tag = "WIRING";
-
-		tracer = { trace: noop, untrace: noop };
-
-		filter = createPathFilter(options.filter);
-
-		function contextTime(msg) {
-			return time(msg, contextTimer);
-		}
-
-		logger.log(contextTime("Context debug"));
-
-		context = {
-			initialize: function(resolver) {
-				logger.log(contextTime("Context init"));
-				resolver.resolve();
-			},
-			ready: function(resolver) {
-				cancelPathsTimeout();
-				logger.log(contextTime("Context ready"));
-				resolver.resolve();
-			},
-			destroy: function(resolver) {
-				tracer.untrace();
-				logger.log(contextTime("Context destroyed"));
-				resolver.resolve();
-			},
-			error: function(resolver, api, err) {
-				cancelPathsTimeout();
-				console.error(contextTime("Context ERROR: ") + err, err);
-				logStack(err);
-				resolver.reject(err);
-			}
-		};
-
-		function makeListener(step, verbose) {
-			return function (promise, proxy /*, wire */) {
-				cancelPathsTimeout();
-
-				var path = proxy.path;
-
-				if (paths[path]) {
-					paths[path].status = step;
-				}
-
-				if (verbose && filter(path)) {
-					var message = time(step + ' ' + (path || proxy.id || ''), contextTimer);
-					if (proxy.target) {
-						logger.log(message, proxy.target, proxy.metadata);
-					} else {
-						logger.log(message, proxy);
-					}
-				}
-
-				if(count) {
-					checkPathsTimeout = setTimeout(checkPaths, timeout);
-				}
-
-				promise.resolve();
-			};
-		}
-
-		paths = {};
-		timeout = options.timeout || defaultTimeout;
-		logCreated = makeListener('created', verbose);
-		logDestroyed = makeListener('destroyed', true);
-
-		function cancelPathsTimeout() {
-			clearTimeout(checkPathsTimeout);
-			checkPathsTimeout = null;
-		}
-
-		function checkPaths() {
-			if (!checkPathsTimeout) {
-				return;
-			}
-
-			var p, component, msg, ready, notReady;
-
-			logSeparator();
-			if(count) {
-				ready = [];
-				notReady = [];
-				logger.error(tag + ': No progress in ' + timeout + 'ms, status:');
-
-				for (p in paths) {
-					component = paths[p];
-					msg = p + ': ' + component.status;
-
-					(component.status == 'ready' ? ready : notReady).push(
-						{ msg: msg, metadata: component.metadata }
-					);
-				}
-
-				if(notReady.length > 0) {
-					logSeparator();
-					logger.log('Components that DID NOT finish wiring');
-					for(p = notReady.length-1; p >= 0; --p) {
-						component = notReady[p];
-						logger.error(component.msg, component.metadata);
-					}
-				}
-
-				if(ready.length > 0) {
-					logSeparator();
-					logger.log('Components that finished wiring');
-					for(p = ready.length-1; p >= 0; --p) {
-						component = ready[p];
-						logger.log(component.msg, component.metadata);
-					}
-				}
-			} else {
-				logger.error(tag + ': No components created after ' + timeout + 'ms');
-			}
-
-			logSeparator();
-		}
-
-		/**
-		 * Adds a named constructor function property to the supplied component
-		 * so that the name shows up in debug inspectors.  Squelches all errors.
-		 */
-		function makeConstructor(name, component) {
-			/*jshint evil:true*/
-			var ctor;
-			try {
-				// Generate a named function to use as the constructor
-				name = name.replace(/^[^a-zA-Z$_]|[^a-zA-Z0-9$_]+/g, '_');
-				eval('ctor = function ' + name + ' () {}');
-
-				// Be friendly and make configurable and writable just in case
-				// some other library or application code tries to set constructor.
-				Object.defineProperty(component, 'constructor', {
-					configurable: true,
-					writable: true,
-					value: ctor
-				});
-
-			} catch(e) {
-				// Oh well, ignore.
-			}
-		}
-
-		plugin = {
-			context: context,
-			create:function (promise, proxy) {
-				var path, component;
-
-				path = proxy.path;
-				component = proxy.target;
-
-				count++;
-				paths[path || ('(unnamed-' + count + ')')] = {
-					metadata: proxy.metadata
-				};
-
-				if(component && typeof component == 'object'
-					&& !ownProp(component, 'constructor')) {
-					makeConstructor(proxy.id, component);
-				}
-
-				logCreated(promise, proxy);
-			},
-			configure:  makeListener('configured', verbose),
-			initialize: makeListener('initialized', verbose),
-			ready:      makeListener('ready', true),
-			destroy:    function(promise, proxy) {
-				// stop tracking destroyed components, since we don't
-				// care anymore
-				delete paths[proxy.path];
-				count--;
-				tag = "DESTROY";
-
-				logDestroyed(promise, proxy);
-			}
-		};
-
-		if (options.trace) {
-			tracer = createTracer(options, plugin, filter);
-		}
-
-		checkPathsTimeout = setTimeout(checkPaths, timeout);
-
-		return plugin;
-	};
-
-});
-})(this, typeof define == 'function' && define.amd
-	? define : function(factory) { module.exports = factory(require); }
-);
 
 define('plugins/marionette/router',['underscore', 'marionette'], function(_, Marionette) {
   return function(options) {
@@ -24951,6 +24375,607 @@ define('when/when',['require','./lib/decorators/timed','./lib/decorators/array',
 
 define('when', ['when/when'], function (main) { return main; });
 
+/** @license MIT License (c) copyright 2011-2013 original author or authors */
+
+/**
+ * meld
+ * Aspect Oriented Programming for Javascript
+ *
+ * meld is part of the cujo.js family of libraries (http://cujojs.com/)
+ *
+ * Licensed under the MIT License at:
+ * http://www.opensource.org/licenses/mit-license.php
+ *
+ * @author Brian Cavalier
+ * @author John Hann
+ * @version 1.3.1
+ */
+(function (define) {
+define('meld/meld',[],function () {
+
+	//
+	// Public API
+	//
+
+	// Add a single, specific type of advice
+	// returns a function that will remove the newly-added advice
+	meld.before =         adviceApi('before');
+	meld.around =         adviceApi('around');
+	meld.on =             adviceApi('on');
+	meld.afterReturning = adviceApi('afterReturning');
+	meld.afterThrowing =  adviceApi('afterThrowing');
+	meld.after =          adviceApi('after');
+
+	// Access to the current joinpoint in advices
+	meld.joinpoint =      joinpoint;
+
+	// DEPRECATED: meld.add(). Use meld() instead
+	// Returns a function that will remove the newly-added aspect
+	meld.add =            function() { return meld.apply(null, arguments); };
+
+	/**
+	 * Add an aspect to all matching methods of target, or to target itself if
+	 * target is a function and no pointcut is provided.
+	 * @param {object|function} target
+	 * @param {string|array|RegExp|function} [pointcut]
+	 * @param {object} aspect
+	 * @param {function?} aspect.before
+	 * @param {function?} aspect.on
+	 * @param {function?} aspect.around
+	 * @param {function?} aspect.afterReturning
+	 * @param {function?} aspect.afterThrowing
+	 * @param {function?} aspect.after
+	 * @returns {{ remove: function }|function} if target is an object, returns a
+	 *  remover { remove: function } whose remove method will remove the added
+	 *  aspect. If target is a function, returns the newly advised function.
+	 */
+	function meld(target, pointcut, aspect) {
+		var pointcutType, remove;
+
+		if(arguments.length < 3) {
+			return addAspectToFunction(target, pointcut);
+		} else {
+			if (isArray(pointcut)) {
+				remove = addAspectToAll(target, pointcut, aspect);
+			} else {
+				pointcutType = typeof pointcut;
+
+				if (pointcutType === 'string') {
+					if (typeof target[pointcut] === 'function') {
+						remove = addAspectToMethod(target, pointcut, aspect);
+					}
+
+				} else if (pointcutType === 'function') {
+					remove = addAspectToAll(target, pointcut(target), aspect);
+
+				} else {
+					remove = addAspectToMatches(target, pointcut, aspect);
+				}
+			}
+
+			return remove;
+		}
+
+	}
+
+	function Advisor(target, func) {
+
+		var orig, advisor, advised;
+
+		this.target = target;
+		this.func = func;
+		this.aspects = {};
+
+		orig = this.orig = target[func];
+		advisor = this;
+
+		advised = this.advised = function() {
+			var context, joinpoint, args, callOrig, afterType;
+
+			// If called as a constructor (i.e. using "new"), create a context
+			// of the correct type, so that all advice types (including before!)
+			// are called with the correct context.
+			if(this instanceof advised) {
+				// shamelessly derived from https://github.com/cujojs/wire/blob/c7c55fe50238ecb4afbb35f902058ab6b32beb8f/lib/component.js#L25
+				context = objectCreate(orig.prototype);
+				callOrig = function (args) {
+					return applyConstructor(orig, context, args);
+				};
+
+			} else {
+				context = this;
+				callOrig = function(args) {
+					return orig.apply(context, args);
+				};
+
+			}
+
+			args = slice.call(arguments);
+			afterType = 'afterReturning';
+
+			// Save the previous joinpoint and set the current joinpoint
+			joinpoint = pushJoinpoint({
+				target: context,
+				method: func,
+				args: args
+			});
+
+			try {
+				advisor._callSimpleAdvice('before', context, args);
+
+				try {
+					joinpoint.result = advisor._callAroundAdvice(context, func, args, callOrigAndOn);
+				} catch(e) {
+					joinpoint.result = joinpoint.exception = e;
+					// Switch to afterThrowing
+					afterType = 'afterThrowing';
+				}
+
+				args = [joinpoint.result];
+
+				callAfter(afterType, args);
+				callAfter('after', args);
+
+				if(joinpoint.exception) {
+					throw joinpoint.exception;
+				}
+
+				return joinpoint.result;
+
+			} finally {
+				// Restore the previous joinpoint, if necessary.
+				popJoinpoint();
+			}
+
+			function callOrigAndOn(args) {
+				var result = callOrig(args);
+				advisor._callSimpleAdvice('on', context, args);
+
+				return result;
+			}
+
+			function callAfter(afterType, args) {
+				advisor._callSimpleAdvice(afterType, context, args);
+			}
+		};
+
+		defineProperty(advised, '_advisor', { value: advisor, configurable: true });
+	}
+
+	Advisor.prototype = {
+
+		/**
+		 * Invoke all advice functions in the supplied context, with the supplied args
+		 *
+		 * @param adviceType
+		 * @param context
+		 * @param args
+		 */
+		_callSimpleAdvice: function(adviceType, context, args) {
+
+			// before advice runs LIFO, from most-recently added to least-recently added.
+			// All other advice is FIFO
+			var iterator, advices;
+
+			advices = this.aspects[adviceType];
+			if(!advices) {
+				return;
+			}
+
+			iterator = iterators[adviceType];
+
+			iterator(this.aspects[adviceType], function(aspect) {
+				var advice = aspect.advice;
+				advice && advice.apply(context, args);
+			});
+		},
+
+		/**
+		 * Invoke all around advice and then the original method
+		 *
+		 * @param context
+		 * @param method
+		 * @param args
+		 * @param applyOriginal
+		 */
+		_callAroundAdvice: function (context, method, args, applyOriginal) {
+			var len, aspects;
+
+			aspects = this.aspects.around;
+			len = aspects ? aspects.length : 0;
+
+			/**
+			 * Call the next function in the around chain, which will either be another around
+			 * advice, or the orig method.
+			 * @param i {Number} index of the around advice
+			 * @param args {Array} arguments with with to call the next around advice
+			 */
+			function callNext(i, args) {
+				// If we exhausted all aspects, finally call the original
+				// Otherwise, if we found another around, call it
+				return i < 0
+					? applyOriginal(args)
+					: callAround(aspects[i].advice, i, args);
+			}
+
+			function callAround(around, i, args) {
+				var proceedCalled, joinpoint;
+
+				proceedCalled = 0;
+
+				// Joinpoint is immutable
+				// TODO: Use Object.freeze once v8 perf problem is fixed
+				joinpoint = pushJoinpoint({
+					target: context,
+					method: method,
+					args: args,
+					proceed: proceedCall,
+					proceedApply: proceedApply,
+					proceedCount: proceedCount
+				});
+
+				try {
+					// Call supplied around advice function
+					return around.call(context, joinpoint);
+				} finally {
+					popJoinpoint();
+				}
+
+				/**
+				 * The number of times proceed() has been called
+				 * @return {Number}
+				 */
+				function proceedCount() {
+					return proceedCalled;
+				}
+
+				/**
+				 * Proceed to the original method/function or the next around
+				 * advice using original arguments or new argument list if
+				 * arguments.length > 0
+				 * @return {*} result of original method/function or next around advice
+				 */
+				function proceedCall(/* newArg1, newArg2... */) {
+					return proceed(arguments.length > 0 ? slice.call(arguments) : args);
+				}
+
+				/**
+				 * Proceed to the original method/function or the next around
+				 * advice using original arguments or new argument list if
+				 * newArgs is supplied
+				 * @param [newArgs] {Array} new arguments with which to proceed
+				 * @return {*} result of original method/function or next around advice
+				 */
+				function proceedApply(newArgs) {
+					return proceed(newArgs || args);
+				}
+
+				/**
+				 * Create proceed function that calls the next around advice, or
+				 * the original.  May be called multiple times, for example, in retry
+				 * scenarios
+				 * @param [args] {Array} optional arguments to use instead of the
+				 * original arguments
+				 */
+				function proceed(args) {
+					proceedCalled++;
+					return callNext(i - 1, args);
+				}
+
+			}
+
+			return callNext(len - 1, args);
+		},
+
+		/**
+		 * Adds the supplied aspect to the advised target method
+		 *
+		 * @param aspect
+		 */
+		add: function(aspect) {
+
+			var advisor, aspects;
+
+			advisor = this;
+			aspects = advisor.aspects;
+
+			insertAspect(aspects, aspect);
+
+			return {
+				remove: function () {
+					var remaining = removeAspect(aspects, aspect);
+
+					// If there are no aspects left, restore the original method
+					if (!remaining) {
+						advisor.remove();
+					}
+				}
+			};
+		},
+
+		/**
+		 * Removes the Advisor and thus, all aspects from the advised target method, and
+		 * restores the original target method, copying back all properties that may have
+		 * been added or updated on the advised function.
+		 */
+		remove: function () {
+			delete this.advised._advisor;
+			this.target[this.func] = this.orig;
+		}
+	};
+
+	/**
+	 * Returns the advisor for the target object-function pair.  A new advisor
+	 * will be created if one does not already exist.
+	 * @param target {*} target containing a method with the supplied methodName
+	 * @param methodName {String} name of method on target for which to get an advisor
+	 * @return {Object|undefined} existing or newly created advisor for the supplied method
+	 */
+	Advisor.get = function(target, methodName) {
+		if(!(methodName in target)) {
+			return;
+		}
+
+		var advisor, advised;
+
+		advised = target[methodName];
+
+		if(typeof advised !== 'function') {
+			throw new Error('Advice can only be applied to functions: ' + methodName);
+		}
+
+		advisor = advised._advisor;
+		if(!advisor) {
+			advisor = new Advisor(target, methodName);
+			target[methodName] = advisor.advised;
+		}
+
+		return advisor;
+	};
+
+	/**
+	 * Add an aspect to a pure function, returning an advised version of it.
+	 * NOTE: *only the returned function* is advised.  The original (input) function
+	 * is not modified in any way.
+	 * @param func {Function} function to advise
+	 * @param aspect {Object} aspect to add
+	 * @return {Function} advised function
+	 */
+	function addAspectToFunction(func, aspect) {
+		var name, placeholderTarget;
+
+		name = func.name || '_';
+
+		placeholderTarget = {};
+		placeholderTarget[name] = func;
+
+		addAspectToMethod(placeholderTarget, name, aspect);
+
+		return placeholderTarget[name];
+
+	}
+
+	function addAspectToMethod(target, method, aspect) {
+		var advisor = Advisor.get(target, method);
+
+		return advisor && advisor.add(aspect);
+	}
+
+	function addAspectToAll(target, methodArray, aspect) {
+		var removers, added, f, i;
+
+		removers = [];
+		i = 0;
+
+		while((f = methodArray[i++])) {
+			added = addAspectToMethod(target, f, aspect);
+			added && removers.push(added);
+		}
+
+		return createRemover(removers);
+	}
+
+	function addAspectToMatches(target, pointcut, aspect) {
+		var removers = [];
+		// Assume the pointcut is a an object with a .test() method
+		for (var p in target) {
+			// TODO: Decide whether hasOwnProperty is correct here
+			// Only apply to own properties that are functions, and match the pointcut regexp
+			if (typeof target[p] == 'function' && pointcut.test(p)) {
+				// if(object.hasOwnProperty(p) && typeof object[p] === 'function' && pointcut.test(p)) {
+				removers.push(addAspectToMethod(target, p, aspect));
+			}
+		}
+
+		return createRemover(removers);
+	}
+
+	function createRemover(removers) {
+		return {
+			remove: function() {
+				for (var i = removers.length - 1; i >= 0; --i) {
+					removers[i].remove();
+				}
+			}
+		};
+	}
+
+	// Create an API function for the specified advice type
+	function adviceApi(type) {
+		return function(target, method, adviceFunc) {
+			var aspect = {};
+
+			if(arguments.length === 2) {
+				aspect[type] = method;
+				return meld(target, aspect);
+			} else {
+				aspect[type] = adviceFunc;
+				return meld(target, method, aspect);
+			}
+		};
+	}
+
+	/**
+	 * Insert the supplied aspect into aspectList
+	 * @param aspectList {Object} list of aspects, categorized by advice type
+	 * @param aspect {Object} aspect containing one or more supported advice types
+	 */
+	function insertAspect(aspectList, aspect) {
+		var adviceType, advice, advices;
+
+		for(adviceType in iterators) {
+			advice = aspect[adviceType];
+
+			if(advice) {
+				advices = aspectList[adviceType];
+				if(!advices) {
+					aspectList[adviceType] = advices = [];
+				}
+
+				advices.push({
+					aspect: aspect,
+					advice: advice
+				});
+			}
+		}
+	}
+
+	/**
+	 * Remove the supplied aspect from aspectList
+	 * @param aspectList {Object} list of aspects, categorized by advice type
+	 * @param aspect {Object} aspect containing one or more supported advice types
+	 * @return {Number} Number of *advices* left on the advised function.  If
+	 *  this returns zero, then it is safe to remove the advisor completely.
+	 */
+	function removeAspect(aspectList, aspect) {
+		var adviceType, advices, remaining;
+
+		remaining = 0;
+
+		for(adviceType in iterators) {
+			advices = aspectList[adviceType];
+			if(advices) {
+				remaining += advices.length;
+
+				for (var i = advices.length - 1; i >= 0; --i) {
+					if (advices[i].aspect === aspect) {
+						advices.splice(i, 1);
+						--remaining;
+						break;
+					}
+				}
+			}
+		}
+
+		return remaining;
+	}
+
+	function applyConstructor(C, instance, args) {
+		try {
+			// Try to define a constructor, but don't care if it fails
+			defineProperty(instance, 'constructor', {
+				value: C,
+				enumerable: false
+			});
+		} catch(e) {
+			// ignore
+		}
+
+		C.apply(instance, args);
+
+		return instance;
+	}
+
+	var currentJoinpoint, joinpointStack,
+		ap, prepend, append, iterators, slice, isArray, defineProperty, objectCreate;
+
+	// TOOD: Freeze joinpoints when v8 perf problems are resolved
+//	freeze = Object.freeze || function (o) { return o; };
+
+	joinpointStack = [];
+
+	ap      = Array.prototype;
+	prepend = ap.unshift;
+	append  = ap.push;
+	slice   = ap.slice;
+
+	isArray = Array.isArray || function(it) {
+		return Object.prototype.toString.call(it) == '[object Array]';
+	};
+
+	// Check for a *working* Object.defineProperty, fallback to
+	// simple assignment.
+	defineProperty = definePropertyWorks()
+		? Object.defineProperty
+		: function(obj, prop, descriptor) {
+		obj[prop] = descriptor.value;
+	};
+
+	objectCreate = Object.create ||
+		(function() {
+			function F() {}
+			return function(proto) {
+				F.prototype = proto;
+				var instance = new F();
+				F.prototype = null;
+				return instance;
+			};
+		}());
+
+	iterators = {
+		// Before uses reverse iteration
+		before: forEachReverse,
+		around: false
+	};
+
+	// All other advice types use forward iteration
+	// Around is a special case that uses recursion rather than
+	// iteration.  See Advisor._callAroundAdvice
+	iterators.on
+		= iterators.afterReturning
+		= iterators.afterThrowing
+		= iterators.after
+		= forEach;
+
+	function forEach(array, func) {
+		for (var i = 0, len = array.length; i < len; i++) {
+			func(array[i]);
+		}
+	}
+
+	function forEachReverse(array, func) {
+		for (var i = array.length - 1; i >= 0; --i) {
+			func(array[i]);
+		}
+	}
+
+	function joinpoint() {
+		return currentJoinpoint;
+	}
+
+	function pushJoinpoint(newJoinpoint) {
+		joinpointStack.push(currentJoinpoint);
+		return currentJoinpoint = newJoinpoint;
+	}
+
+	function popJoinpoint() {
+		return currentJoinpoint = joinpointStack.pop();
+	}
+
+	function definePropertyWorks() {
+		try {
+			return 'x' in Object.defineProperty({}, 'x', {});
+		} catch (e) { /* return falsey */ }
+	}
+
+	return meld;
+
+});
+})(typeof define == 'function' && define.amd ? define : function (factory) { module.exports = factory(); }
+);
+
+define('meld', ['meld/meld'], function (main) { return main; });
+
 var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 define('plugins/container/register',['underscore', 'backbone.radio', 'when', 'meld'], function(_, Radio, When, meld) {
@@ -25116,10 +25141,6 @@ define('application/appController',['underscore', 'marionette', 'when', 'meld'],
 
     AppController.prototype.currentRootFragment = null;
 
-    AppController.prototype.showPreloader = function(preloader) {
-      return this.regions.mainAreaRegion.show(preloader);
-    };
-
     AppController.prototype.onRoute = function(name, path, opts) {
       if (path !== '*notFound') {
         return this.notFoundPageLayer.hide();
@@ -25135,7 +25156,7 @@ define('application/appController',['underscore', 'marionette', 'when', 'meld'],
       }
     };
 
-    AppController.prototype.carsModuleHandler = function(brand, id) {
+    AppController.prototype.carsModuleHandler = function(brand) {
       var environment;
       this.configure('navigation', {}, {
         brandTabs: true,
@@ -25155,10 +25176,7 @@ define('application/appController',['underscore', 'marionette', 'when', 'meld'],
         },
         controlLabel: 'select'
       };
-      this.filterBy('table', environment, 'brand', brand);
-      if (brand && id) {
-        return this.emphasizeEntity('table', environment, brand, id);
-      }
+      return this.filterBy('table', environment, 'brand', brand);
     };
 
     AppController.prototype.selectedCarsHandler = function() {
@@ -25190,6 +25208,10 @@ define('application/appController',['underscore', 'marionette', 'when', 'meld'],
     };
 
     AppController.prototype.notFoundHandler = function() {
+      this.configure('navigation', {}, {
+        brandTabs: false,
+        counter: false
+      });
       return this.notFoundPageLayer.show();
     };
 
@@ -25201,10 +25223,6 @@ define('application/appController',['underscore', 'marionette', 'when', 'meld'],
 
     AppController.prototype.filterBy = function(sandbox, args) {
       return sandbox.filterBy(args[0], args[1]);
-    };
-
-    AppController.prototype.emphasizeEntity = function(sandbox, args) {
-      return console.debug('brand, id:::::', args[0], args[1]);
     };
 
     return AppController;
@@ -25318,8 +25336,8 @@ define('application/behaviors/remove',[],function() {
 });
 
 
-define('application/modules/navigation/spec', ['wire/debug', 'plugins/hbs', 'plugins/marionette/layout', 'plugins/marionette/components/tabs', 'plugins/marionette/components/counter', 'application/modules/navigation/controller'], {
-  $plugins: ['wire/debug', 'plugins/hbs', 'plugins/marionette/layout', 'plugins/marionette/components/tabs', 'plugins/marionette/components/counter'],
+define('application/modules/navigation/spec', ['plugins/hbs', 'plugins/marionette/layout', 'plugins/marionette/components/tabs', 'plugins/marionette/components/counter', 'application/modules/navigation/controller'], {
+  $plugins: ['plugins/hbs', 'plugins/marionette/layout', 'plugins/marionette/components/tabs', 'plugins/marionette/components/counter'],
   publicApi: {
     literal: {
       configureLayout: {
@@ -25688,8 +25706,8 @@ define('application/modules/navigation/controller',["marionette", "meld"], funct
 });
 
 
-define('application/modules/table/spec', ['wire/debug', 'plugins/hbs', 'plugins/marionette/layout', 'plugins/marionette/components/tabs', 'plugins/marionette/components/table', 'application/behaviors/imageCellBehavior', 'application/modules/table/controller'], {
-  $plugins: ['wire/debug', 'plugins/hbs', 'plugins/marionette/layout', 'plugins/marionette/components/tabs', 'plugins/marionette/components/table'],
+define('application/modules/table/spec', ['plugins/hbs', 'plugins/marionette/layout', 'plugins/marionette/components/tabs', 'plugins/marionette/components/table', 'application/behaviors/imageCellBehavior', 'application/modules/table/controller'], {
+  $plugins: ['plugins/hbs', 'plugins/marionette/layout', 'plugins/marionette/components/tabs', 'plugins/marionette/components/table'],
   publicApi: {
     literal: {
       filterBy: {
@@ -25980,8 +25998,8 @@ define('application/modules/table/controller',["marionette", "meld"], function(M
 });
 
 
-define('application/modules/statistic/spec', ['wire/debug', 'plugins/hbs', 'plugins/marionette/layout', 'application/modules/statistic/chart'], {
-  $plugins: ['wire/debug', 'plugins/hbs', 'plugins/marionette/layout'],
+define('application/modules/statistic/spec', ['plugins/hbs', 'plugins/marionette/layout', 'application/modules/statistic/chart'], {
+  $plugins: ['plugins/hbs', 'plugins/marionette/layout'],
   layout: {
     createLayout: {
       fromTemplate: {
@@ -26388,34 +26406,6 @@ define('application/modules/statistic/chart',['marionette', 'highcharts'], funct
     };
 
     return Chart;
-
-  })(Marionette.ItemView);
-});
-
-
-define('hbs!templates/preloader', ['handlebars'], function(Handlebars){ 
-Handlebars = Handlebars || this.Handlebars;
-return Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-    return "<div class=\"loading\"></div>";
-},"useData":true});
-});
-
-var __hasProp = {}.hasOwnProperty,
-  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
-
-define('blocks/views/preloader/index',['marionette', 'hbs!templates/preloader'], function(Marionette, preloader) {
-  var PreloaderView, _ref;
-  return PreloaderView = (function(_super) {
-    __extends(PreloaderView, _super);
-
-    function PreloaderView() {
-      _ref = PreloaderView.__super__.constructor.apply(this, arguments);
-      return _ref;
-    }
-
-    PreloaderView.prototype.template = preloader;
-
-    return PreloaderView;
 
   })(Marionette.ItemView);
 });
