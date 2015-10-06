@@ -1,6 +1,6 @@
 ###Одностраничное приложение "Car-select-spa"
 
-+ Приложение построено на Wire.js, Marionette.js `2.4.3v`, Backbone.js.
++ Приложение построено на Wire.js, Marionette.js `2.4.3v`, Backbone.js. Для отображения статистики используется [Highcharts](http://www.highcharts.com/).
 
 ###Демо-версия
 http://designeng.github.io/car-select/#/cars
