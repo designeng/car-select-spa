@@ -3,6 +3,12 @@
   "authors": [
     "Denis Savenok <denissavenok@gmail.com>"
   ],
+  "keywords": [
+    "cujo",
+    "wire",
+    "marionette",
+    "backbone"
+  ],
   "dependencies": {
     "random-word-generator": "^0.9.9",
     "underscore": "^1.8.3",
