@@ -36,8 +36,6 @@ define
                 cellBehavior: {$ref: 'imageCellBehavior'}
         addFilters:
             'brand' : {}
-        properties:
-            sandbox: {$ref: 'sandbox'}
 
     imageCellBehavior:
         module: 'application/behaviors/imageCellBehavior'

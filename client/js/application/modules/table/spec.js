@@ -54,11 +54,6 @@ define({
     },
     addFilters: {
       'brand': {}
-    },
-    properties: {
-      sandbox: {
-        $ref: 'sandbox'
-      }
     }
   },
   imageCellBehavior: {
