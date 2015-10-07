@@ -19,7 +19,6 @@ define [
                 when 'notFoundRouteHandler'
                     @configure 'navigation', {}, {brandTabs: false, counter: false}
 
-        # remove and destroy cached context if root fragment is changed
         rootFragmentMutation: ->
             rootFragment = window.location.hash.split('/')[1]
             if @currentRootFragment != rootFragment
