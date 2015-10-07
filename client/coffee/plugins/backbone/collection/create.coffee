@@ -9,6 +9,7 @@ define [
         #   fromStorage
         #   initValues
         #   synchronize
+        # TODO: add options.collectionClass to create collection from special class
         createCollectionFactory = (resolver, compDef, wire) ->
             wire(compDef.options).then (options) ->
                 fromArray   = options.fromArray
