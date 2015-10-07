@@ -63,19 +63,5 @@ define({
   },
   imageCellBehavior: {
     module: 'application/behaviors/imageCellBehavior'
-  },
-  controller: {
-    create: 'application/modules/table/controller',
-    properties: {
-      collection: {
-        $ref: 'collection'
-      },
-      table: {
-        $ref: 'table'
-      }
-    },
-    ready: {
-      onReady: {}
-    }
   }
 });
