@@ -39,8 +39,6 @@ define [
             @collection.add models
             @render()
 
-            @sandbox.channel.trigger 'onCollectionSync', @collection
-
     insertControl = (cell, controlType, controlBehavior, model) ->
         # noop function, not implemented for other control types
 

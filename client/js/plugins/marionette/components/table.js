@@ -65,8 +65,7 @@ define(['underscore', 'backbone', 'marionette', 'hbs!templates/tableRow'], funct
       });
       this.collection.reset();
       this.collection.add(models);
-      this.render();
-      return this.sandbox.channel.trigger('onCollectionSync', this.collection);
+      return this.render();
     };
 
     return TableView;
