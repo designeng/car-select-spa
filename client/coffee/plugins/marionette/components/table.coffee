@@ -1,9 +1,8 @@
 define [
     'underscore'
-    'backbone'
     'marionette'
     'hbs!templates/tableRow'
-], (_, Backbone, Marionette, tableRowTpl) ->
+], (_, Marionette, tableRowTpl) ->
 
     class TableRowView extends Marionette.ItemView
         tagName: "tr"
