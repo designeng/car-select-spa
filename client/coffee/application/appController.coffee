@@ -63,7 +63,7 @@ define [
         # INTERCESSORS:
 
         startModule: (sandbox) ->
-            # all is done in container/register plugin
+            # no api call. all is done in container/register plugin
 
         configure: (sandbox, args) ->
             sandbox.configureLayout args[0]
