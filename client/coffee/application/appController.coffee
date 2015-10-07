@@ -8,7 +8,7 @@ define [
         currentRootFragment: null
 
         # will be invoked before any '...RouteHandler' method
-        handlersPreceder: (handlerName) ->
+        configureNavigationModule: (handlerName) ->
             switch handlerName
                 when 'carsRouteHandler'
                     @configure 'navigation', {}, {brandTabs: true, counter: false}
@@ -18,11 +18,6 @@ define [
                     @configure 'navigation', {}, {brandTabs: false, counter: false}
                 when 'notFoundRouteHandler'
                     @configure 'navigation', {}, {brandTabs: false, counter: false}
-            @rootFragmentMutation()
-
-        # DEFAULT ROUTE HANDLER:
-        onRoute: (name, path, opts) =>
-            @notFoundPageLayer.hide() unless path is '*notFound'
 
         # remove and destroy cached context if root fragment is changed
         rootFragmentMutation: ->
@@ -30,6 +25,10 @@ define [
             if @currentRootFragment != rootFragment
                 @container.stopModules ['table', 'statistic']
                 @currentRootFragment = rootFragment
+
+        # DEFAULT ROUTE HANDLER:
+        onRoute: (name, path, opts) =>
+            @notFoundPageLayer.hide() unless path is '*notFound'
 
         # ROUTES HANDLERS:
 

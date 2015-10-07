@@ -39,7 +39,10 @@ define
                 '*notFound'         : 'notFoundRouteHandler'
             precede:
                 handlers: '*'
-                withMethod: {$ref: 'appController.handlersPreceder'}
+                with: [
+                    {$ref: 'appController.configureNavigationModule'}
+                    {$ref: 'appController.rootFragmentMutation'}
+                ]
         onRoute: {$ref: 'appController.onRoute'}
 
     # COLLECTIONS

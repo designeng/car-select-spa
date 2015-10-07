@@ -11,22 +11,28 @@ define(['underscore', 'marionette', 'meld'], function(_, Marionette, meld) {
         }
       }
       return wire(compDef.options).then(function(opts) {
-        var handlers, method, precededMethods, router;
+        var handlers, methodName, precededMethods, router, _with;
         if (opts.precede) {
           handlers = opts.precede.handlers;
           precededMethods = [];
           if (handlers === '*' || handlers[0] === '*') {
-            for (method in opts.controller) {
-              if (method.slice(-12) === 'RouteHandler') {
-                precededMethods.push(method);
+            for (methodName in opts.controller) {
+              if (methodName.slice(-12) === 'RouteHandler') {
+                precededMethods.push(methodName);
               }
             }
           } else if (_.isArray(handlers)) {
             precededMethods = handlers;
           }
-          _.each(precededMethods, function(method) {
-            return meld.before(opts.controller, method, function() {
-              return opts.precede.withMethod.call(opts.controller, method);
+          _with = opts.precede["with"];
+          _.each(precededMethods, function(methodName) {
+            return meld.before(opts.controller, methodName, function() {
+              if (_.isFunction(_with)) {
+                _with = [_with];
+              }
+              return _.each(_with, function(func) {
+                return func.call(opts.controller, methodName);
+              });
             });
           });
         }
