@@ -15,38 +15,28 @@ define(['underscore', 'marionette'], function(_, Marionette) {
 
     AppController.prototype.currentRootFragment = null;
 
-    AppController.prototype.handlersPreceder = function(handlerName) {
+    AppController.prototype.configureNavigationModule = function(handlerName) {
       switch (handlerName) {
         case 'carsRouteHandler':
-          this.configure('navigation', {}, {
+          return this.configure('navigation', {}, {
             brandTabs: true,
             counter: false
           });
-          break;
         case 'selectedCarsRouteHandler':
-          this.configure('navigation', {}, {
+          return this.configure('navigation', {}, {
             brandTabs: false,
             counter: true
           });
-          break;
         case 'statisticRouteHandler':
-          this.configure('navigation', {}, {
+          return this.configure('navigation', {}, {
             brandTabs: false,
             counter: false
           });
-          break;
         case 'notFoundRouteHandler':
-          this.configure('navigation', {}, {
+          return this.configure('navigation', {}, {
             brandTabs: false,
             counter: false
           });
-      }
-      return this.rootFragmentMutation();
-    };
-
-    AppController.prototype.onRoute = function(name, path, opts) {
-      if (path !== '*notFound') {
-        return this.notFoundPageLayer.hide();
       }
     };
 
@@ -56,6 +46,12 @@ define(['underscore', 'marionette'], function(_, Marionette) {
       if (this.currentRootFragment !== rootFragment) {
         this.container.stopModules(['table', 'statistic']);
         return this.currentRootFragment = rootFragment;
+      }
+    };
+
+    AppController.prototype.onRoute = function(name, path, opts) {
+      if (path !== '*notFound') {
+        return this.notFoundPageLayer.hide();
       }
     };
 

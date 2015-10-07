@@ -18,15 +18,19 @@ define [
                     handlers = opts.precede.handlers
                     precededMethods = []
                     if handlers == '*' or handlers[0] == '*'
-                        for method of opts.controller
-                            if method.slice(-12) == 'RouteHandler'
-                                precededMethods.push method
+                        for methodName of opts.controller
+                            if methodName.slice(-12) == 'RouteHandler'
+                                precededMethods.push methodName
                     else if _.isArray(handlers)
                         precededMethods = handlers
 
-                    _.each precededMethods, (method) ->
-                        meld.before opts.controller, method, () ->
-                            opts.precede.withMethod.call(opts.controller, method)
+                    _with = opts.precede.with
+                    _.each precededMethods, (methodName) ->
+                        meld.before opts.controller, methodName, () ->
+                            if _.isFunction _with
+                                _with = [_with]
+                            _.each _with, (func) ->
+                                func.call(opts.controller, methodName)
 
                 router = new Marionette.AppRouter
                     controller: opts.controller
