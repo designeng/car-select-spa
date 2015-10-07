@@ -14,6 +14,8 @@ define [
                 app.addRegions options.withRegions
                 resolver.resolve app
 
+        # TODO: use Marionette.LayoutView for nested views.
+        # http://marionettejs.com/docs/v2.4.3/marionette.application.html#application-regions deprecated
         showInRegionsFacet = (resolver, facet, wire) ->
             wire(facet.options).then (options) ->
                 _.each options, (view, region) ->
