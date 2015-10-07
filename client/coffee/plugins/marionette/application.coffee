@@ -4,10 +4,6 @@ define [
 ], (_, Marionette) ->
 
     return (options) ->
-        # Marionette.Module is deprecated, and is scheduled to be removed in the next major release:
-        # http://marionettejs.com/docs/v2.4.2/marionette.module.html
-        # in Marionette we are not restricted with creating Marionette.Application instances,
-        # so they can be treated as different modules.
         createApplicationFactory = (resolver, compDef, wire) ->
             app = new Marionette.Application()
 
