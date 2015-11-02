@@ -1,16 +1,16 @@
-###Одностраничное приложение "Car-select-spa"
+###Single-page application "Car-select-spa"
 
-+ Приложение построено на Wire.js, Marionette.js `2.4.3v`, Backbone.js. Для отображения статистики используется [Highcharts](http://www.highcharts.com/).
++ Single-page application is built on the top of Wire.js, Marionette.js `2.4.3v`, Backbone.js. For statistic chart rendering used [Highcharts](http://www.highcharts.com/).
 
-###Демо-версия
+###Demo
 http://designeng.github.io/car-select/#/cars
 
-###Разработка
-+ После установки зависимостей (`npm install`, `bower install`), запустите команду `grunt` и откройте в браузере `http://localhost:7788/#/cars` (инструкции по установке [grunt-cli](http://gruntjs.com/getting-started)).
+###Development
++ After dependencies instalation (`npm install`, `bower install`), run `grunt` and open `http://localhost:7788/#/cars` (additional instructions for [grunt-cli](http://gruntjs.com/getting-started)).
 
-+ Тесты доступны по адресу: `http://localhost:8888/test/jasmine/`
++ Tests available here: `http://localhost:8888/test/jasmine/`
 
-+ Чтобы приложение взаимодействовало с поднятым на connect.js сервисом `http://localhost:7788/api/v1/cars`, нужно закомментировать метод [Backbone.ajax](https://github.com/designeng/car-select-spa/blob/master/client/coffee/bootstrap/hooks.coffee).
++ To interact with connect.js service `http://localhost:7788/api/v1/cars`, method [Backbone.ajax](https://github.com/designeng/car-select-spa/blob/master/client/coffee/bootstrap/hooks.coffee) should be removed.
 
-###Проверено в браузерах
+###Checked in browsers
 Chrome (v45), Safari (v7.0), Firefox (v41).
